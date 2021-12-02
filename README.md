@@ -1,4 +1,4 @@
 As an example:
 
-root -l slimNtuple.C\(2018,\"GluGluHToZZTo4L_M125_\"\)
+root -l slimNtuple.C\(2017,\"GluGluHToZZTo4L_M125_2017\"\)
 
