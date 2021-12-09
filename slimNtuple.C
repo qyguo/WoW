@@ -33,12 +33,13 @@
 #include "TClonesArray.h"
 #include "TCanvas.h"
 
-void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo4L_M125_2017", const bool & isSignal = true, const bool & _Test=false) {
+void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo4L_M125_2017", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
 
     int year = _year_;
     string pre_name = "root://cmsio5.rc.ufl.edu:1094//store/user/t2/users/ferrico/Qianying/";
     string whichYear[3] = {"2016/", "2017/", "2018/"};
     string MC__ = "MC/";
+    if (!isMC) MC__ = "DATA/";
     //string name_DS = "GluGluHToZZTo4L_M125_2017";
     string name_DS = _name_DS_.c_str();
 
@@ -50,19 +51,21 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     std::cout<<filename<<std::endl;
 
     TFile *oldfile = TFile::Open(filename.c_str());
-    oldfile->cd("Ana");
+    if (isMC) oldfile->cd("Ana");
     //TTree *oldtree = (TTree*)oldfile->Get("Ana/passedEvents");
     TTree *oldtree = (TTree*)gDirectory->Get("passedEvents");
-
     TH1F *th[7];
-    th[0]=(TH1F*)oldfile->Get("Ana/nEvents");
-    th[1]=(TH1F*)oldfile->Get("Ana/sumWeights");
-    th[2]=(TH1F*)oldfile->Get("Ana/sumWeightsPU");
-    th[3]=(TH1F*)oldfile->Get("Ana/nVtx");
-    th[4]=(TH1F*)oldfile->Get("Ana/nVtx_ReWeighted");
-    th[5]=(TH1F*)oldfile->Get("Ana/nInteractions");
-    th[6]=(TH1F*)oldfile->Get("Ana/nInteraction_ReWeighted");
 
+    if (isMC)
+    {
+    	th[0]=(TH1F*)oldfile->Get("Ana/nEvents");
+    	th[1]=(TH1F*)oldfile->Get("Ana/sumWeights");
+    	th[2]=(TH1F*)oldfile->Get("Ana/sumWeightsPU");
+    	th[3]=(TH1F*)oldfile->Get("Ana/nVtx");
+    	th[4]=(TH1F*)oldfile->Get("Ana/nVtx_ReWeighted");
+    	th[5]=(TH1F*)oldfile->Get("Ana/nInteractions");
+    	th[6]=(TH1F*)oldfile->Get("Ana/nInteraction_ReWeighted");
+    }
     Long64_t nentries = oldtree->GetEntries();
     std::cout<<nentries<<" total entries."<<std::endl;
     //ULong64_t Run, LumiSect, Event;
@@ -230,6 +233,12 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     oldtree->SetBranchStatus("GENpt_leadingjet_pt30_eta4p7",1);
     oldtree->SetBranchStatus("GENpt_leadingjet_pt30_eta2p5",1);
 
+// Weights for the uncertainty module
+    oldtree->SetBranchStatus("nnloWeights",1);
+    oldtree->SetBranchStatus("qcdWeights",1);
+    oldtree->SetBranchStatus("pdfENVup",1);
+
+
     if (!_Test) {
         oldtree->SetBranchStatus("GEND_0m",1);
         oldtree->SetBranchStatus("GEND_CP",1);
@@ -255,11 +264,16 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
             (name_DS+"_slimmed.root").c_str()
             ,"recreate");
     cout<<"Output file: "<<newfile->GetName()<<endl;
-    newfile->mkdir("Ana");
-    newfile->cd("Ana");
-    for (int ii=0; ii<7; ii++)
+    if (isMC)
     {
-      th[ii]->Write();
+	newfile->mkdir("Ana");
+    	newfile->cd("Ana");
+    }
+    if (isMC){
+    	for (int ii=0; ii<7; ii++)
+   	 {
+      		th[ii]->Write();
+    	}
     }
     TTree *newtree = oldtree->CloneTree(0);
     //newtree->Branch("dataMCWeight_new", &dataMCWeight_new);
@@ -269,7 +283,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     for (Long64_t i=0;i<nentries; i++) {
         //lep_dataMC_new.clear();
         //if (i>=2000000) continue;
-        if (i>=2000000&&_Test) break;
+        //if (i>=2000000&&_Test) break;
         if (i%100000==0) std::cout<<i<<"/"<<nentries<<std::endl;
         oldtree->GetEntry(i);
         if (isSignal)
