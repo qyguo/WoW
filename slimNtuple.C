@@ -33,22 +33,53 @@
 #include "TClonesArray.h"
 #include "TCanvas.h"
 
-void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo4L_M125_2017", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
+float dataMC_(float pt_, float eta_, TH2F* hMuScaleFac)
+{
+    float pt = TMath::Min(pt_,(float)199.0);
+    float eta = eta_;
+    //float eta = TMath::Abs(eta_);
+    return hMuScaleFac->GetBinContent(hMuScaleFac->FindBin(eta,pt));
+}
+
+float dataMCErr_(float pt_, float eta_, TH2F* hMuScaleFacUnc)
+{
+    float pt = TMath::Min(pt_,(float)199.0);
+    float eta = eta_;
+    //float eta = TMath::Abs(eta_);
+    return hMuScaleFacUnc->GetBinContent(hMuScaleFacUnc->FindBin(eta,pt));
+}
+
+void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_M125_TuneCP2_13TeV-jhugenv7011-pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
+    std::cout<<"year: "<<_year_<<"; name_DS: "<<_name_DS_<<"; isMC: "<<isMC<<"; isSignal: "<<isSignal<<"; _Test: "<<_Test<<std::endl;
 
     int year = _year_;
-    string pre_name = "root://cmsio5.rc.ufl.edu:1094//store/user/t2/users/ferrico/Qianying/";
+    int Year = TMath::Abs(year);
+    //string pre_name = "root://cmsio5.rc.ufl.edu:1094//store/user/t2/users/ferrico/Qianying/";
+    //string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/" + whichYear[year-2016] + "/MC/";
+    string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/";
+    if (year==2016)    pre_name="";
+    else if (year==-2016) //UL16APV
+        pre_name="";
+
     string whichYear[3] = {"2016/", "2017/", "2018/"};
     string MC__ = "MC/";
-    if (!isMC) MC__ = "DATA/";
+    if (!isMC) MC__ = "Data/";
     //string name_DS = "GluGluHToZZTo4L_M125_2017";
     string name_DS = _name_DS_.c_str();
 
     //TString filename = prefix+".root";
     string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
-    //filename = "Sync_106X_2018UL_30112021_-1ggH_V2.root";
+    string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed/").c_str(); 
 
     std::cout<<"Year: "<<year<<std::endl;
     std::cout<<filename<<std::endl;
+
+    // UL new muon SFs
+    string mu_scalefac_name_161718[3] = {"final_HZZ_SF_2016UL_mupogsysts_newLoose.root", "final_HZZ_SF_2017UL_mupogsysts_newLoose.root", "final_HZZ_SF_2018UL_mupogsysts_newLoose.root"};
+    string mu_scalefacFileInPath = ("/publicfs/cms/data/hzz/guoqy/newNTuple_UL/newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
+    TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.c_str());
+    TH2F *hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
+    TH2F *hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");
 
     TFile *oldfile = TFile::Open(filename.c_str());
     if (isMC) oldfile->cd("Ana");
@@ -70,32 +101,38 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     std::cout<<nentries<<" total entries."<<std::endl;
     //ULong64_t Run, LumiSect, Event;
     //Bool_t          passedFullSelection;
-    //Float_t         dataMCWeight;
-    //Float_t         eventWeight;
-    //vector<int>     *lep_id;
-    //vector<float>   *lep_pt;
-    //vector<float>   *lep_eta;
-    //Int_t           lep_Hindex[4];
-    //vector<float>   *lep_dataMC;
-    //vector<float>   lep_dataMC_new;
-    //vector<float>   *lep_dataMCErr;
-    //lep_id = 0; 
-    //lep_pt = 0;    
-    //lep_eta = 0;  
-    //lep_dataMC = 0;
-    //lep_dataMCErr = 0;
-    //oldtree->SetBranchAddress("Run",&Run);
-    //oldtree->SetBranchAddress("LumiSect",&LumiSect);
-    //oldtree->SetBranchAddress("Event",&Event);
-    //oldtree->SetBranchAddress("passedFullSelection", &passedFullSelection);
-    //oldtree->SetBranchAddress("dataMCWeight", &dataMCWeight);
-    //oldtree->SetBranchAddress("eventWeight", &eventWeight);
-    //oldtree->SetBranchAddress("lep_id", &lep_id);
-    //oldtree->SetBranchAddress("lep_pt", &lep_pt);
-    //oldtree->SetBranchAddress("lep_Hindex", lep_Hindex);
-    //oldtree->SetBranchAddress("lep_eta", &lep_eta);
-    //oldtree->SetBranchAddress("lep_dataMC", &lep_dataMC);
-    //oldtree->SetBranchAddress("lep_dataMCErr", &lep_dataMCErr);
+    Float_t         dataMCWeight;
+    Float_t         eventWeight;
+    vector<int>     *lep_id;
+    vector<float>   *lep_pt;
+    vector<float>   *lep_eta;
+    Int_t           lep_Hindex[4];
+    vector<float>   *lep_dataMC;
+    vector<float>   *lep_dataMCErr;
+    vector<float>   lep_dataMC_new;
+    vector<float>   lep_dataMCErr_new;
+    Float_t         dataMCWeight_new;
+    Float_t         eventWeight_new;
+    lep_id = 0; 
+    lep_pt = 0;    
+    lep_eta = 0;  
+    lep_dataMC = 0;
+    lep_dataMCErr = 0;
+    if (isMC)
+    {
+        //oldtree->SetBranchAddress("Run",&Run);
+        //oldtree->SetBranchAddress("LumiSect",&LumiSect);
+        //oldtree->SetBranchAddress("Event",&Event);
+        //oldtree->SetBranchAddress("passedFullSelection", &passedFullSelection);
+        oldtree->SetBranchAddress("dataMCWeight", &dataMCWeight);
+        oldtree->SetBranchAddress("eventWeight", &eventWeight);
+        oldtree->SetBranchAddress("lep_id", &lep_id);
+        oldtree->SetBranchAddress("lep_pt", &lep_pt);
+        oldtree->SetBranchAddress("lep_Hindex", lep_Hindex);
+        oldtree->SetBranchAddress("lep_eta", &lep_eta);
+        oldtree->SetBranchAddress("lep_dataMC", &lep_dataMC);
+        oldtree->SetBranchAddress("lep_dataMCErr", &lep_dataMCErr);
+    }
     
     Bool_t passedZ4lSelection;
     Bool_t passedZXCRSelection;
@@ -104,6 +141,15 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
 
     oldtree->SetBranchStatus("*",0); //Disables All Branches
     //Then enables only select branches
+    //
+    if (isMC){
+        oldtree->SetBranchStatus("lep_id",1);
+        oldtree->SetBranchStatus("lep_pt",1);
+        oldtree->SetBranchStatus("lep_eta",1);
+        oldtree->SetBranchStatus("lep_dataMC",1);
+        oldtree->SetBranchStatus("lep_dataMCErr",1);
+    }
+
     oldtree->SetBranchStatus("Run",1);
     oldtree->SetBranchStatus("LumiSect",1);
     oldtree->SetBranchStatus("Event",1);
@@ -261,7 +307,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
 
     //Create a new file + a clone of old tree in new file
     TFile *newfile = new TFile(
-            (name_DS+"_slimmed.root").c_str()
+            (outputFile_Slimmed+name_DS+"_slimmed_newMuSF.root").c_str()
             ,"recreate");
     cout<<"Output file: "<<newfile->GetName()<<endl;
     if (isMC)
@@ -276,16 +322,52 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     	}
     }
     TTree *newtree = oldtree->CloneTree(0);
-    //newtree->Branch("dataMCWeight_new", &dataMCWeight_new);
-    //newtree->Branch("eventWeight_new", &eventWeight_new);
+    newtree->Branch("lep_dataMC_new", &lep_dataMC_new);
+    newtree->Branch("lep_dataMCErr_new", &lep_dataMCErr_new);
+    newtree->Branch("dataMCWeight_new", &dataMCWeight_new);
+    newtree->Branch("eventWeight_new", &eventWeight_new);
 
     std::set<TString> runlumieventSet;
     for (Long64_t i=0;i<nentries; i++) {
-        //lep_dataMC_new.clear();
+        lep_dataMC_new.clear();
+        lep_dataMCErr_new.clear();
         //if (i>=2000000) continue;
         //if (i>=2000000&&_Test) break;
         if (i%100000==0) std::cout<<i<<"/"<<nentries<<std::endl;
         oldtree->GetEntry(i);
+
+        if (isMC)
+        {
+            if (isSignal || (!isSignal && (passedZ4lSelection ||passedZXCRSelection)))
+            {
+                for(Long64_t j=0; j<lep_pt->size(); j++)
+                {
+                    if(TMath::Abs((*lep_id)[j])==13)
+                    {
+                        lep_dataMC_new.push_back(dataMC_((*lep_pt)[j], (*lep_eta)[j], hMuScaleFac));
+                        lep_dataMCErr_new.push_back(dataMCErr_((*lep_pt)[j], (*lep_eta)[j], hMuScaleFacUnc));
+                    }
+                    else
+                    {
+                        lep_dataMC_new.push_back((*lep_dataMC)[j]);
+                        lep_dataMCErr_new.push_back((*lep_dataMCErr)[j]);
+                    }
+                }
+
+                int sum_lep_Hindex=lep_Hindex[0]+lep_Hindex[1]+lep_Hindex[2]+lep_Hindex[3];//lep_Hindex default value is -1
+                if (sum_lep_Hindex!=-4)
+                {
+                    dataMCWeight_new = lep_dataMC_new[lep_Hindex[0]]*lep_dataMC_new[lep_Hindex[1]]*lep_dataMC_new[lep_Hindex[2]]*lep_dataMC_new[lep_Hindex[3]]; 
+                    eventWeight_new = eventWeight/dataMCWeight*dataMCWeight_new;
+                }
+                else
+                {
+                    dataMCWeight_new = 1.0;
+                    eventWeight_new = eventWeight/dataMCWeight*dataMCWeight_new;
+                }
+            }
+        }
+
         if (isSignal)
         {
             newtree->Fill();
