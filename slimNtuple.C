@@ -76,7 +76,8 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
 
     // UL new muon SFs
     string mu_scalefac_name_161718[3] = {"final_HZZ_SF_2016UL_mupogsysts_newLoose.root", "final_HZZ_SF_2017UL_mupogsysts_newLoose.root", "final_HZZ_SF_2018UL_mupogsysts_newLoose.root"};
-    string mu_scalefacFileInPath = ("/publicfs/cms/data/hzz/guoqy/newNTuple_UL/newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
+    //string mu_scalefacFileInPath = ("/publicfs/cms/data/hzz/guoqy/newNTuple_UL/newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
+    string mu_scalefacFileInPath = ("newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
     TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.c_str());
     TH2F *hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
     TH2F *hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");
@@ -89,13 +90,13 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
 
     if (isMC)
     {
-    	th[0]=(TH1F*)oldfile->Get("Ana/nEvents");
-    	th[1]=(TH1F*)oldfile->Get("Ana/sumWeights");
-    	th[2]=(TH1F*)oldfile->Get("Ana/sumWeightsPU");
-    	th[3]=(TH1F*)oldfile->Get("Ana/nVtx");
-    	th[4]=(TH1F*)oldfile->Get("Ana/nVtx_ReWeighted");
-    	th[5]=(TH1F*)oldfile->Get("Ana/nInteractions");
-    	th[6]=(TH1F*)oldfile->Get("Ana/nInteraction_ReWeighted");
+        th[0]=(TH1F*)oldfile->Get("Ana/nEvents");
+        th[1]=(TH1F*)oldfile->Get("Ana/sumWeights");
+        th[2]=(TH1F*)oldfile->Get("Ana/sumWeightsPU");
+        th[3]=(TH1F*)oldfile->Get("Ana/nVtx");
+        th[4]=(TH1F*)oldfile->Get("Ana/nVtx_ReWeighted");
+        th[5]=(TH1F*)oldfile->Get("Ana/nInteractions");
+        th[6]=(TH1F*)oldfile->Get("Ana/nInteraction_ReWeighted");
     }
     Long64_t nentries = oldtree->GetEntries();
     std::cout<<nentries<<" total entries."<<std::endl;
@@ -312,14 +313,14 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     cout<<"Output file: "<<newfile->GetName()<<endl;
     if (isMC)
     {
-	newfile->mkdir("Ana");
-    	newfile->cd("Ana");
+        newfile->mkdir("Ana");
+        newfile->cd("Ana");
     }
     if (isMC){
-    	for (int ii=0; ii<7; ii++)
-   	 {
-      		th[ii]->Write();
-    	}
+        for (int ii=0; ii<7; ii++)
+        {
+            th[ii]->Write();
+        }
     }
     TTree *newtree = oldtree->CloneTree(0);
     newtree->Branch("lep_dataMC_new", &lep_dataMC_new);

@@ -77,17 +77,27 @@ void newSFmuon(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_
     //edm::FileInPath mu_scalefacFileInPath(("UFHZZAnalysisRun2/UFHZZ4LAna/data/"+mu_scalefac_name_161718[year-2016]).c_str());
 
     //string mu_scalefacFileInPath = ("/raid/raid9/qguo/Run2/after/Run2_2/test3/CMSSW_10_2_18/src/UFHZZAnalysisRun2/UFHZZ4LAna/data/"+mu_scalefac_name_161718[year-2016]).c_str();
-    string mu_scalefacFileInPath = ("/publicfs/cms/data/hzz/guoqy/newNTuple_UL/newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
+    //string mu_scalefacFileInPath = ("/publicfs/cms/data/hzz/guoqy/newNTuple_UL/newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
+    string mu_scalefacFileInPath = ("newMuonSF/" + mu_scalefac_name_161718[Year-2016]).c_str();
     TFile *fMuScalFac = TFile::Open(mu_scalefacFileInPath.c_str());
     TH2F *hMuScaleFac = (TH2F*)fMuScalFac->Get("FINAL");
     TH2F *hMuScaleFacUnc = (TH2F*)fMuScalFac->Get("ERROR");
 
     TFile *oldfile = TFile::Open(filename.c_str());
     oldfile->cd("Ana");
+
     //TTree *oldtree = (TTree*)oldfile->Get("Ana/passedEvents");
-    
     TTree *oldtree = (TTree*)gDirectory->Get("passedEvents");
     //TTree *oldtree = (TTree*)oldfile->Get("passedEvents");
+    
+    TH1F *th[7];
+    th[0]=(TH1F*)oldfile->Get("Ana/nEvents");
+    th[1]=(TH1F*)oldfile->Get("Ana/sumWeights");
+    th[2]=(TH1F*)oldfile->Get("Ana/sumWeightsPU");
+    th[3]=(TH1F*)oldfile->Get("Ana/nVtx");
+    th[4]=(TH1F*)oldfile->Get("Ana/nVtx_ReWeighted");
+    th[5]=(TH1F*)oldfile->Get("Ana/nInteractions");
+    th[6]=(TH1F*)oldfile->Get("Ana/nInteraction_ReWeighted");
 
     Long64_t nentries = oldtree->GetEntries();
     std::cout<<nentries<<" total entries."<<std::endl;
@@ -132,6 +142,11 @@ void newSFmuon(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_
     cout<<"Output file: "<<newfile->GetName()<<endl;
     newfile->mkdir("Ana");
     newfile->cd("Ana");
+    for (int ii=0; ii<7; ii++)
+    {
+        th[ii]->Write();
+    }
+
     TTree *newtree = oldtree->CloneTree(0);
     newtree->Branch("lep_dataMC_new", &lep_dataMC_new);
     newtree->Branch("lep_dataMCErr_new", &lep_dataMCErr_new);
