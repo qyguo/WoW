@@ -69,7 +69,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
 
     //TString filename = prefix+".root";
     string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
-    string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed/").c_str(); 
+    string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_2p5/").c_str(); 
 
     std::cout<<"Year: "<<year<<std::endl;
     std::cout<<filename<<std::endl;
@@ -114,11 +114,75 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     vector<float>   lep_dataMCErr_new;
     Float_t         dataMCWeight_new;
     Float_t         eventWeight_new;
+
+    Float_t         GENpT4lj_2p5;
+    Float_t         GENmass4lj_2p5;
+    Float_t         GENpT4ljj_2p5;
+    Float_t         GENmass4ljj_2p5;
+    Float_t         pT4lj_2p5;
+    Float_t         mass4lj_2p5;
+    Float_t         pT4ljj_2p5;
+    Float_t         mass4ljj_2p5;
+    Float_t         pT4lj_2p5_jesup;
+    Float_t         mass4lj_2p5_jesup;
+    Float_t         pT4ljj_2p5_jesup;
+    Float_t         mass4ljj_2p5_jesup;
+    Float_t         pT4lj_2p5_jesdn;
+    Float_t         mass4lj_2p5_jesdn;
+    Float_t         pT4ljj_2p5_jesdn;
+    Float_t         mass4ljj_2p5_jesdn;
+
+    Float_t         GENpT4l;
+    Float_t         GENeta4l;
+    Float_t         GENphi4l;
+    Float_t         GENmass4l;
+    Float_t         GENpTj1_2p5;
+    Float_t         GENetaj1_2p5;
+    Float_t         GENphij1_2p5;
+    Float_t         GENmj1_2p5;
+    Float_t         GENpTj2_2p5;
+    Float_t         GENetaj2_2p5;
+    Float_t         GENphij2_2p5;
+    Float_t         GENmj2_2p5;
+    Int_t           GENnjets_pt30_eta2p5;
+    Float_t         pT4l;
+    Float_t         eta4l;
+    Float_t         phi4l;
+    Float_t         mass4l;
+    Float_t         pTj1_2p5;
+    Float_t         etaj1_2p5;
+    Float_t         phij1_2p5;
+    Float_t         mj1_2p5;
+    Float_t         pTj2_2p5;
+    Float_t         etaj2_2p5;
+    Float_t         phij2_2p5;
+    Float_t         mj2_2p5;
+    Float_t         pTj1_2p5_jesup;
+    Float_t         etaj1_2p5_jesup;
+    Float_t         phij1_2p5_jesup;
+    Float_t         mj1_2p5_jesup;
+    Float_t         pTj2_2p5_jesup;
+    Float_t         etaj2_2p5_jesup;
+    Float_t         phij2_2p5_jesup;
+    Float_t         mj2_2p5_jesup;
+    Float_t         pTj1_2p5_jesdn;
+    Float_t         etaj1_2p5_jesdn;
+    Float_t         phij1_2p5_jesdn;
+    Float_t         mj1_2p5_jesdn;
+    Float_t         pTj2_2p5_jesdn;
+    Float_t         etaj2_2p5_jesdn;
+    Float_t         phij2_2p5_jesdn;
+    Float_t         mj2_2p5_jesdn;
+    Int_t           njets_pt30_eta2p5;
+    Int_t           njets_pt30_eta2p5_jesup;
+    Int_t           njets_pt30_eta2p5_jesdn;
+
     lep_id = 0; 
     lep_pt = 0;    
     lep_eta = 0;  
     lep_dataMC = 0;
     lep_dataMCErr = 0;
+
     if (isMC)
     {
         //oldtree->SetBranchAddress("Run",&Run);
@@ -133,7 +197,51 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
         oldtree->SetBranchAddress("lep_eta", &lep_eta);
         oldtree->SetBranchAddress("lep_dataMC", &lep_dataMC);
         oldtree->SetBranchAddress("lep_dataMCErr", &lep_dataMCErr);
+        oldtree->SetBranchAddress("GENpT4l", &GENpT4l);
+        oldtree->SetBranchAddress("GENeta4l", &GENeta4l);
+        oldtree->SetBranchAddress("GENphi4l", &GENphi4l);
+        oldtree->SetBranchAddress("GENmass4l", &GENmass4l);
+        oldtree->SetBranchAddress("GENpTj1_2p5", &GENpTj1_2p5);
+        oldtree->SetBranchAddress("GENetaj1_2p5", &GENetaj1_2p5);
+        oldtree->SetBranchAddress("GENphij1_2p5", &GENphij1_2p5);
+        oldtree->SetBranchAddress("GENmj1_2p5", &GENmj1_2p5);
+        oldtree->SetBranchAddress("GENpTj2_2p5", &GENpTj2_2p5);
+        oldtree->SetBranchAddress("GENetaj2_2p5", &GENetaj2_2p5);
+        oldtree->SetBranchAddress("GENphij2_2p5", &GENphij2_2p5);
+        oldtree->SetBranchAddress("GENmj2_2p5", &GENmj2_2p5);
+        oldtree->SetBranchAddress("GENnjets_pt30_eta2p5", &GENnjets_pt30_eta2p5);
     }
+    oldtree->SetBranchAddress("pTj1_2p5", &pTj1_2p5);
+    oldtree->SetBranchAddress("etaj1_2p5", &etaj1_2p5);
+    oldtree->SetBranchAddress("phij1_2p5", &phij1_2p5);
+    oldtree->SetBranchAddress("mj1_2p5", &mj1_2p5);
+    oldtree->SetBranchAddress("pTj2_2p5", &pTj2_2p5);
+    oldtree->SetBranchAddress("etaj2_2p5", &etaj2_2p5);
+    oldtree->SetBranchAddress("phij2_2p5", &phij2_2p5);
+    oldtree->SetBranchAddress("mj2_2p5", &mj2_2p5);
+    oldtree->SetBranchAddress("pTj1_2p5_jesup", &pTj1_2p5_jesup);
+    oldtree->SetBranchAddress("etaj1_2p5_jesup", &etaj1_2p5_jesup);
+    oldtree->SetBranchAddress("phij1_2p5_jesup", &phij1_2p5_jesup);
+    oldtree->SetBranchAddress("mj1_2p5_jesup", &mj1_2p5_jesup);
+    oldtree->SetBranchAddress("pTj2_2p5_jesup", &pTj2_2p5_jesup);
+    oldtree->SetBranchAddress("etaj2_2p5_jesup", &etaj2_2p5_jesup);
+    oldtree->SetBranchAddress("phij2_2p5_jesup", &phij2_2p5_jesup);
+    oldtree->SetBranchAddress("mj2_2p5_jesup", &mj2_2p5_jesup);
+    oldtree->SetBranchAddress("pTj1_2p5_jesdn", &pTj1_2p5_jesdn);
+    oldtree->SetBranchAddress("etaj1_2p5_jesdn", &etaj1_2p5_jesdn);
+    oldtree->SetBranchAddress("phij1_2p5_jesdn", &phij1_2p5_jesdn);
+    oldtree->SetBranchAddress("mj1_2p5_jesdn", &mj1_2p5_jesdn);
+    oldtree->SetBranchAddress("pTj2_2p5_jesdn", &pTj2_2p5_jesdn);
+    oldtree->SetBranchAddress("etaj2_2p5_jesdn", &etaj2_2p5_jesdn);
+    oldtree->SetBranchAddress("phij2_2p5_jesdn", &phij2_2p5_jesdn);
+    oldtree->SetBranchAddress("mj2_2p5_jesdn", &mj2_2p5_jesdn);
+    oldtree->SetBranchAddress("pT4l", &pT4l);
+    oldtree->SetBranchAddress("eta4l", &eta4l);
+    oldtree->SetBranchAddress("phi4l", &phi4l);
+    oldtree->SetBranchAddress("mass4l", &mass4l);
+    oldtree->SetBranchAddress("njets_pt30_eta2p5", &njets_pt30_eta2p5);
+    oldtree->SetBranchAddress("njets_pt30_eta2p5_jesup", &njets_pt30_eta2p5_jesup);
+    oldtree->SetBranchAddress("njets_pt30_eta2p5_jesdn", &njets_pt30_eta2p5_jesdn);
     
     Bool_t passedZ4lSelection;
     Bool_t passedZXCRSelection;
@@ -174,6 +282,8 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     oldtree->SetBranchStatus("k_qqZZ_ewk",1);
     oldtree->SetBranchStatus("k_ggZZ",1);
     oldtree->SetBranchStatus("mass4lREFIT",1);
+    oldtree->SetBranchStatus("mass4lErr",1);
+    oldtree->SetBranchStatus("mass4lErrREFIT",1);
 
     oldtree->SetBranchStatus("finalState",1);
     oldtree->SetBranchStatus("idL1",1);
@@ -254,6 +364,43 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
         oldtree->SetBranchStatus("mass4ljj",1);
         oldtree->SetBranchStatus("mass4ljj_jesup",1);
         oldtree->SetBranchStatus("mass4ljj_jesdn",1);
+//
+        oldtree->SetBranchStatus("pTj2_2p5",1);
+        oldtree->SetBranchStatus("pTj2_2p5_jesup",1);
+        oldtree->SetBranchStatus("pTj2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("mj1j2_2p5",1);
+        oldtree->SetBranchStatus("mj1j2_2p5_jesup",1);
+        oldtree->SetBranchStatus("mj1j2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("dEtaj1j2_2p5",1);
+        oldtree->SetBranchStatus("dEtaj1j2_2p5_jesup",1);
+        oldtree->SetBranchStatus("dEtaj1j2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("dPhij1j2_2p5",1);
+        oldtree->SetBranchStatus("dPhij1j2_2p5_jesup",1);
+        oldtree->SetBranchStatus("dPhij1j2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("pTj1_2p5",1);
+        oldtree->SetBranchStatus("etaj1_2p5",1);
+        oldtree->SetBranchStatus("phij1_2p5",1);
+        oldtree->SetBranchStatus("mj1_2p5",1);
+        //oldtree->SetBranchStatus("pTj2_2p5",1);
+        oldtree->SetBranchStatus("etaj2_2p5",1);
+        oldtree->SetBranchStatus("phij2_2p5",1);
+        oldtree->SetBranchStatus("mj2_2p5",1);
+        oldtree->SetBranchStatus("pTj1_2p5_jesup",1);
+        oldtree->SetBranchStatus("etaj1_2p5_jesup",1);
+        oldtree->SetBranchStatus("phij1_2p5_jesup",1);
+        oldtree->SetBranchStatus("mj1_2p5_jesup",1);
+        //oldtree->SetBranchStatus("pTj2_2p5_jesup",1);
+        oldtree->SetBranchStatus("etaj2_2p5_jesup",1);
+        oldtree->SetBranchStatus("phij2_2p5_jesup",1);
+        oldtree->SetBranchStatus("mj2_2p5_jesup",1);
+        oldtree->SetBranchStatus("pTj1_2p5_jesdn",1);
+        oldtree->SetBranchStatus("etaj1_2p5_jesdn",1);
+        oldtree->SetBranchStatus("phij1_2p5_jesdn",1);
+        oldtree->SetBranchStatus("mj1_2p5_jesdn",1);
+        //oldtree->SetBranchStatus("pTj2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("etaj2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("phij2_2p5_jesdn",1);
+        oldtree->SetBranchStatus("mj2_2p5_jesdn",1);
     }
 
     oldtree->SetBranchStatus("GENZ_DaughtersId",1);
@@ -304,11 +451,24 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
         oldtree->SetBranchStatus("GENmass4lj",1);
         oldtree->SetBranchStatus("GENpT4ljj",1);
         oldtree->SetBranchStatus("GENmass4ljj",1);
+        oldtree->SetBranchStatus("GENpTj2_2p5",1);
+        oldtree->SetBranchStatus("GENmj1j2_2p5",1);
+        oldtree->SetBranchStatus("GENdEtaj1j2_2p5",1);
+        oldtree->SetBranchStatus("GENdPhij1j2_2p5",1);
+
+        oldtree->SetBranchStatus("GENpTj1_2p5",1);
+        oldtree->SetBranchStatus("GENetaj1_2p5",1);
+        oldtree->SetBranchStatus("GENphij1_2p5",1);
+        oldtree->SetBranchStatus("GENmj1_2p5",1);
+        //oldtree->SetBranchStatus("GENpTj2_2p5",1);
+        oldtree->SetBranchStatus("GENetaj2_2p5",1);
+        oldtree->SetBranchStatus("GENphij2_2p5",1);
+        oldtree->SetBranchStatus("GENmj2_2p5",1);
     }
 
     //Create a new file + a clone of old tree in new file
     TFile *newfile = new TFile(
-            (outputFile_Slimmed+name_DS+"_slimmed_newMuSF.root").c_str()
+            (outputFile_Slimmed+name_DS+"_slimmed_newMuSF_add2p5.root").c_str()
             ,"recreate");
     cout<<"Output file: "<<newfile->GetName()<<endl;
     if (isMC)
@@ -327,15 +487,103 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     newtree->Branch("lep_dataMCErr_new", &lep_dataMCErr_new);
     newtree->Branch("dataMCWeight_new", &dataMCWeight_new);
     newtree->Branch("eventWeight_new", &eventWeight_new);
+    newtree->Branch("GENpT4lj_2p5", &GENpT4lj_2p5);
+    newtree->Branch("GENmass4lj_2p5", &GENmass4lj_2p5);
+    newtree->Branch("GENpT4ljj_2p5", &GENpT4ljj_2p5);
+    newtree->Branch("GENmass4ljj_2p5", &GENmass4ljj_2p5);
+    newtree->Branch("pT4lj_2p5", &pT4lj_2p5);
+    newtree->Branch("mass4lj_2p5", &mass4lj_2p5);
+    newtree->Branch("pT4ljj_2p5", &pT4ljj_2p5);
+    newtree->Branch("mass4ljj_2p5", &mass4ljj_2p5);
+    newtree->Branch("pT4lj_2p5_jesup", &pT4lj_2p5_jesup);
+    newtree->Branch("mass4lj_2p5_jesup", &mass4lj_2p5_jesup);
+    newtree->Branch("pT4ljj_2p5_jesup", &pT4ljj_2p5_jesup);
+    newtree->Branch("mass4ljj_2p5_jesup", &mass4ljj_2p5_jesup);
+    newtree->Branch("pT4lj_2p5_jesdn", &pT4lj_2p5_jesdn);
+    newtree->Branch("mass4lj_2p5_jesdn", &mass4lj_2p5_jesdn);
+    newtree->Branch("pT4ljj_2p5_jesdn", &pT4ljj_2p5_jesdn);
+    newtree->Branch("mass4ljj_2p5_jesdn", &mass4ljj_2p5_jesdn);
 
     std::set<TString> runlumieventSet;
     for (Long64_t i=0;i<nentries; i++) {
         lep_dataMC_new.clear();
         lep_dataMCErr_new.clear();
+        eventWeight_new=-1.0;
+        dataMCWeight_new=-1.0;
+        GENpT4lj_2p5=-1.0;
+        GENmass4lj_2p5=-1.0;
+        GENpT4ljj_2p5=-1.0;
+        GENmass4ljj_2p5=-1.0;
+        pT4lj_2p5=-1.0;
+        mass4lj_2p5=-1.0;
+        pT4ljj_2p5=-1.0;
+        mass4ljj_2p5=-1.0;
+        pT4lj_2p5_jesup=-1.0;
+        mass4lj_2p5_jesup=-1.0;
+        pT4ljj_2p5_jesup=-1.0;
+        mass4ljj_2p5_jesup=-1.0;
+        pT4lj_2p5_jesdn=-1.0;
+        mass4lj_2p5_jesdn=-1.0;
+        pT4ljj_2p5_jesdn=-1.0;
+        mass4ljj_2p5_jesdn=-1.0;
         //if (i>=2000000) continue;
         //if (i>=2000000&&_Test) break;
         if (i%100000==0) std::cout<<i<<"/"<<nentries<<std::endl;
         oldtree->GetEntry(i);
+
+        if (!isMC || (isMC && (isSignal || (!isSignal && (passedZ4lSelection ||passedZXCRSelection)))) )
+        {
+            if (pT4l>0)
+            {
+                TLorentzVector j1, j2, Higgs, hj, jj, hjj, j1_jesup, j1_jesdn, j2_jesup, j2_jesdn, hj_jesup, hj_jesdn, jj_jesup, jj_jesdn, hjj_jesup, hjj_jesdn;
+                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
+                if(njets_pt30_eta2p5>0)
+                {
+                    j1.SetPtEtaPhiM(pTj1_2p5,etaj1_2p5,phij1_2p5,mj1_2p5);
+                    hj = Higgs + j1;
+                    pT4lj_2p5 = hj.Pt();
+                    mass4lj_2p5 = hj.M();
+                }
+                if(njets_pt30_eta2p5>1)
+                {
+                    j2.SetPtEtaPhiM(pTj2_2p5,etaj2_2p5,phij2_2p5,mj2_2p5);
+                    jj = j1 + j2;
+                    hjj = Higgs + jj;
+                    pT4ljj_2p5 = hjj.Pt();
+                    mass4ljj_2p5 = hjj.M();
+                }
+                if(njets_pt30_eta2p5_jesup>0)
+                {
+                    j1_jesup.SetPtEtaPhiM(pTj1_2p5_jesup,etaj1_2p5_jesup,phij1_2p5_jesup,mj1_2p5_jesup);
+                    hj_jesup = Higgs + j1_jesup;
+                    pT4lj_2p5_jesup = hj_jesup.Pt();
+                    mass4lj_2p5_jesup = hj_jesup.M();
+                }
+                if(njets_pt30_eta2p5_jesup>1)
+                {
+                    j2_jesup.SetPtEtaPhiM(pTj2_2p5_jesup,etaj2_2p5_jesup,phij2_2p5_jesup,mj2_2p5_jesup);
+                    jj_jesup = j1_jesup + j2_jesup;
+                    hjj_jesup = Higgs + jj_jesup;
+                    pT4ljj_2p5_jesup = hjj_jesup.Pt();
+                    mass4ljj_2p5_jesup = hjj_jesup.M();
+                }
+                if(njets_pt30_eta2p5_jesdn>0)
+                {
+                    j1_jesdn.SetPtEtaPhiM(pTj1_2p5_jesdn,etaj1_2p5_jesdn,phij1_2p5_jesdn,mj1_2p5_jesdn);
+                    hj_jesdn = Higgs + j1_jesdn;
+                    pT4lj_2p5_jesdn = hj_jesdn.Pt();
+                    mass4lj_2p5_jesdn = hj_jesdn.M();
+                }
+                if(njets_pt30_eta2p5_jesdn>1)
+                {
+                    j2_jesdn.SetPtEtaPhiM(pTj2_2p5_jesdn,etaj2_2p5_jesdn,phij2_2p5_jesdn,mj2_2p5_jesdn);
+                    jj_jesdn = j1_jesdn + j2_jesdn;
+                    hjj_jesdn = Higgs + jj_jesdn;
+                    pT4ljj_2p5_jesdn = hjj_jesdn.Pt();
+                    mass4ljj_2p5_jesdn = hjj_jesdn.M();
+                }
+            }
+        }
 
         if (isMC)
         {
@@ -365,6 +613,28 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
                 {
                     dataMCWeight_new = 1.0;
                     eventWeight_new = eventWeight/dataMCWeight*dataMCWeight_new;
+                }
+
+                if(GENpT4l>0)
+                {
+                    TLorentzVector GENj1, GENj2, GENHiggs, GENhj, GENjj, GENhjj;
+                    GENHiggs.SetPtEtaPhiM(GENpT4l, GENeta4l, GENphi4l, GENmass4l);
+
+                    if(GENnjets_pt30_eta2p5>0)
+                    {
+                        GENj1.SetPtEtaPhiM(GENpTj1_2p5, GENetaj1_2p5, GENphij1_2p5, GENmj1_2p5);
+                        GENhj = GENj1 + GENHiggs;
+                        GENpT4lj_2p5=GENhj.Pt();
+                        GENmass4lj_2p5=GENhj.M();
+                    }
+                    if(GENnjets_pt30_eta2p5>1)
+                    {
+                        GENj2.SetPtEtaPhiM(GENpTj2_2p5, GENetaj2_2p5, GENphij2_2p5, GENmj2_2p5);
+                        GENjj = GENj1 + GENj2;
+                        GENhjj = GENjj + GENHiggs;
+                        GENpT4ljj_2p5 = GENhjj.Pt();
+                        GENmass4ljj_2p5 = GENhjj.M();
+                    }
                 }
             }
         }
