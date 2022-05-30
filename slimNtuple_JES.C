@@ -310,7 +310,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
          uncSources.push_back("RelativeSample_2016");
     }
    if (year == 2017)   {
-         edm::FileInPath jecUncFile("JECUncertaintySources/RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt");
+         edm::FileInPath jecUncFile("JECUncertaintySources/RegroupedV2_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt");
          jecUncFile_ = jecUncFile.fullPath();
          uncSources.push_back("Total");
          uncSources.push_back("Absolute"); uncSources.push_back("Absolute_2017");
@@ -322,7 +322,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
          uncSources.push_back("RelativeSample_2017");
          }
    if (year == 2018)   {
-         edm::FileInPath jecUncFile("JECUncertaintySources/RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt");
+         edm::FileInPath jecUncFile("JECUncertaintySources/RegroupedV2_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt");
          jecUncFile_ = jecUncFile.fullPath();
          uncSources.push_back("Total");
          uncSources.push_back("Absolute"); uncSources.push_back("Absolute_2018");
