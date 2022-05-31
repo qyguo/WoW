@@ -220,10 +220,16 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
     Float_t         njets_pt30_eta4p7_jesup_Abs;
     Float_t         njets_pt30_eta2p5_jesup_Abs;
+    Float_t         njets_pt30_eta4p7_jesdn_Abs;
+    Float_t         njets_pt30_eta2p5_jesdn_Abs;
     int jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1;
     int jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1;
     float jet1pt_jesup_Abs=0.0, jet2pt_jesup_Abs=0.0;
     float jet1pt2p5_jesup_Abs=0.0, jet2pt2p5_jesup_Abs=0.0;
+    int jet1index_jesdn_Abs=-1, jet2index_jesdn_Abs=-1;
+    int jet1index2p5_jesdn_Abs=-1, jet2index2p5_jesdn_Abs=-1;
+    float jet1pt_jesdn_Abs=0.0, jet2pt_jesdn_Abs=0.0;
+    float jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
 
 
 // try
@@ -751,11 +757,13 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
     newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_Abs", &njets_pt30_eta4p7_jesdn_Abs, "njets_pt30_eta4p7_jesdn_Abs/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_Abs", &njets_pt30_eta2p5_jesdn_Abs, "njets_pt30_eta2p5_jesdn_Abs/F");
 
 
     std::set<TString> runlumieventSet;
-    //for (Long64_t i=0;i<nentries; i++) {
-    for (Long64_t i=0;i<10000; i++) {
+    for (Long64_t i=0;i<nentries; i++) {
+    //for (Long64_t i=0;i<10000; i++) {
 	// do a Skim
 	//if ( doM4lSkim && (GENmass4l<GENmassZZLow || GENmass4l>GENmassZZHigh) && !(passedFullSelection==1 && mass4l>GENmassZZLow && mass4l<GENmassZZHigh) ) continue;
 
@@ -787,6 +795,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 	njets_pt30_eta4p7_jesup_Abs=0;
 	njets_pt30_eta2p5_jesup_Abs=0;
+	njets_pt30_eta4p7_jesdn_Abs=0;
+	njets_pt30_eta2p5_jesdn_Abs=0;
         //if (i>=2000000) continue;
         //if (i>=2000000&&_Test) break;
         if (i%100000==0) std::cout<<i<<"/"<<nentries<<std::endl;
@@ -948,10 +958,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     //if ((*pt_jesup_split_Abs)[k]<30.0 || abs((*jet_eta)[k])>4.7) continue;
                     //TLorentzVector thisJet_jesAbsup;
                     //thisJet_jesup.SetPtEtaPhiM((*jet_jesup_pt)[k],(*jet_jesup_eta)[k],(*jet_jesup_phi)[k],(*jet_jesup_mass)[k]);
-                    
                     bool isclean_H4l=true;
-                    
-                    if (isclean_H4l) {
+                    //if (isclean_H4l) {
                         njets_pt30_eta4p7_jesup_Abs+=1;  
                         //jet_jesup_Abs_iscleanH4l->push_back(k);
                         if (thisJet_jesup_Abs.Pt()>jet1pt_jesup_Abs) {
@@ -960,7 +968,6 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                         } else if (thisJet_jesup_Abs.Pt()>jet2pt_jesup_Abs) {
                             jet2pt_jesup_Abs=thisJet_jesup_Abs.Pt(); jet2index_jesup_Abs=k;
                         }
-                        //if (abs((*jet_jesup_eta)[k])<2.5) {
                         if (abs(thisJet_jesup_Abs.Eta())<2.5) {
                             njets_pt30_eta2p5_jesup_Abs+=1;
                             if (thisJet_jesup_Abs.Pt()>jet1pt2p5_jesup_Abs) {
@@ -970,18 +977,40 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                                 jet2pt2p5_jesup_Abs=thisJet_jesup_Abs.Pt(); jet2index2p5_jesup_Abs=k;
                             }
                         }
-                            
-                    }
-                    
+                    //}
                 }
                 cout<<njets_pt30_eta4p7_jesup_Abs<<" jets (jesup_Abs)"<<endl;
 	        pt_jesup_split_Abs.clear(); 	// FIXME
-/// ABS up finish
+/// Abs up finish
+/////////////////
+// Abs dn start
+                for( unsigned int k = 0; k< pt_jesdn_split_Abs.size(); k++) {
+                    if (pt_jesdn_split_Abs[k]<30.0 || abs((*jet_eta)[((*jet_iscleanH4l)[k])])>4.7) continue;
+//                    cout<<"test print:->   pt_jesdn_split_Abs["<<k<<"]:   "<<pt_jesdn_split_Abs[k]<<endl;
+//                    cout<<"test print:->   pt_jesdn_split_Abs[((*jet_iscleanH4l)["<<k<<"])]:   "<<pt_jesdn_split_Abs[((*jet_iscleanH4l)[k])]<<endl;
+                    TLorentzVector thisJet_jesdn_Abs;
+                    thisJet_jesdn_Abs.SetPtEtaPhiM(pt_jesdn_split_Abs[k],(*jet_eta)[((*jet_iscleanH4l)[k])],(*jet_phi)[((*jet_iscleanH4l)[k])],(*jet_mass)[((*jet_iscleanH4l)[k])]);
 
-
-
-
-
+                    bool isclean_H4l=true;
+                        njets_pt30_eta4p7_jesdn_Abs+=1;
+			if (thisJet_jesdn_Abs.Pt()>jet1pt_jesdn_Abs) {
+                            jet2pt_jesdn_Abs=jet1pt_jesdn_Abs; jet2index_jesdn_Abs=jet1index_jesdn_Abs;
+                            jet1pt_jesdn_Abs=thisJet_jesdn_Abs.Pt(); jet1index_jesdn_Abs=k;
+                        } else if (thisJet_jesdn_Abs.Pt()>jet2pt_jesdn_Abs) {
+                            jet2pt_jesdn_Abs=thisJet_jesdn_Abs.Pt(); jet2index_jesdn_Abs=k;
+                        }
+                        if (abs(thisJet_jesdn_Abs.Eta())<2.5) {
+                            njets_pt30_eta2p5_jesdn_Abs+=1;
+                            if (thisJet_jesdn_Abs.Pt()>jet1pt2p5_jesdn_Abs) {
+                                jet2pt2p5_jesdn_Abs=jet1pt2p5_jesdn_Abs; jet2index2p5_jesdn_Abs=jet1index2p5_jesdn_Abs;
+                                jet1pt2p5_jesdn_Abs=thisJet_jesdn_Abs.Pt(); jet1index2p5_jesdn_Abs=k;
+                            } else if (thisJet_jesdn_Abs.Pt()>jet2pt2p5_jesdn_Abs) {
+                                jet2pt2p5_jesdn_Abs=thisJet_jesdn_Abs.Pt(); jet2index2p5_jesdn_Abs=k;
+                            }
+                        }
+                }
+                cout<<njets_pt30_eta4p7_jesdn_Abs<<" jets (jesdn_Abs)"<<endl;
+                pt_jesdn_split_Abs.clear();
 
 
 
