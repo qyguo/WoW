@@ -85,7 +85,8 @@ float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float>
         for( unsigned int k = 0; k< pt.size(); k++) {
             TLorentzVector theJet;
             theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
-	    TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(theJet.Rapidity() - H.Rapidity()));
+	    TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(theJet.Rapidity() - H.Rapidity()));   // equivalent ?
+	    //TauB_j = sqrt(theJet.energy()*theJet.energy() - theJet.pz()*theJet.pz())*exp(-1*(theJet.Rapidity() - H.Rapidity()));
             if (TauB_j > TauB_jmax) {
                 TauB_jmax = TauB_j;
                 }
@@ -253,7 +254,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Int_t           njets_pt30_eta2p5;
     Int_t           njets_pt30_eta2p5_jesup;
     Int_t           njets_pt30_eta2p5_jesdn;
-
+// validation variable
+    float pTj1;
 // Abs variables
     Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs;
     Float_t         TauB_Inc_0j_pTWgt_jesup_Abs;
@@ -881,6 +883,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("pt_jesdn_split_RelSample_year", &pt_jesdn_split_RelSample_year, "pt_jesdn_split_RelSample_year/F");
 
 
+    newtree->Branch("pTj1",&pTj1,"pTj1/F");
 // Abs JES 
 // up
     newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
@@ -979,6 +982,9 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
         mass4lj_2p5_jesdn=-1.0;
         pT4ljj_2p5_jesdn=-1.0;
         mass4ljj_2p5_jesdn=-1.0;
+
+
+        pTj1=-9999.0; 	
 // initialize Abs variables
         jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1;
         jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1;
@@ -1104,6 +1110,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                 for( unsigned int k = 0; k<(*jet_iscleanH4l).size(); k++) {
                     if ((*jet_pt)[k]<30.0 || abs((*jet_eta)[k])>4.7) continue;
                     thisJet.SetPtEtaPhiM((*jet_pt)[((*jet_iscleanH4l)[k])],(*jet_eta)[((*jet_iscleanH4l)[k])],(*jet_phi)[((*jet_iscleanH4l)[k])],(*jet_mass)[((*jet_iscleanH4l)[k])]);
+		    // validation variable pTj1
+		    if ((*jet_pt)[((*jet_iscleanH4l)[k])] > pTj1) {
+			pTj1 = (*jet_pt)[((*jet_iscleanH4l)[k])];
+			}
 
                     //if(applyJEC_ && isMC)
                     if(applyJEC_)
