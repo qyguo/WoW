@@ -41,6 +41,9 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
+// NJettiness module
+//#include "UFHZZAnalysisRun2/UFHZZ4LAna/interface/NJettiness.h"
+
 using namespace edm;
 using namespace std;
 
@@ -61,6 +64,36 @@ float dataMCErr_(float pt_, float eta_, TH2F* hMuScaleFacUnc)
     //float eta = TMath::Abs(eta_);
     return hMuScaleFacUnc->GetBinContent(hMuScaleFacUnc->FindBin(eta,pt));
 }
+
+float TauC(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
+{
+	float TauC_j = 0; float TauC_jmax = 0;
+	for( unsigned int k = 0; k< pt.size(); k++) {
+	    TLorentzVector theJet;
+	    theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
+	    TauC_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())/(2*cosh(theJet.Rapidity() - H.Rapidity()));
+	    if (TauC_j > TauC_jmax) {
+		TauC_jmax = TauC_j;
+		}
+	}
+    return TauC_jmax;
+}
+
+float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
+{
+        float TauB_j = 0; float TauB_jmax = 0;
+        for( unsigned int k = 0; k< pt.size(); k++) {
+            TLorentzVector theJet;
+            theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
+	    TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(theJet.Rapidity() - H.Rapidity()));
+            if (TauB_j > TauB_jmax) {
+                TauB_jmax = TauB_j;
+                }
+        }
+    return TauB_jmax;
+}
+
+
 
 //void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
 void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false, const bool & applyJEC_ = true) {
@@ -222,6 +255,11 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Int_t           njets_pt30_eta2p5_jesdn;
 
 // Abs variables
+    Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs;
+    Float_t         TauB_Inc_0j_pTWgt_jesup_Abs;
+    Float_t         TauC_Inc_0j_EnergyWgt_jesdn_Abs;
+    Float_t         TauB_Inc_0j_pTWgt_jesdn_Abs;
+
     Float_t         njets_pt30_eta4p7_jesup_Abs;
     Float_t         njets_pt30_eta2p5_jesup_Abs;
     Float_t         njets_pt30_eta4p7_jesdn_Abs;
@@ -846,6 +884,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 // Abs JES 
 // up
     newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
+    newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Abs", &TauC_Inc_0j_EnergyWgt_jesup_Abs, "TauC_Inc_0j_EnergyWgt_jesup_Abs/F");
+    newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Abs", &TauB_Inc_0j_pTWgt_jesup_Abs, "TauB_Inc_0j_pTWgt_jesup_Abs/F");
+    newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs", &TauC_Inc_0j_EnergyWgt_jesdn_Abs, "TauC_Inc_0j_EnergyWgt_jesdn_Abs/F");
+    newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs", &TauB_Inc_0j_pTWgt_jesdn_Abs, "TauB_Inc_0j_pTWgt_jesdn_Abs/F");
     newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/F");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_Abs",&pt_leadingjet_pt30_eta4p7_jesup_Abs,"pt_leadingjet_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("pTj1_jesup_Abs",&pTj1_jesup_Abs,"pTj1_jesup_Abs/F");
@@ -948,6 +990,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
         jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
 
 
+	TauC_Inc_0j_EnergyWgt_jesup_Abs=0;
+	TauB_Inc_0j_pTWgt_jesup_Abs=0;
+	TauC_Inc_0j_EnergyWgt_jesdn_Abs=0;
+	TauB_Inc_0j_pTWgt_jesdn_Abs=0;
 
 	njets_pt30_eta4p7_jesup_Abs=0;
 	njets_pt30_eta2p5_jesup_Abs=0;
@@ -1040,6 +1086,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                 pt_jesdn_split_RelBal=-999; 
                 pt_jesdn_split_RelSample_year=-999;	
 */
+           //     vector<float> goodJets_JECJER_pt30_eta4p7 {}; 
                 vector<float> jes_unc_split {};
 //up    
                 vector<float> pt_jesup_split {};
@@ -1194,7 +1241,16 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
        	       }  // redoJets
 ////////////////////////////////////////////////////////////////////////////
+                TLorentzVector Higgs;
+                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
+
 //Abs up
+                TauC_Inc_0j_EnergyWgt_jesup_Abs = TauC(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                TauB_Inc_0j_pTWgt_jesup_Abs = TauB(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesup_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesup_Abs<<endl;
+                cout<<"test print:->  TauB_Inc_0j_pTWgt_jesup_Abs  :   "<<TauB_Inc_0j_pTWgt_jesup_Abs<<endl;
+
+
                 for( unsigned int k = 0; k< pt_jesup_split_Abs.size(); k++) {
                     if (pt_jesup_split_Abs[k]<30.0 || abs(eta_jes_split_Abs[k])>4.7) continue;
 		    cout<<"test print:->   pt_jesup_split_Abs["<<k<<"]:   "<<pt_jesup_split_Abs[k]<<endl;
@@ -1202,6 +1258,17 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 		    cout<<"test print:->  pt_leadingjet_pt30_eta4p7:   "<<pt_leadingjet_pt30_eta4p7<<endl;
 		    TLorentzVector thisJet_jesup_Abs;
 		    thisJet_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
+
+/*		    TauC_Inc_0j_EnergyWgt_jesup_Abs = TauC(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+		    TauB_Inc_0j_pTWgt_jesup_Abs = TauB(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+		    cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesup_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesup_Abs<<endl;
+		    cout<<"test print:->  TauB_Inc_0j_pTWgt_jesup_Abs  :   "<<TauB_Inc_0j_pTWgt_jesup_Abs<<endl; */
+
+//		    pat::Jet goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs; //=goodJets[k];
+                    //goodJets_JECJER_pt30_eta4p7_tmp.setP4(reco::Particle::PolarLorentzVector(jet_jer->Pt(), jet_jer->Eta(), jet_jer->Phi(), jet_jer->M()));
+//                    goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs.setP4(reco::Particle::PolarLorentzVector(pt_jesup_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
+//		    goodJets_JECJER_pt30_eta4p7_jesup_Abs.push_back(goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs);
+
                     bool isclean_H4l=true;
                     //if (isclean_H4l) {
                         njets_pt30_eta4p7_jesup_Abs+=1;  
@@ -1225,8 +1292,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                 }
                 cout<<njets_pt30_eta4p7_jesup_Abs<<" jets (jesup_Abs)"<<endl;
 
-		TLorentzVector Higgs;
-                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
+//		TLorentzVector Higgs;
+//                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
 
 		TLorentzVector Jet1_jesup_Abs, Jet1_2p5_jesup_Abs;
 		TLorentzVector Jet2_jesup_Abs, Jet2_2p5_jesup_Abs;
@@ -1275,10 +1342,22 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 /////////////////
 // Abs dn start
+                TauC_Inc_0j_EnergyWgt_jesdn_Abs = TauC(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                TauB_Inc_0j_pTWgt_jesdn_Abs = TauB(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesdn_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesdn_Abs<<endl;
+                cout<<"test print:->  TauB_Inc_0j_pTWgt_jesdn_Abs  :   "<<TauB_Inc_0j_pTWgt_jesdn_Abs<<endl;
+
+
                 for( unsigned int k = 0; k< pt_jesdn_split_Abs.size(); k++) {
-                    if (pt_jesdn_split_Abs[k]<30.0 || abs((*jet_eta)[((*jet_iscleanH4l)[k])])>4.7) continue;
+                    if (pt_jesdn_split_Abs[k]<30.0 || abs(eta_jes_split_Abs[k])>4.7) continue;
                     TLorentzVector thisJet_jesdn_Abs;
 		    thisJet_jesdn_Abs.SetPtEtaPhiM(pt_jesdn_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
+
+/*                    TauC_Inc_0j_EnergyWgt_jesdn_Abs = TauC(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                    TauB_Inc_0j_pTWgt_jesdn_Abs = TauB(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                    cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesdn_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesdn_Abs<<endl;
+                    cout<<"test print:->  TauB_Inc_0j_pTWgt_jesdn_Abs  :   "<<TauB_Inc_0j_pTWgt_jesdn_Abs<<endl;  */
+
                     bool isclean_H4l=true;
                         njets_pt30_eta4p7_jesdn_Abs+=1;
 			if (thisJet_jesdn_Abs.Pt()>jet1pt_jesdn_Abs) {
