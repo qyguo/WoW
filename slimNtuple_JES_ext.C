@@ -257,55 +257,13 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 // validation variable
     float pTj1;
 // Abs variables
-    Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs;
-    Float_t         TauB_Inc_0j_pTWgt_jesup_Abs;
-    Float_t         TauC_Inc_0j_EnergyWgt_jesdn_Abs;
-    Float_t         TauB_Inc_0j_pTWgt_jesdn_Abs;
+    Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs, TauB_Inc_0j_pTWgt_jesup_Abs, TauC_Inc_0j_EnergyWgt_jesdn_Abs, TauB_Inc_0j_pTWgt_jesdn_Abs;
+int jet1index_jesup_Abs, jet2index_jesup_Abs,jet1index2p5_jesup_Abs, jet2index2p5_jesup_Abs,jet1pt_jesup_Abs, jet2pt_jesup_Abs,jet1pt2p5_jesup_Abs, jet2pt2p5_jesup_Abs, njets_pt30_eta4p7_jesup_Abs,njets_pt30_eta2p5_jesup_Abs,njets_pt30_eta4p7_jesdn_Abs,njets_pt30_eta2p5_jesdn_Abs;
+int jet1index_jesdn_Abs, jet2index_jesdn_Abs,jet1index2p5_jesdn_Abs, jet2index2p5_jesdn_Abs,jet1pt_jesdn_Abs, jet2pt_jesdn_Abs,jet1pt2p5_jesdn_Abs, jet2pt2p5_jesdn_Abs;
 
-    Float_t         njets_pt30_eta4p7_jesup_Abs;
-    Float_t         njets_pt30_eta2p5_jesup_Abs;
-    Float_t         njets_pt30_eta4p7_jesdn_Abs;
-    Float_t         njets_pt30_eta2p5_jesdn_Abs;
-    int jet1index_jesup_Abs, jet2index_jesup_Abs;
-    int jet1index2p5_jesup_Abs, jet2index2p5_jesup_Abs;
-    float jet1pt_jesup_Abs, jet2pt_jesup_Abs;
-    float jet1pt2p5_jesup_Abs, jet2pt2p5_jesup_Abs;
-    int jet1index_jesdn_Abs, jet2index_jesdn_Abs;
-    int jet1index2p5_jesdn_Abs, jet2index2p5_jesdn_Abs;
-    float jet1pt_jesdn_Abs, jet2pt_jesdn_Abs;
-    float jet1pt2p5_jesdn_Abs, jet2pt2p5_jesdn_Abs;
+float pTj1_jesup_Abs, pt_leadingjet_pt30_eta4p7_jesup_Abs, pTj2_jesup_Abs,etaj1_jesup_Abs,  etaj2_jesup_Abs,pTj1_2p5_jesup_Abs, pt_leadingjet_pt30_eta2p5_jesup_Abs,pTj2_2p5_jesup_Abs,mj1j2_jesup_Abs,  dEtaj1j2_jesup_Abs,yj1_jesup_Abs,  yj2_jesup_Abs,dPhiHj1_jesup_Abs,  dyHj1_jesup_Abs,dPhij1j2_jesup_Abs,  dPhiHj1j2_jesup_Abs,yj1_2p5_jesup_Abs,  yj2_2p5_jesup_Abs,dPhiHj1_2p5_jesup_Abs,  dyHj1_2p5_jesup_Abs,mj1j2_2p5_jesup_Abs,  dEtaj1j2_2p5_jesup_Abs,dPhij1j2_2p5_jesup_Abs,  dPhiHj1j2_2p5_jesup_Abs;
 
-    float pTj1_jesup_Abs; 
-    float pt_leadingjet_pt30_eta4p7_jesup_Abs; 
-    float pTj2_jesup_Abs;     
-    float etaj1_jesup_Abs; float etaj2_jesup_Abs;
-    float pTj1_2p5_jesup_Abs; 
-    float pt_leadingjet_pt30_eta2p5_jesup_Abs;
-    float pTj2_2p5_jesup_Abs;
-    float mj1j2_jesup_Abs; float dEtaj1j2_jesup_Abs;
-    float yj1_jesup_Abs; float yj2_jesup_Abs;
-    float dPhiHj1_jesup_Abs; float dyHj1_jesup_Abs;
-    float dPhij1j2_jesup_Abs; float dPhiHj1j2_jesup_Abs;
-    float yj1_2p5_jesup_Abs; float yj2_2p5_jesup_Abs;
-    float dPhiHj1_2p5_jesup_Abs; float dyHj1_2p5_jesup_Abs;
-    float mj1j2_2p5_jesup_Abs; float dEtaj1j2_2p5_jesup_Abs;
-    float dPhij1j2_2p5_jesup_Abs; float dPhiHj1j2_2p5_jesup_Abs;
-
-    float pTj1_jesdn_Abs; 
-    float pt_leadingjet_pt30_eta4p7_jesdn_Abs;
-    float pTj2_jesdn_Abs;     
-    float etaj1_jesdn_Abs; float etaj2_jesdn_Abs;
-    float pTj1_2p5_jesdn_Abs; 
-    float pt_leadingjet_pt30_eta2p5_jesdn_Abs; 
-    float pTj2_2p5_jesdn_Abs; 
-    float mj1j2_jesdn_Abs; float dEtaj1j2_jesdn_Abs;
-    float yj1_jesdn_Abs; float yj2_jesdn_Abs;
-    float dPhiHj1_jesdn_Abs; float dyHj1_jesdn_Abs;
-    float dPhij1j2_jesdn_Abs; float dPhiHj1j2_jesdn_Abs;
-    float yj1_2p5_jesdn_Abs; float yj2_2p5_jesdn_Abs;
-    float dPhiHj1_2p5_jesdn_Abs; float dyHj1_2p5_jesdn_Abs;
-    float mj1j2_2p5_jesdn_Abs; float dEtaj1j2_2p5_jesdn_Abs;
-    float dPhij1j2_2p5_jesdn_Abs; float dPhiHj1j2_2p5_jesdn_Abs;
+float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_jesdn_Abs,  etaj2_jesdn_Abs,pTj1_2p5_jesdn_Abs, pt_leadingjet_pt30_eta2p5_jesdn_Abs, pTj2_2p5_jesdn_Abs, mj1j2_jesdn_Abs,  dEtaj1j2_jesdn_Abs,yj1_jesdn_Abs,  yj2_jesdn_Abs,dPhiHj1_jesdn_Abs,  dyHj1_jesdn_Abs,dPhij1j2_jesdn_Abs,  dPhiHj1j2_jesdn_Abs,yj1_2p5_jesdn_Abs,  yj2_2p5_jesdn_Abs,dPhiHj1_2p5_jesdn_Abs,  dyHj1_2p5_jesdn_Abs,mj1j2_2p5_jesdn_Abs,  dEtaj1j2_2p5_jesdn_Abs,dPhij1j2_2p5_jesdn_Abs,  dPhiHj1j2_2p5_jesdn_Abs;
 
 
 
@@ -313,8 +271,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 
 // try
-/*    std::vector<float> *jet_mass;
-    std::vector<float> *jet_pt; 
+/*    std::vector<> *jet_mass;
+    std::vector<> *jet_pt; 
     std::vector<float> *jet_eta; 
     std::vector<float> *jet_phi;
     std::vector<float> *jet_iscleanH4l; 
@@ -842,46 +800,6 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("mass4ljj_2p5_jesdn", &mass4ljj_2p5_jesdn);
 
     newtree->Branch("isH4l",&isH4l,"isH4l/O");
-// JES splitted nominal    
-    newtree->Branch("jes_unc_split_Total",&jes_unc_split_Total,"jes_unc_split_Total/F");
-    newtree->Branch("jes_unc_split_Abs",&jes_unc_split_Abs,"jes_unc_split_Abs/F");
-    newtree->Branch("jes_unc_split_Abs_year",&jes_unc_split_Abs_year,"jes_unc_split_Abs_year/F");
-    newtree->Branch("jes_unc_split_BBEC1",&jes_unc_split_BBEC1,"jes_unc_split_BBEC1/F");
-    newtree->Branch("jes_unc_split_BBEC1_year",&jes_unc_split_BBEC1_year,"jes_unc_split_BBEC1_year/F");
-    newtree->Branch("jes_unc_split_EC2", &jes_unc_split_EC2,"jes_unc_split_EC2/F");
-    newtree->Branch("jes_unc_split_EC2_year", &jes_unc_split_EC2_year,"jes_unc_split_EC2_year/F");
-    newtree->Branch("jes_unc_split_FlavQCD", &jes_unc_split_FlavQCD,"jes_unc_split_FlavQCD/F");
-    newtree->Branch("jes_unc_split_HF",&jes_unc_split_HF,"jes_unc_split_HF/F");
-    newtree->Branch("jes_unc_split_HF_year", &jes_unc_split_HF_year,"jes_unc_split_HF_year/F");
-    newtree->Branch("jes_unc_split_RelBal", &jes_unc_split_RelBal, "jes_unc_split_RelBal/F");
-    newtree->Branch("jes_unc_split_RelSample_year", &jes_unc_split_RelSample_year, "jes_unc_split_RelSample_year/F");
-    // JES splitted up/dn
-    newtree->Branch("pt_jesup_split_Total",&pt_jesup_split_Total,"pt_jesup_split_Total/F");
-    newtree->Branch("pt_jesup_split_Abs",&pt_jesup_split_Abs,"pt_jesup_split_Abs/F");
-    newtree->Branch("pt_jesup_split_Abs_year",&pt_jesup_split_Abs_year,"pt_jesup_split_Abs_year/F");
-    newtree->Branch("pt_jesup_split_BBEC1",&pt_jesup_split_BBEC1,"pt_jesup_split_BBEC1/F");
-    newtree->Branch("pt_jesup_split_BBEC1_year",&pt_jesup_split_BBEC1_year,"pt_jesup_split_BBEC1_year/F");
-    newtree->Branch("pt_jesup_split_EC2", &pt_jesup_split_EC2,"pt_jesup_split_EC2/F");
-    newtree->Branch("pt_jesup_split_EC2_year", &pt_jesup_split_EC2_year,"pt_jesup_split_EC2_year/F");
-    newtree->Branch("pt_jesup_split_FlavQCD", &pt_jesup_split_FlavQCD,"pt_jesup_split_FlavQCD/F");
-    newtree->Branch("pt_jesup_split_HF",&pt_jesup_split_HF,"pt_jesup_split_HF/F");
-    newtree->Branch("pt_jesup_split_HF_year", &pt_jesup_split_HF_year,"pt_jesup_split_HF_year/F");
-    newtree->Branch("pt_jesup_split_RelBal", &pt_jesup_split_RelBal, "pt_jesup_split_RelBal/F");
-    newtree->Branch("pt_jesup_split_RelSample_year", &pt_jesup_split_RelSample_year, "pt_jesup_split_RelSample_year/F");
-
-    newtree->Branch("pt_jesdn_split_Total",&pt_jesdn_split_Total,"pt_jesdn_split_Total/F");
-    newtree->Branch("pt_jesdn_split_Abs",&pt_jesdn_split_Abs,"pt_jesdn_split_Abs/F");
-    newtree->Branch("pt_jesdn_split_Abs_year",&pt_jesdn_split_Abs_year,"pt_jesdn_split_Abs_year/F");
-    newtree->Branch("pt_jesdn_split_BBEC1",&pt_jesdn_split_BBEC1,"pt_jesdn_split_BBEC1/F");
-    newtree->Branch("pt_jesdn_split_BBEC1_year",&pt_jesdn_split_BBEC1_year,"pt_jesdn_split_BBEC1_year/F");
-    newtree->Branch("pt_jesdn_split_EC2", &pt_jesdn_split_EC2,"pt_jesdn_split_EC2/F");
-    newtree->Branch("pt_jesdn_split_EC2_year", &pt_jesdn_split_EC2_year,"pt_jesdn_split_EC2_year/F");
-    newtree->Branch("pt_jesdn_split_FlavQCD", &pt_jesdn_split_FlavQCD,"pt_jesdn_split_FlavQCD/F");
-    newtree->Branch("pt_jesdn_split_HF",&pt_jesdn_split_HF,"pt_jesdn_split_HF/F");
-    newtree->Branch("pt_jesdn_split_HF_year", &pt_jesdn_split_HF_year,"pt_jesdn_split_HF_year/F");
-    newtree->Branch("pt_jesdn_split_RelBal", &pt_jesdn_split_RelBal, "pt_jesdn_split_RelBal/F");
-    newtree->Branch("pt_jesdn_split_RelSample_year", &pt_jesdn_split_RelSample_year, "pt_jesdn_split_RelSample_year/F");
-
 
     newtree->Branch("pTj1",&pTj1,"pTj1/F");
 // Abs JES 
@@ -986,55 +904,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
         pTj1=-9999.0; 	
 // initialize Abs variables
-        jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1;
-        jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1;
-        jet1pt_jesup_Abs=0.0, jet2pt_jesup_Abs=0.0;
-        jet1pt2p5_jesup_Abs=0.0, jet2pt2p5_jesup_Abs=0.0;
-        jet1index_jesdn_Abs=-1, jet2index_jesdn_Abs=-1;
-        jet1index2p5_jesdn_Abs=-1, jet2index2p5_jesdn_Abs=-1;
-        jet1pt_jesdn_Abs=0.0, jet2pt_jesdn_Abs=0.0;
-        jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
+        jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1, jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1, jet1pt_jesup_Abs=0.0, jet2pt_jesup_Abs=0.0, jet1pt2p5_jesup_Abs=0.0, jet2pt2p5_jesup_Abs=0.0,jet1index_jesdn_Abs=-1, jet2index_jesdn_Abs=-1,jet1index2p5_jesdn_Abs=-1, jet2index2p5_jesdn_Abs=-1, jet1pt_jesdn_Abs=0.0, jet2pt_jesdn_Abs=0.0,jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
 
 
-	TauC_Inc_0j_EnergyWgt_jesup_Abs=0;
-	TauB_Inc_0j_pTWgt_jesup_Abs=0;
-	TauC_Inc_0j_EnergyWgt_jesdn_Abs=0;
-	TauB_Inc_0j_pTWgt_jesdn_Abs=0;
-
-	njets_pt30_eta4p7_jesup_Abs=0;
-	njets_pt30_eta2p5_jesup_Abs=0;
-	njets_pt30_eta4p7_jesdn_Abs=0;
-	njets_pt30_eta2p5_jesdn_Abs=0;
-
-        pTj1_jesup_Abs=-9999.0; 	
-        pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0; 	
-	pTj2_jesup_Abs=-9999.0;     
-        pTj1_2p5_jesup_Abs=-9999.0; 
-        pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0; 
-	pTj2_jesup_Abs=-9999.0;
-        dEtaj1j2_jesup_Abs=-9999.0;
-        yj1_jesup_Abs=-9999.0; yj2_jesup_Abs=-9999.0;
-        dPhiHj1_jesup_Abs=-9999.0; dyHj1_jesup_Abs=-9999.0;
-        mj1j2_jesup_Abs=-9999.0; dEtaj1j2_jesup_Abs=-9999.0;
-        dPhij1j2_jesup_Abs=-9999.0; dPhiHj1j2_jesup_Abs=-9999.0;
-        yj1_2p5_jesup_Abs=-9999.0; yj2_2p5_jesup_Abs=-9999.0;
-        dPhiHj1_2p5_jesup_Abs=-9999.0; dyHj1_2p5_jesup_Abs=-9999.0;
-        mj1j2_2p5_jesup_Abs=-9999.0; dEtaj1j2_2p5_jesup_Abs=-9999.0;
-        dPhij1j2_2p5_jesup_Abs=-9999.0; dPhiHj1j2_2p5_jesup_Abs=-9999.0;
-
-
-        pTj1_jesdn_Abs=-9999.0; pTj2_jesdn_Abs=-9999.0;     
-        pTj1_2p5_jesdn_Abs=-9999.0; pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0;
-        pTj2_jesdn_Abs=-9999.0;
-        mj1j2_jesdn_Abs=-9999.0; dEtaj1j2_jesdn_Abs=-9999.0;
-        yj1_jesdn_Abs=-9999.0; yj2_jesdn_Abs=-9999.0;
-        dPhiHj1_jesdn_Abs=-9999.0; dyHj1_jesdn_Abs=-9999.0;
-        mj1j2_jesdn_Abs=-9999.0; dEtaj1j2_jesdn_Abs=-9999.0;
-        dPhij1j2_jesdn_Abs=-9999.0; dPhiHj1j2_jesdn_Abs=-9999.0;
-        yj1_2p5_jesdn_Abs=-9999.0; yj2_2p5_jesdn_Abs=-9999.0;
-        dPhiHj1_2p5_jesdn_Abs=-9999.0; dyHj1_2p5_jesdn_Abs=-9999.0;
-        mj1j2_2p5_jesdn_Abs=-9999.0; dEtaj1j2_2p5_jesdn_Abs=-9999.0;
-        dPhij1j2_2p5_jesdn_Abs=-9999.0; dPhiHj1j2_2p5_jesdn_Abs=-9999.0;
+	TauC_Inc_0j_EnergyWgt_jesup_Abs=0,TauB_Inc_0j_pTWgt_jesup_Abs=0, TauC_Inc_0j_EnergyWgt_jesdn_Abs=0, TauB_Inc_0j_pTWgt_jesdn_Abs=0, njets_pt30_eta4p7_jesup_Abs=0, njets_pt30_eta2p5_jesup_Abs=0, njets_pt30_eta4p7_jesdn_Abs=0, njets_pt30_eta2p5_jesdn_Abs=0, pTj1_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, pTj1_2p5_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0,  yj1_jesup_Abs=-9999.0,  yj2_jesup_Abs=-9999.0,dPhiHj1_jesup_Abs=-9999.0,  dyHj1_jesup_Abs=-9999.0, mj1j2_jesup_Abs=-9999.0,  dEtaj1j2_jesup_Abs=-9999.0, dPhij1j2_jesup_Abs=-9999.0,  dPhiHj1j2_jesup_Abs=-9999.0, yj1_2p5_jesup_Abs=-9999.0,  yj2_2p5_jesup_Abs=-9999.0, dPhiHj1_2p5_jesup_Abs=-9999.0,  dyHj1_2p5_jesup_Abs=-9999.0, mj1j2_2p5_jesup_Abs=-9999.0,  dEtaj1j2_2p5_jesup_Abs=-9999.0, dPhij1j2_2p5_jesup_Abs=-9999.0,  dPhiHj1j2_2p5_jesup_Abs=-9999.0, pTj1_jesdn_Abs=-9999.0,  pTj2_jesdn_Abs=-9999.0,pTj1_2p5_jesdn_Abs=-9999.0,  pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, yj1_jesdn_Abs=-9999.0,  yj2_jesdn_Abs=-9999.0, dPhiHj1_jesdn_Abs=-9999.0,  dyHj1_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, dPhij1j2_jesdn_Abs=-9999.0,  dPhiHj1j2_jesdn_Abs=-9999.0, yj1_2p5_jesdn_Abs=-9999.0,  yj2_2p5_jesdn_Abs=-9999.0, dPhiHj1_2p5_jesdn_Abs=-9999.0,  dyHj1_2p5_jesdn_Abs=-9999.0,mj1j2_2p5_jesdn_Abs=-9999.0,  dEtaj1j2_2p5_jesdn_Abs=-9999.0, dPhij1j2_2p5_jesdn_Abs=-9999.0,  dPhiHj1j2_2p5_jesdn_Abs=-9999.0; 
 
 
         //if (i>=2000000) continue;
@@ -1053,45 +926,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 
 	if (redoJets) {
-/*                jes_unc_split_Total=-999; 
-                jes_unc_split_Abs=-999; 
-                jes_unc_split_Abs_year=-999; 
-                jes_unc_split_BBEC1=-999; 
-                jes_unc_split_BBEC1_year=-999;
-                jes_unc_split_EC2=-999; 
-                jes_unc_split_EC2_year=-999; 
-                jes_unc_split_FlavQCD=-999; 
-                jes_unc_split_HF=-999; 
-                jes_unc_split_HF_year=-999;
-                jes_unc_split_RelBal=-999; 
-                jes_unc_split_RelSample_year=-999;
-        // up
-                pt_jesup_split_Total=-999; 
-                pt_jesup_split_Abs=-999; 
-                pt_jesup_split_Abs_year=-999; 
-                pt_jesup_split_BBEC1=-999; 
-                pt_jesup_split_BBEC1_year=-999;
-                pt_jesup_split_EC2=-999; 
-                pt_jesup_split_EC2_year=-999; 
-                pt_jesup_split_FlavQCD=-999; 
-                pt_jesup_split_HF=-999; 
-                pt_jesup_split_HF_year=-999;
-                pt_jesup_split_RelBal=-999; 
-                pt_jesup_split_RelSample_year=-999;
-        // dn
-                pt_jesdn_split_Total=-999; 
-                pt_jesdn_split_Abs=-999; 
-                pt_jesdn_split_Abs_year=-999; 
-                pt_jesdn_split_BBEC1=-999; 
-                pt_jesdn_split_BBEC1_year=-999;
-                pt_jesdn_split_EC2=-999; 
-                pt_jesdn_split_EC2_year=-999; 
-                pt_jesdn_split_FlavQCD=-999; 
-                pt_jesdn_split_HF=-999; 
-                pt_jesdn_split_HF_year=-999;
-                pt_jesdn_split_RelBal=-999; 
-                pt_jesdn_split_RelSample_year=-999;	
-*/
+
            //     vector<float> goodJets_JECJER_pt30_eta4p7 {}; 
                 vector<float> jes_unc_split {};
 //up    
@@ -1157,92 +992,21 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                       }
 //filling variables
         //nominal
-                      jes_unc_split_Total.push_back(jes_unc_split[0]); 
-                      jes_unc_split_Abs.push_back(jes_unc_split[1]); 
-                      jes_unc_split_Abs_year.push_back(jes_unc_split[2]); 
-                      jes_unc_split_BBEC1.push_back(jes_unc_split[3]); 
-                      jes_unc_split_BBEC1_year.push_back(jes_unc_split[4]);
-                      jes_unc_split_EC2.push_back(jes_unc_split[5]); 
-                      jes_unc_split_EC2_year.push_back(jes_unc_split[6]); 
-                      jes_unc_split_FlavQCD.push_back(jes_unc_split[7]); 
-                      jes_unc_split_HF.push_back(jes_unc_split[8]); 
-                      jes_unc_split_HF_year.push_back(jes_unc_split[9]);
-                      jes_unc_split_RelBal.push_back(jes_unc_split[10]); 
-                      jes_unc_split_RelSample_year.push_back(jes_unc_split[11]);
+                      jes_unc_split_Total.push_back(jes_unc_split[0]);jes_unc_split_Abs.push_back(jes_unc_split[1]); jes_unc_split_Abs_year.push_back(jes_unc_split[2]); jes_unc_split_BBEC1.push_back(jes_unc_split[3]); jes_unc_split_BBEC1_year.push_back(jes_unc_split[4]);jes_unc_split_EC2.push_back(jes_unc_split[5]); jes_unc_split_EC2_year.push_back(jes_unc_split[6]); jes_unc_split_FlavQCD.push_back(jes_unc_split[7]); jes_unc_split_HF.push_back(jes_unc_split[8]); jes_unc_split_HF_year.push_back(jes_unc_split[9]);jes_unc_split_RelBal.push_back(jes_unc_split[10]); jes_unc_split_RelSample_year.push_back(jes_unc_split[11]);
               //pt up 
-                      pt_jesup_split_Total.push_back(pt_jesup_split[0]); 
-                      pt_jesup_split_Abs.push_back(pt_jesup_split[1]); 
-                      pt_jesup_split_Abs_year.push_back(pt_jesup_split[2]); 
-                      pt_jesup_split_BBEC1.push_back(pt_jesup_split[3]); 
-                      pt_jesup_split_BBEC1_year.push_back(pt_jesup_split[4]);
-                      pt_jesup_split_EC2.push_back(pt_jesup_split[5]); 
-                      pt_jesup_split_EC2_year.push_back(pt_jesup_split[6]); 
-                      pt_jesup_split_FlavQCD.push_back(pt_jesup_split[7]); 
-                      pt_jesup_split_HF.push_back(pt_jesup_split[8]); 
-                      pt_jesup_split_HF_year.push_back(pt_jesup_split[9]);
-                      pt_jesup_split_RelBal.push_back(pt_jesup_split[10]); 
-                      pt_jesup_split_RelSample_year.push_back(pt_jesup_split[11]);
+                      pt_jesup_split_Total.push_back(pt_jesup_split[0]);pt_jesup_split_Abs.push_back(pt_jesup_split[1]); pt_jesup_split_Abs_year.push_back(pt_jesup_split[2]); pt_jesup_split_BBEC1.push_back(pt_jesup_split[3]); pt_jesup_split_BBEC1_year.push_back(pt_jesup_split[4]);pt_jesup_split_EC2.push_back(pt_jesup_split[5]); pt_jesup_split_EC2_year.push_back(pt_jesup_split[6]); pt_jesup_split_FlavQCD.push_back(pt_jesup_split[7]); pt_jesup_split_HF.push_back(pt_jesup_split[8]); pt_jesup_split_HF_year.push_back(pt_jesup_split[9]);pt_jesup_split_RelBal.push_back(pt_jesup_split[10]); pt_jesup_split_RelSample_year.push_back(pt_jesup_split[11]);
               //pt dn    
-                      pt_jesdn_split_Total.push_back(pt_jesdn_split[0]); 
-                      pt_jesdn_split_Abs.push_back(pt_jesdn_split[1]); 
-                      pt_jesdn_split_Abs_year.push_back(pt_jesdn_split[2]); 
-                      pt_jesdn_split_BBEC1.push_back(pt_jesdn_split[3]); 
-                      pt_jesdn_split_BBEC1_year.push_back(pt_jesdn_split[4]);
-                      pt_jesdn_split_EC2.push_back(pt_jesdn_split[5]); 
-                      pt_jesdn_split_EC2_year.push_back(pt_jesdn_split[6]); 
-                      pt_jesdn_split_FlavQCD.push_back(pt_jesdn_split[7]); 
-                      pt_jesdn_split_HF.push_back(pt_jesdn_split[8]); 
-                      pt_jesdn_split_HF_year.push_back(pt_jesdn_split[9]);
-                      pt_jesdn_split_RelBal.push_back(pt_jesdn_split[10]); 
-                      pt_jesdn_split_RelSample_year.push_back(pt_jesdn_split[11]);
+                      pt_jesdn_split_Total.push_back(pt_jesdn_split[0]);pt_jesdn_split_Abs.push_back(pt_jesdn_split[1]); pt_jesdn_split_Abs_year.push_back(pt_jesdn_split[2]); pt_jesdn_split_BBEC1.push_back(pt_jesdn_split[3]); pt_jesdn_split_BBEC1_year.push_back(pt_jesdn_split[4]);pt_jesdn_split_EC2.push_back(pt_jesdn_split[5]); pt_jesdn_split_EC2_year.push_back(pt_jesdn_split[6]); pt_jesdn_split_FlavQCD.push_back(pt_jesdn_split[7]); pt_jesdn_split_HF.push_back(pt_jesdn_split[8]); pt_jesdn_split_HF_year.push_back(pt_jesdn_split[9]);pt_jesdn_split_RelBal.push_back(pt_jesdn_split[10]); pt_jesdn_split_RelSample_year.push_back(pt_jesdn_split[11]);
 // eta
-                      eta_jes_split_Total.push_back(eta_jes_split[0]); 
-                      eta_jes_split_Abs.push_back(eta_jes_split[1]); 
-                      eta_jes_split_Abs_year.push_back(eta_jes_split[2]); 
-                      eta_jes_split_BBEC1.push_back(eta_jes_split[3]); 
-                      eta_jes_split_BBEC1_year.push_back(eta_jes_split[4]);
-                      eta_jes_split_EC2.push_back(eta_jes_split[5]); 
-                      eta_jes_split_EC2_year.push_back(eta_jes_split[6]); 
-                      eta_jes_split_FlavQCD.push_back(eta_jes_split[7]); 
-                      eta_jes_split_HF.push_back(eta_jes_split[8]); 
-                      eta_jes_split_HF_year.push_back(eta_jes_split[9]);
-                      eta_jes_split_RelBal.push_back(eta_jes_split[10]); 
-                      eta_jes_split_RelSample_year.push_back(eta_jes_split[11]);		
+                      eta_jes_split_Total.push_back(eta_jes_split[0]);eta_jes_split_Abs.push_back(eta_jes_split[1]); eta_jes_split_Abs_year.push_back(eta_jes_split[2]); eta_jes_split_BBEC1.push_back(eta_jes_split[3]); eta_jes_split_BBEC1_year.push_back(eta_jes_split[4]);eta_jes_split_EC2.push_back(eta_jes_split[5]); eta_jes_split_EC2_year.push_back(eta_jes_split[6]); eta_jes_split_FlavQCD.push_back(eta_jes_split[7]); eta_jes_split_HF.push_back(eta_jes_split[8]); eta_jes_split_HF_year.push_back(eta_jes_split[9]);eta_jes_split_RelBal.push_back(eta_jes_split[10]); eta_jes_split_RelSample_year.push_back(eta_jes_split[11]);		
 
 // phi
-                      phi_jes_split_Total.push_back(phi_jes_split[0]); 
-                      phi_jes_split_Abs.push_back(phi_jes_split[1]); 
-                      phi_jes_split_Abs_year.push_back(phi_jes_split[2]); 
-                      phi_jes_split_BBEC1.push_back(phi_jes_split[3]); 
-                      phi_jes_split_BBEC1_year.push_back(phi_jes_split[4]);
-                      phi_jes_split_EC2.push_back(phi_jes_split[5]); 
-                      phi_jes_split_EC2_year.push_back(phi_jes_split[6]); 
-                      phi_jes_split_FlavQCD.push_back(phi_jes_split[7]); 
-                      phi_jes_split_HF.push_back(phi_jes_split[8]); 
-                      phi_jes_split_HF_year.push_back(phi_jes_split[9]);
-                      phi_jes_split_RelBal.push_back(phi_jes_split[10]); 
-                      phi_jes_split_RelSample_year.push_back(phi_jes_split[11]);		
+                      phi_jes_split_Total.push_back(phi_jes_split[0]);phi_jes_split_Abs.push_back(phi_jes_split[1]); phi_jes_split_Abs_year.push_back(phi_jes_split[2]); phi_jes_split_BBEC1.push_back(phi_jes_split[3]); phi_jes_split_BBEC1_year.push_back(phi_jes_split[4]);phi_jes_split_EC2.push_back(phi_jes_split[5]); phi_jes_split_EC2_year.push_back(phi_jes_split[6]); phi_jes_split_FlavQCD.push_back(phi_jes_split[7]); phi_jes_split_HF.push_back(phi_jes_split[8]); phi_jes_split_HF_year.push_back(phi_jes_split[9]);phi_jes_split_RelBal.push_back(phi_jes_split[10]); phi_jes_split_RelSample_year.push_back(phi_jes_split[11]);		
 
 // mass
-                      mass_jes_split_Total.push_back(mass_jes_split[0]); 
-                      mass_jes_split_Abs.push_back(mass_jes_split[1]); 
-                      mass_jes_split_Abs_year.push_back(mass_jes_split[2]); 
-                      mass_jes_split_BBEC1.push_back(mass_jes_split[3]); 
-                      mass_jes_split_BBEC1_year.push_back(mass_jes_split[4]);
-                      mass_jes_split_EC2.push_back(mass_jes_split[5]); 
-                      mass_jes_split_EC2_year.push_back(mass_jes_split[6]); 
-                      mass_jes_split_FlavQCD.push_back(mass_jes_split[7]); 
-                      mass_jes_split_HF.push_back(mass_jes_split[8]); 
-                      mass_jes_split_HF_year.push_back(mass_jes_split[9]);
-                      mass_jes_split_RelBal.push_back(mass_jes_split[10]); 
-                      mass_jes_split_RelSample_year.push_back(mass_jes_split[11]);		
+                      mass_jes_split_Total.push_back(mass_jes_split[0]);mass_jes_split_Abs.push_back(mass_jes_split[1]); mass_jes_split_Abs_year.push_back(mass_jes_split[2]); mass_jes_split_BBEC1.push_back(mass_jes_split[3]); mass_jes_split_BBEC1_year.push_back(mass_jes_split[4]);mass_jes_split_EC2.push_back(mass_jes_split[5]); mass_jes_split_EC2_year.push_back(mass_jes_split[6]); mass_jes_split_FlavQCD.push_back(mass_jes_split[7]); mass_jes_split_HF.push_back(mass_jes_split[8]); mass_jes_split_HF_year.push_back(mass_jes_split[9]);mass_jes_split_RelBal.push_back(mass_jes_split[10]); mass_jes_split_RelSample_year.push_back(mass_jes_split[11]);		
 
-	              jes_unc_split.clear();    
-        	      pt_jesup_split.clear();
-        	      pt_jesdn_split.clear();
-		      eta_jes_split.clear();
-		      phi_jes_split.clear();
-		      mass_jes_split.clear();
+	              jes_unc_split.clear(); pt_jesup_split.clear();pt_jesdn_split.clear();eta_jes_split.clear();phi_jes_split.clear();mass_jes_split.clear();
 
 
 
@@ -1268,11 +1032,6 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 		    cout<<"test print:->  pt_leadingjet_pt30_eta4p7:   "<<pt_leadingjet_pt30_eta4p7<<endl;
 		    TLorentzVector thisJet_jesup_Abs;
 		    thisJet_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
-
-/*		    TauC_Inc_0j_EnergyWgt_jesup_Abs = TauC(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-		    TauB_Inc_0j_pTWgt_jesup_Abs = TauB(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-		    cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesup_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesup_Abs<<endl;
-		    cout<<"test print:->  TauB_Inc_0j_pTWgt_jesup_Abs  :   "<<TauB_Inc_0j_pTWgt_jesup_Abs<<endl; */
 
 //		    pat::Jet goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs; //=goodJets[k];
                     //goodJets_JECJER_pt30_eta4p7_tmp.setP4(reco::Particle::PolarLorentzVector(jet_jer->Pt(), jet_jer->Eta(), jet_jer->Phi(), jet_jer->M()));
@@ -1305,8 +1064,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 //		TLorentzVector Higgs;
 //                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
 
-		TLorentzVector Jet1_jesup_Abs, Jet1_2p5_jesup_Abs;
-		TLorentzVector Jet2_jesup_Abs, Jet2_2p5_jesup_Abs;
+		TLorentzVector Jet1_jesup_Abs, Jet1_2p5_jesup_Abs, Jet2_jesup_Abs, Jet2_2p5_jesup_Abs;
                 if (njets_pt30_eta4p7_jesup_Abs > 0) {
 		    Jet1_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[jet1index_jesup_Abs],eta_jes_split_Abs[jet1index_jesup_Abs],phi_jes_split_Abs[jet1index_jesup_Abs], mass_jes_split_Abs[jet1index_jesup_Abs]);
 
@@ -1363,11 +1121,6 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     TLorentzVector thisJet_jesdn_Abs;
 		    thisJet_jesdn_Abs.SetPtEtaPhiM(pt_jesdn_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
 
-/*                    TauC_Inc_0j_EnergyWgt_jesdn_Abs = TauC(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-                    TauB_Inc_0j_pTWgt_jesdn_Abs = TauB(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-                    cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesdn_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesdn_Abs<<endl;
-                    cout<<"test print:->  TauB_Inc_0j_pTWgt_jesdn_Abs  :   "<<TauB_Inc_0j_pTWgt_jesdn_Abs<<endl;  */
-
                     bool isclean_H4l=true;
                         njets_pt30_eta4p7_jesdn_Abs+=1;
 			if (thisJet_jesdn_Abs.Pt()>jet1pt_jesdn_Abs) {
@@ -1391,8 +1144,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 // Filling Abs dn variables
 
 
-                TLorentzVector Jet1_jesdn_Abs, Jet1_2p5_jesdn_Abs;
-                TLorentzVector Jet2_jesdn_Abs, Jet2_2p5_jesdn_Abs;
+                TLorentzVector Jet1_jesdn_Abs, Jet1_2p5_jesdn_Abs, Jet2_jesdn_Abs, Jet2_2p5_jesdn_Abs;
 
                 if (njets_pt30_eta4p7_jesdn_Abs > 0) { 
                     Jet1_jesdn_Abs.SetPtEtaPhiM(pt_jesdn_split_Abs[jet1index_jesdn_Abs],eta_jes_split_Abs[jet1index_jesdn_Abs],phi_jes_split_Abs[jet1index_jesdn_Abs], mass_jes_split_Abs[jet1index_jesdn_Abs]);
