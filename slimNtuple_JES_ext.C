@@ -85,7 +85,8 @@ float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float>
         for( unsigned int k = 0; k< pt.size(); k++) {
             TLorentzVector theJet;
             theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
-	    TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(theJet.Rapidity() - H.Rapidity()));   // equivalent ?
+	    TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(abs(theJet.Rapidity() - H.Rapidity())));   // equivalent ?
+	    //TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(theJet.Rapidity() - H.Rapidity()));   // equivalent ?
 	    //TauB_j = sqrt(theJet.energy()*theJet.energy() - theJet.pz()*theJet.pz())*exp(-1*(theJet.Rapidity() - H.Rapidity()));
             if (TauB_j > TauB_jmax) {
                 TauB_jmax = TauB_j;
@@ -180,7 +181,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     vector<float>   *lep_dataMCErr;
     vector<float>   lep_dataMC_new;
     vector<float>   lep_dataMCErr_new;
-
+    vector<float> pt_nom {};
 // JES split vars
 /*    vector<float> jes_unc_split {};
     vector<float> pt_jesup_split {};
@@ -227,6 +228,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Float_t         phi4l;
     Float_t         mass4l;
     Float_t         pt_leadingjet_pt30_eta4p7;
+    Float_t         TauC_Inc_0j_EnergyWgt;
+    Float_t         TauB_Inc_0j_pTWgt;
     Float_t         pTj1_2p5;
     Float_t         etaj1_2p5;
     Float_t         phij1_2p5;
@@ -256,6 +259,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Int_t           njets_pt30_eta2p5_jesdn;
 // validation variable
     float pTj1;
+    Float_t         TauC_Inc_0j_EnergyWgt_nom, TauB_Inc_0j_pTWgt_nom;
 // Abs variables
     Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs, TauB_Inc_0j_pTWgt_jesup_Abs, TauC_Inc_0j_EnergyWgt_jesdn_Abs, TauB_Inc_0j_pTWgt_jesdn_Abs;
 int jet1index_jesup_Abs, jet2index_jesup_Abs,jet1index2p5_jesup_Abs, jet2index2p5_jesup_Abs,jet1pt_jesup_Abs, jet2pt_jesup_Abs,jet1pt2p5_jesup_Abs, jet2pt2p5_jesup_Abs, njets_pt30_eta4p7_jesup_Abs,njets_pt30_eta2p5_jesup_Abs,njets_pt30_eta4p7_jesdn_Abs,njets_pt30_eta2p5_jesdn_Abs;
@@ -483,6 +487,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 
 
     }
+    oldtree->SetBranchAddress("TauC_Inc_0j_EnergyWgt", &TauC_Inc_0j_EnergyWgt);
+    oldtree->SetBranchAddress("TauB_Inc_0j_pTWgt", &TauB_Inc_0j_pTWgt);
     oldtree->SetBranchAddress("pt_leadingjet_pt30_eta4p7", &pt_leadingjet_pt30_eta4p7);
     oldtree->SetBranchAddress("pTj1_2p5", &pTj1_2p5);
     oldtree->SetBranchAddress("etaj1_2p5", &etaj1_2p5);
@@ -806,7 +812,9 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 // up
     newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Abs", &TauC_Inc_0j_EnergyWgt_jesup_Abs, "TauC_Inc_0j_EnergyWgt_jesup_Abs/F");
+    newtree->Branch("TauC_Inc_0j_EnergyWgt_nom", &TauC_Inc_0j_EnergyWgt_nom, "TauC_Inc_0j_EnergyWgt_nom/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Abs", &TauB_Inc_0j_pTWgt_jesup_Abs, "TauB_Inc_0j_pTWgt_jesup_Abs/F");
+    newtree->Branch("TauB_Inc_0j_pTWgt_nom", &TauB_Inc_0j_pTWgt_nom, "TauB_Inc_0j_pTWgt_nom/F");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs", &TauC_Inc_0j_EnergyWgt_jesdn_Abs, "TauC_Inc_0j_EnergyWgt_jesdn_Abs/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs", &TauB_Inc_0j_pTWgt_jesdn_Abs, "TauB_Inc_0j_pTWgt_jesdn_Abs/F");
     newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/F");
@@ -901,13 +909,14 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
         pT4ljj_2p5_jesdn=-1.0;
         mass4ljj_2p5_jesdn=-1.0;
 
-
-        pTj1=-9999.0; 	
+	TauC_Inc_0j_EnergyWgt_nom=0; 
+        pTj1=-9999.0; 
+        TauC_Inc_0j_EnergyWgt_nom=-9999.0, TauB_Inc_0j_pTWgt_nom=-9999.0;	
 // initialize Abs variables
         jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1, jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1, jet1pt_jesup_Abs=0.0, jet2pt_jesup_Abs=0.0, jet1pt2p5_jesup_Abs=0.0, jet2pt2p5_jesup_Abs=0.0,jet1index_jesdn_Abs=-1, jet2index_jesdn_Abs=-1,jet1index2p5_jesdn_Abs=-1, jet2index2p5_jesdn_Abs=-1, jet1pt_jesdn_Abs=0.0, jet2pt_jesdn_Abs=0.0,jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
 
 
-	TauC_Inc_0j_EnergyWgt_jesup_Abs=0,TauB_Inc_0j_pTWgt_jesup_Abs=0, TauC_Inc_0j_EnergyWgt_jesdn_Abs=0, TauB_Inc_0j_pTWgt_jesdn_Abs=0, njets_pt30_eta4p7_jesup_Abs=0, njets_pt30_eta2p5_jesup_Abs=0, njets_pt30_eta4p7_jesdn_Abs=0, njets_pt30_eta2p5_jesdn_Abs=0, pTj1_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, pTj1_2p5_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0,  yj1_jesup_Abs=-9999.0,  yj2_jesup_Abs=-9999.0,dPhiHj1_jesup_Abs=-9999.0,  dyHj1_jesup_Abs=-9999.0, mj1j2_jesup_Abs=-9999.0,  dEtaj1j2_jesup_Abs=-9999.0, dPhij1j2_jesup_Abs=-9999.0,  dPhiHj1j2_jesup_Abs=-9999.0, yj1_2p5_jesup_Abs=-9999.0,  yj2_2p5_jesup_Abs=-9999.0, dPhiHj1_2p5_jesup_Abs=-9999.0,  dyHj1_2p5_jesup_Abs=-9999.0, mj1j2_2p5_jesup_Abs=-9999.0,  dEtaj1j2_2p5_jesup_Abs=-9999.0, dPhij1j2_2p5_jesup_Abs=-9999.0,  dPhiHj1j2_2p5_jesup_Abs=-9999.0, pTj1_jesdn_Abs=-9999.0,  pTj2_jesdn_Abs=-9999.0,pTj1_2p5_jesdn_Abs=-9999.0,  pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, yj1_jesdn_Abs=-9999.0,  yj2_jesdn_Abs=-9999.0, dPhiHj1_jesdn_Abs=-9999.0,  dyHj1_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, dPhij1j2_jesdn_Abs=-9999.0,  dPhiHj1j2_jesdn_Abs=-9999.0, yj1_2p5_jesdn_Abs=-9999.0,  yj2_2p5_jesdn_Abs=-9999.0, dPhiHj1_2p5_jesdn_Abs=-9999.0,  dyHj1_2p5_jesdn_Abs=-9999.0,mj1j2_2p5_jesdn_Abs=-9999.0,  dEtaj1j2_2p5_jesdn_Abs=-9999.0, dPhij1j2_2p5_jesdn_Abs=-9999.0,  dPhiHj1j2_2p5_jesdn_Abs=-9999.0; 
+	TauC_Inc_0j_EnergyWgt_jesup_Abs=-9999.0,TauB_Inc_0j_pTWgt_jesup_Abs=-9999.0, TauC_Inc_0j_EnergyWgt_jesdn_Abs=-9999.0, TauB_Inc_0j_pTWgt_jesdn_Abs=-9999.0, njets_pt30_eta4p7_jesup_Abs=0, njets_pt30_eta2p5_jesup_Abs=0, njets_pt30_eta4p7_jesdn_Abs=0, njets_pt30_eta2p5_jesdn_Abs=0, pTj1_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, pTj1_2p5_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0,  yj1_jesup_Abs=-9999.0,  yj2_jesup_Abs=-9999.0,dPhiHj1_jesup_Abs=-9999.0,  dyHj1_jesup_Abs=-9999.0, mj1j2_jesup_Abs=-9999.0,  dEtaj1j2_jesup_Abs=-9999.0, dPhij1j2_jesup_Abs=-9999.0,  dPhiHj1j2_jesup_Abs=-9999.0, yj1_2p5_jesup_Abs=-9999.0,  yj2_2p5_jesup_Abs=-9999.0, dPhiHj1_2p5_jesup_Abs=-9999.0,  dyHj1_2p5_jesup_Abs=-9999.0, mj1j2_2p5_jesup_Abs=-9999.0,  dEtaj1j2_2p5_jesup_Abs=-9999.0, dPhij1j2_2p5_jesup_Abs=-9999.0,  dPhiHj1j2_2p5_jesup_Abs=-9999.0, pTj1_jesdn_Abs=-9999.0,  pTj2_jesdn_Abs=-9999.0,pTj1_2p5_jesdn_Abs=-9999.0,  pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, yj1_jesdn_Abs=-9999.0,  yj2_jesdn_Abs=-9999.0, dPhiHj1_jesdn_Abs=-9999.0,  dyHj1_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, dPhij1j2_jesdn_Abs=-9999.0,  dPhiHj1j2_jesdn_Abs=-9999.0, yj1_2p5_jesdn_Abs=-9999.0,  yj2_2p5_jesdn_Abs=-9999.0, dPhiHj1_2p5_jesdn_Abs=-9999.0,  dyHj1_2p5_jesdn_Abs=-9999.0,mj1j2_2p5_jesdn_Abs=-9999.0,  dEtaj1j2_2p5_jesdn_Abs=-9999.0, dPhij1j2_2p5_jesdn_Abs=-9999.0,  dPhiHj1j2_2p5_jesdn_Abs=-9999.0; 
 
 
         //if (i>=2000000) continue;
@@ -942,6 +951,9 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                 float singleContr_jes_unc ;
 
                 TLorentzVector thisJet;
+// tempo variables for TauC TauB nominal values
+//		vector<float> pt_nom {};
+
                 for( unsigned int k = 0; k<(*jet_iscleanH4l).size(); k++) {
                     if ((*jet_pt)[k]<30.0 || abs((*jet_eta)[k])>4.7) continue;
                     thisJet.SetPtEtaPhiM((*jet_pt)[((*jet_iscleanH4l)[k])],(*jet_eta)[((*jet_iscleanH4l)[k])],(*jet_phi)[((*jet_iscleanH4l)[k])],(*jet_mass)[((*jet_iscleanH4l)[k])]);
@@ -949,6 +961,9 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 		    if ((*jet_pt)[((*jet_iscleanH4l)[k])] > pTj1) {
 			pTj1 = (*jet_pt)[((*jet_iscleanH4l)[k])];
 			}
+			
+			pt_nom.push_back(thisJet.Pt());
+
 
                     //if(applyJEC_ && isMC)
                     if(applyJEC_)
@@ -1020,7 +1035,9 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 
 //Abs up
                 TauC_Inc_0j_EnergyWgt_jesup_Abs = TauC(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                TauC_Inc_0j_EnergyWgt_nom = TauC(pt_nom, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
                 TauB_Inc_0j_pTWgt_jesup_Abs = TauB(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
+                TauB_Inc_0j_pTWgt_nom = TauB(pt_nom, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
                 cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesup_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesup_Abs<<endl;
                 cout<<"test print:->  TauB_Inc_0j_pTWgt_jesup_Abs  :   "<<TauB_Inc_0j_pTWgt_jesup_Abs<<endl;
 
@@ -1107,6 +1124,7 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                 }
 
 		pt_jesup_split_Abs.clear();  
+		pt_nom.clear();  
 
 /////////////////
 // Abs dn start
