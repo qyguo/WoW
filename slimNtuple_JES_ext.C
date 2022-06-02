@@ -31,7 +31,7 @@
 #include "TClonesArray.h"
 #include "TCanvas.h"
 #include "slimNtuple_JES.h"
-
+#include "variables.h"
 //#include "JetMETCorrections/Modules/interface/JetResolution.h"
 //#include "DataFormats/PatCandidates/interface/Jet.h"
 #include "FWCore/ParameterSet/interface/FileInPath.h"
@@ -257,21 +257,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Int_t           njets_pt30_eta2p5;
     Int_t           njets_pt30_eta2p5_jesup;
     Int_t           njets_pt30_eta2p5_jesdn;
-// validation variable
     float pTj1;
     Float_t         TauC_Inc_0j_EnergyWgt_nom, TauB_Inc_0j_pTWgt_nom;
-// Abs variables
-    Float_t         TauC_Inc_0j_EnergyWgt_jesup_Abs, TauB_Inc_0j_pTWgt_jesup_Abs, TauC_Inc_0j_EnergyWgt_jesdn_Abs, TauB_Inc_0j_pTWgt_jesdn_Abs;
-int jet1index_jesup_Abs, jet2index_jesup_Abs,jet1index2p5_jesup_Abs, jet2index2p5_jesup_Abs,jet1pt_jesup_Abs, jet2pt_jesup_Abs,jet1pt2p5_jesup_Abs, jet2pt2p5_jesup_Abs, njets_pt30_eta4p7_jesup_Abs,njets_pt30_eta2p5_jesup_Abs,njets_pt30_eta4p7_jesdn_Abs,njets_pt30_eta2p5_jesdn_Abs;
-int jet1index_jesdn_Abs, jet2index_jesdn_Abs,jet1index2p5_jesdn_Abs, jet2index2p5_jesdn_Abs,jet1pt_jesdn_Abs, jet2pt_jesdn_Abs,jet1pt2p5_jesdn_Abs, jet2pt2p5_jesdn_Abs;
-
-float pTj1_jesup_Abs, pt_leadingjet_pt30_eta4p7_jesup_Abs, pTj2_jesup_Abs,etaj1_jesup_Abs,  etaj2_jesup_Abs,pTj1_2p5_jesup_Abs, pt_leadingjet_pt30_eta2p5_jesup_Abs,pTj2_2p5_jesup_Abs,mj1j2_jesup_Abs,  dEtaj1j2_jesup_Abs,yj1_jesup_Abs,  yj2_jesup_Abs,dPhiHj1_jesup_Abs,  dyHj1_jesup_Abs,dPhij1j2_jesup_Abs,  dPhiHj1j2_jesup_Abs,yj1_2p5_jesup_Abs,  yj2_2p5_jesup_Abs,dPhiHj1_2p5_jesup_Abs,  dyHj1_2p5_jesup_Abs,mj1j2_2p5_jesup_Abs,  dEtaj1j2_2p5_jesup_Abs,dPhij1j2_2p5_jesup_Abs,  dPhiHj1j2_2p5_jesup_Abs;
-
-float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_jesdn_Abs,  etaj2_jesdn_Abs,pTj1_2p5_jesdn_Abs, pt_leadingjet_pt30_eta2p5_jesdn_Abs, pTj2_2p5_jesdn_Abs, mj1j2_jesdn_Abs,  dEtaj1j2_jesdn_Abs,yj1_jesdn_Abs,  yj2_jesdn_Abs,dPhiHj1_jesdn_Abs,  dyHj1_jesdn_Abs,dPhij1j2_jesdn_Abs,  dPhiHj1j2_jesdn_Abs,yj1_2p5_jesdn_Abs,  yj2_2p5_jesdn_Abs,dPhiHj1_2p5_jesdn_Abs,  dyHj1_2p5_jesdn_Abs,mj1j2_2p5_jesdn_Abs,  dEtaj1j2_2p5_jesdn_Abs,dPhij1j2_2p5_jesdn_Abs,  dPhiHj1j2_2p5_jesdn_Abs;
-
-
-
-
 
 
 // try
@@ -806,40 +793,44 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
     newtree->Branch("mass4ljj_2p5_jesdn", &mass4ljj_2p5_jesdn);
 
     newtree->Branch("isH4l",&isH4l,"isH4l/O");
-
+// validation branches
     newtree->Branch("pTj1",&pTj1,"pTj1/F");
+    newtree->Branch("TauC_Inc_0j_EnergyWgt_nom", &TauC_Inc_0j_EnergyWgt_nom, "TauC_Inc_0j_EnergyWgt_nom/F");
+    newtree->Branch("TauB_Inc_0j_pTWgt_nom", &TauB_Inc_0j_pTWgt_nom, "TauB_Inc_0j_pTWgt_nom/F");
+
 // Abs JES 
 // up
     newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Abs", &TauC_Inc_0j_EnergyWgt_jesup_Abs, "TauC_Inc_0j_EnergyWgt_jesup_Abs/F");
-    newtree->Branch("TauC_Inc_0j_EnergyWgt_nom", &TauC_Inc_0j_EnergyWgt_nom, "TauC_Inc_0j_EnergyWgt_nom/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Abs", &TauB_Inc_0j_pTWgt_jesup_Abs, "TauB_Inc_0j_pTWgt_jesup_Abs/F");
-    newtree->Branch("TauB_Inc_0j_pTWgt_nom", &TauB_Inc_0j_pTWgt_nom, "TauB_Inc_0j_pTWgt_nom/F");
-    newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs", &TauC_Inc_0j_EnergyWgt_jesdn_Abs, "TauC_Inc_0j_EnergyWgt_jesdn_Abs/F");
-    newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs", &TauB_Inc_0j_pTWgt_jesdn_Abs, "TauB_Inc_0j_pTWgt_jesdn_Abs/F");
     newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/F");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_Abs",&pt_leadingjet_pt30_eta4p7_jesup_Abs,"pt_leadingjet_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("pTj1_jesup_Abs",&pTj1_jesup_Abs,"pTj1_jesup_Abs/F");
-/*    newtree->Branch("pTj1_VBF_jesup_Abs",&pTj1_VBF_jesup_Abs,"pTj1_VBF_jesup_Abs/F"); */
     newtree->Branch("etaj1_jesup_Abs",&etaj1_jesup_Abs,"etaj1_jesup_Abs/F");
     newtree->Branch("pTj2_jesup_Abs",&pTj2_jesup_Abs,"pTj2_jesup_Abs/F");
     newtree->Branch("etaj2_jesup_Abs",&etaj2_jesup_Abs,"etaj2_jesup_Abs/F");
     newtree->Branch("yj1_jesup_Abs",&yj1_jesup_Abs,"yj1_jesup_Abs/F");
     newtree->Branch("yj2_jesup_Abs",&yj2_jesup_Abs,"yj2_jesup_Abs/F");
     newtree->Branch("dPhiHj1_jesup_Abs",&dPhiHj1_jesup_Abs,"dPhiHj1_jesup_Abs/F"); 
+    newtree->Branch("mass4lj_jesup_Abs",&mass4lj_jesup_Abs,"mass4lj_jesup_Abs/F"); 
+    newtree->Branch("mass4ljj_jesup_Abs",&mass4ljj_jesup_Abs,"mass4ljj_jesup_Abs/F"); 
+    newtree->Branch("pT4lj_jesup_Abs",&pT4lj_jesup_Abs,"pT4lj_jesup_Abs/F"); 
+    newtree->Branch("pT4ljj_jesup_Abs",&pT4ljj_jesup_Abs,"pT4ljj_jesup_Abs/F"); 
     newtree->Branch("dyHj1_jesup_Abs",&dyHj1_jesup_Abs,"dyHj1_jesup_Abs/F");
     newtree->Branch("mj1j2_jesup_Abs",&mj1j2_jesup_Abs,"mj1j2_jesup_Abs/F"); 
     newtree->Branch("dEtaj1j2_jesup_Abs",&dEtaj1j2_jesup_Abs,"dEtaj1j2_jesup_Abs/F");
     newtree->Branch("dPhij1j2_jesup_Abs",&dPhij1j2_jesup_Abs,"dPhij1j2_jesup_Abs/F"); 
     newtree->Branch("dPhiHj1j2_jesup_Abs",&dPhiHj1j2_jesup_Abs,"dPhiHj1j2_jesup_Abs/F");
-/*    newtree->Branch("dPhij1j2_VBF_jesup_Abs",&dPhij1j2_VBF_jesup_Abs,"dPhij1j2_VBF_jesup_Abs/F"); 
-    newtree->Branch("dPhiHj1j2_VBF_jesup_Abs",&dPhiHj1j2_VBF_jesup_Abs,"dPhiHj1j2_VBF_jesup_Abs/F"); */
     newtree->Branch("pTj1_2p5_jesup_Abs",&pTj1_2p5_jesup_Abs,"pTj1_2p5_jesup_Abs/F"); 
     newtree->Branch("pt_leadingjet_pt30_eta2p5_jesup_Abs",&pt_leadingjet_pt30_eta2p5_jesup_Abs,"pt_leadingjet_pt30_eta2p5_jesup_Abs/F");
     newtree->Branch("yj1_2p5_jesup_Abs",&yj1_2p5_jesup_Abs,"yj1_2p5_jesup_Abs/F");
     newtree->Branch("pTj2_2p5_jesup_Abs",&pTj2_2p5_jesup_Abs,"pTj2_2p5_jesup_Abs/F"); 
     newtree->Branch("yj2_2p5_jesup_Abs",&yj2_2p5_jesup_Abs,"yj2_2p5_jesup_Abs/F");
     newtree->Branch("dPhiHj1_2p5_jesup_Abs",&dPhiHj1_2p5_jesup_Abs,"dPhiHj1_2p5_jesup_Abs/F"); 
+    newtree->Branch("mass4lj_2p5_jesup_Abs",&mass4lj_2p5_jesup_Abs,"mass4lj_2p5_jesup_Abs/F");
+    newtree->Branch("mass4ljj_2p5_jesup_Abs",&mass4ljj_2p5_jesup_Abs,"mass4ljj_2p5_jesup_Abs/F");
+    newtree->Branch("pT4lj_2p5_jesup_Abs",&pT4lj_2p5_jesup_Abs,"pT4lj_2p5_jesup_Abs/F");
+    newtree->Branch("pT4ljj_2p5_jesup_Abs",&pT4ljj_2p5_jesup_Abs,"pT4ljj_2p5_jesup_Abs/F");
     newtree->Branch("dyHj1_2p5_jesup_Abs",&dyHj1_2p5_jesup_Abs,"dyHj1_2p5_jesup_Abs/F");
     newtree->Branch("mj1j2_2p5_jesup_Abs",&mj1j2_2p5_jesup_Abs,"mj1j2_2p5_jesup_Abs/F"); 
     newtree->Branch("dEtaj1j2_2p5_jesup_Abs",&dEtaj1j2_2p5_jesup_Abs,"dEtaj1j2_2p5_jesup_Abs/F");
@@ -847,10 +838,11 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
     newtree->Branch("dPhiHj1j2_2p5_jesup_Abs",&dPhiHj1j2_2p5_jesup_Abs,"dPhiHj1j2_2p5_jesup_Abs/F");
 // dn
     newtree->Branch("njets_pt30_eta4p7_jesdn_Abs", &njets_pt30_eta4p7_jesdn_Abs, "njets_pt30_eta4p7_jesdn_Abs/F");
+    newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs", &TauC_Inc_0j_EnergyWgt_jesdn_Abs, "TauC_Inc_0j_EnergyWgt_jesdn_Abs/F");
+    newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs", &TauB_Inc_0j_pTWgt_jesdn_Abs, "TauB_Inc_0j_pTWgt_jesdn_Abs/F");
     newtree->Branch("njets_pt30_eta2p5_jesdn_Abs", &njets_pt30_eta2p5_jesdn_Abs, "njets_pt30_eta2p5_jesdn_Abs/F");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_Abs",&pt_leadingjet_pt30_eta4p7_jesdn_Abs,"pt_leadingjet_pt30_eta4p7_jesdn_Abs/F");
     newtree->Branch("pTj1_jesdn_Abs",&pTj1_jesdn_Abs,"pTj1_jesdn_Abs/F");
-/*    newtree->Branch("pTj1_VBF_jesdn_Abs",&pTj1_VBF_jesdn_Abs,"pTj1_VBF_jesdn_Abs/F"); */
     newtree->Branch("etaj1_jesdn_Abs",&etaj1_jesdn_Abs,"etaj1_jesdn_Abs/F");
     newtree->Branch("pTj2_jesdn_Abs",&pTj2_jesdn_Abs,"pTj2_jesdn_Abs/F");
     newtree->Branch("etaj2_jesdn_Abs",&etaj2_jesdn_Abs,"etaj2_jesdn_Abs/F");
@@ -858,17 +850,23 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
     newtree->Branch("yj2_jesdn_Abs",&yj2_jesdn_Abs,"yj2_jesdn_Abs/F");
     newtree->Branch("dPhiHj1_jesdn_Abs",&dPhiHj1_jesdn_Abs,"dPhiHj1_jesdn_Abs/F"); 
     newtree->Branch("dyHj1_jesdn_Abs",&dyHj1_jesdn_Abs,"dyHj1_jesdn_Abs/F");
+    newtree->Branch("mass4lj_jesdn_Abs",&mass4lj_jesdn_Abs,"mass4lj_jesdn_Abs/F");
+    newtree->Branch("mass4ljj_jesdn_Abs",&mass4ljj_jesdn_Abs,"mass4ljj_jesdn_Abs/F");
+    newtree->Branch("pT4lj_jesdn_Abs",&pT4lj_jesdn_Abs,"pT4lj_jesdn_Abs/F");
+    newtree->Branch("pT4ljj_jesdn_Abs",&pT4ljj_jesdn_Abs,"pT4ljj_jesdn_Abs/F");
     newtree->Branch("mj1j2_jesdn_Abs",&mj1j2_jesdn_Abs,"mj1j2_jesdn_Abs/F"); 
     newtree->Branch("dEtaj1j2_jesdn_Abs",&dEtaj1j2_jesdn_Abs,"dEtaj1j2_jesdn_Abs/F");
     newtree->Branch("dPhij1j2_jesdn_Abs",&dPhij1j2_jesdn_Abs,"dPhij1j2_jesdn_Abs/F"); 
     newtree->Branch("dPhiHj1j2_jesdn_Abs",&dPhiHj1j2_jesdn_Abs,"dPhiHj1j2_jesdn_Abs/F");
-/*    newtree->Branch("dPhij1j2_VBF_jesdn_Abs",&dPhij1j2_VBF_jesdn_Abs,"dPhij1j2_VBF_jesdn_Abs/F"); 
-    newtree->Branch("dPhiHj1j2_VBF_jesdn_Abs",&dPhiHj1j2_VBF_jesdn_Abs,"dPhiHj1j2_VBF_jesdn_Abs/F"); */
     newtree->Branch("pTj1_2p5_jesdn_Abs",&pTj1_2p5_jesdn_Abs,"pTj1_2p5_jesdn_Abs/F"); 
     newtree->Branch("pt_leadingjet_pt30_eta2p5_jesdn_Abs",&pt_leadingjet_pt30_eta2p5_jesdn_Abs,"pt_leadingjet_pt30_eta2p5_2p5_jesdn_Abs/F"); 
     newtree->Branch("yj1_2p5_jesdn_Abs",&yj1_2p5_jesdn_Abs,"yj1_2p5_jesdn_Abs/F");
     newtree->Branch("pTj2_2p5_jesdn_Abs",&pTj2_2p5_jesdn_Abs,"pTj2_2p5_jesdn_Abs/F"); 
     newtree->Branch("yj2_2p5_jesdn_Abs",&yj2_2p5_jesdn_Abs,"yj2_2p5_jesdn_Abs/F");
+    newtree->Branch("mass4lj_2p5_jesdn_Abs",&mass4lj_2p5_jesdn_Abs,"mass4lj_2p5_jesdn_Abs/F");
+    newtree->Branch("mass4ljj_2p5_jesdn_Abs",&mass4ljj_2p5_jesdn_Abs,"mass4ljj_2p5_jesdn_Abs/F");
+    newtree->Branch("pT4lj_2p5_jesdn_Abs",&pT4lj_2p5_jesdn_Abs,"pT4lj_2p5_jesdn_Abs/F");
+    newtree->Branch("pT4ljj_2p5_jesdn_Abs",&pT4ljj_2p5_jesdn_Abs,"pT4ljj_2p5_jesdn_Abs/F");
     newtree->Branch("dPhiHj1_2p5_jesdn_Abs",&dPhiHj1_2p5_jesdn_Abs,"dPhiHj1_2p5_jesdn_Abs/F"); 
     newtree->Branch("dyHj1_2p5_jesdn_Abs",&dyHj1_2p5_jesdn_Abs,"dyHj1_2p5_jesdn_Abs/F");
     newtree->Branch("mj1j2_2p5_jesdn_Abs",&mj1j2_2p5_jesdn_Abs,"mj1j2_2p5_jesdn_Abs/F"); 
@@ -909,14 +907,14 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
         pT4ljj_2p5_jesdn=-1.0;
         mass4ljj_2p5_jesdn=-1.0;
 
-	TauC_Inc_0j_EnergyWgt_nom=0; 
+// validation branches
         pTj1=-9999.0; 
         TauC_Inc_0j_EnergyWgt_nom=-9999.0, TauB_Inc_0j_pTWgt_nom=-9999.0;	
 // initialize Abs variables
         jet1index_jesup_Abs=-1, jet2index_jesup_Abs=-1, jet1index2p5_jesup_Abs=-1, jet2index2p5_jesup_Abs=-1, jet1pt_jesup_Abs=0.0, jet2pt_jesup_Abs=0.0, jet1pt2p5_jesup_Abs=0.0, jet2pt2p5_jesup_Abs=0.0,jet1index_jesdn_Abs=-1, jet2index_jesdn_Abs=-1,jet1index2p5_jesdn_Abs=-1, jet2index2p5_jesdn_Abs=-1, jet1pt_jesdn_Abs=0.0, jet2pt_jesdn_Abs=0.0,jet1pt2p5_jesdn_Abs=0.0, jet2pt2p5_jesdn_Abs=0.0;
 
 
-	TauC_Inc_0j_EnergyWgt_jesup_Abs=-9999.0,TauB_Inc_0j_pTWgt_jesup_Abs=-9999.0, TauC_Inc_0j_EnergyWgt_jesdn_Abs=-9999.0, TauB_Inc_0j_pTWgt_jesdn_Abs=-9999.0, njets_pt30_eta4p7_jesup_Abs=0, njets_pt30_eta2p5_jesup_Abs=0, njets_pt30_eta4p7_jesdn_Abs=0, njets_pt30_eta2p5_jesdn_Abs=0, pTj1_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, pTj1_2p5_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0,pTj2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0,  yj1_jesup_Abs=-9999.0,  yj2_jesup_Abs=-9999.0,dPhiHj1_jesup_Abs=-9999.0,  dyHj1_jesup_Abs=-9999.0, mj1j2_jesup_Abs=-9999.0,  dEtaj1j2_jesup_Abs=-9999.0, dPhij1j2_jesup_Abs=-9999.0,  dPhiHj1j2_jesup_Abs=-9999.0, yj1_2p5_jesup_Abs=-9999.0,  yj2_2p5_jesup_Abs=-9999.0, dPhiHj1_2p5_jesup_Abs=-9999.0,  dyHj1_2p5_jesup_Abs=-9999.0, mj1j2_2p5_jesup_Abs=-9999.0,  dEtaj1j2_2p5_jesup_Abs=-9999.0, dPhij1j2_2p5_jesup_Abs=-9999.0,  dPhiHj1j2_2p5_jesup_Abs=-9999.0, pTj1_jesdn_Abs=-9999.0,  pTj2_jesdn_Abs=-9999.0,pTj1_2p5_jesdn_Abs=-9999.0,  pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, yj1_jesdn_Abs=-9999.0,  yj2_jesdn_Abs=-9999.0, dPhiHj1_jesdn_Abs=-9999.0,  dyHj1_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0,  dEtaj1j2_jesdn_Abs=-9999.0, dPhij1j2_jesdn_Abs=-9999.0,  dPhiHj1j2_jesdn_Abs=-9999.0, yj1_2p5_jesdn_Abs=-9999.0,  yj2_2p5_jesdn_Abs=-9999.0, dPhiHj1_2p5_jesdn_Abs=-9999.0,  dyHj1_2p5_jesdn_Abs=-9999.0,mj1j2_2p5_jesdn_Abs=-9999.0,  dEtaj1j2_2p5_jesdn_Abs=-9999.0, dPhij1j2_2p5_jesdn_Abs=-9999.0,  dPhiHj1j2_2p5_jesdn_Abs=-9999.0; 
+	TauC_Inc_0j_EnergyWgt_jesup_Abs=-9999.0, TauB_Inc_0j_pTWgt_jesup_Abs=-9999.0, TauC_Inc_0j_EnergyWgt_jesdn_Abs=-9999.0, TauB_Inc_0j_pTWgt_jesdn_Abs=-9999.0, njets_pt30_eta4p7_jesup_Abs=0, njets_pt30_eta2p5_jesup_Abs=0, njets_pt30_eta4p7_jesdn_Abs=0, njets_pt30_eta2p5_jesdn_Abs=0, pTj1_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta4p7_jesup_Abs=-9999.0, pTj1_2p5_jesup_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesup_Abs=-9999.0, pTj2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0, yj1_jesup_Abs=-9999.0, yj2_jesup_Abs=-9999.0, dPhiHj1_jesup_Abs=-9999.0, dyHj1_jesup_Abs=-9999.0, mass4lj_jesup_Abs=-9999.0, pT4lj_jesup_Abs=-9999.0, mass4ljj_jesup_Abs=-9999.0, pT4ljj_jesup_Abs=-9999.0, mass4lj_2p5_jesup_Abs=-9999.0, pT4lj_2p5_jesup_Abs=-9999.0, mass4ljj_2p5_jesup_Abs=-9999.0, pT4ljj_2p5_jesup_Abs=-9999.0, mj1j2_jesup_Abs=-9999.0, dEtaj1j2_jesup_Abs=-9999.0, dPhij1j2_jesup_Abs=-9999.0, dPhiHj1j2_jesup_Abs=-9999.0, yj1_2p5_jesup_Abs=-9999.0, yj2_2p5_jesup_Abs=-9999.0, dPhiHj1_2p5_jesup_Abs=-9999.0, dyHj1_2p5_jesup_Abs=-9999.0, mj1j2_2p5_jesup_Abs=-9999.0, dEtaj1j2_2p5_jesup_Abs=-9999.0, dPhij1j2_2p5_jesup_Abs=-9999.0, dPhiHj1j2_2p5_jesup_Abs=-9999.0, pTj1_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, pTj1_2p5_jesdn_Abs=-9999.0, pt_leadingjet_pt30_eta2p5_jesdn_Abs=-9999.0, pTj2_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0, dEtaj1j2_jesdn_Abs=-9999.0, yj1_jesdn_Abs=-9999.0, yj2_jesdn_Abs=-9999.0, dPhiHj1_jesdn_Abs=-9999.0, dyHj1_jesdn_Abs=-9999.0, mj1j2_jesdn_Abs=-9999.0, dEtaj1j2_jesdn_Abs=-9999.0, dPhij1j2_jesdn_Abs=-9999.0, dPhiHj1j2_jesdn_Abs=-9999.0, yj1_2p5_jesdn_Abs=-9999.0, yj2_2p5_jesdn_Abs=-9999.0, dPhiHj1_2p5_jesdn_Abs=-9999.0, dyHj1_2p5_jesdn_Abs=-9999.0, mj1j2_2p5_jesdn_Abs=-9999.0, dEtaj1j2_2p5_jesdn_Abs=-9999.0, dPhij1j2_2p5_jesdn_Abs=-9999.0, dPhiHj1j2_2p5_jesdn_Abs=-9999.0, mass4lj_jesdn_Abs=-9999.0, pT4lj_jesdn_Abs=-9999.0, mass4ljj_jesdn_Abs=-9999.0, pT4ljj_jesdn_Abs=-9999.0, mass4lj_2p5_jesdn_Abs=-9999.0, pT4lj_2p5_jesdn_Abs=-9999.0, mass4ljj_2p5_jesdn_Abs=-9999.0, pT4ljj_2p5_jesdn_Abs=-9999.0;  // FIXME 
 
 
         //if (i>=2000000) continue;
@@ -952,7 +950,6 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 
                 TLorentzVector thisJet;
 // tempo variables for TauC TauB nominal values
-//		vector<float> pt_nom {};
 
                 for( unsigned int k = 0; k<(*jet_iscleanH4l).size(); k++) {
                     if ((*jet_pt)[k]<30.0 || abs((*jet_eta)[k])>4.7) continue;
@@ -963,12 +960,9 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 			}
 			
 			pt_nom.push_back(thisJet.Pt());
-
-
                     //if(applyJEC_ && isMC)
                     if(applyJEC_)
                       {
-                //        cout<<" uncSources.size():    "<< uncSources.size()<<endl;
                         for (unsigned s_unc = 0; s_unc < uncSources.size(); s_unc++)
                           {
                             singleContr_jes_unc = 0;
@@ -982,9 +976,6 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                             phi_jes_split.push_back(thisJet.Phi());
                             mass_jes_split.push_back(thisJet.M());
 
-
-//                            cout<<"singleContr_jes_unc   : "<<singleContr_jes_unc<<endl;
-//                            cout<<"iteration s_unc   : "<<s_unc<<endl;
                             cout<<"Uncertainty source is:  uncSources["<<s_unc<<"]  "<<uncSources[s_unc]<<endl;
                             cout<<"thisJet.Pt():   "<<thisJet.Pt()<<endl;
                             cout<<"jes_unc_split["<<s_unc<<"]  "<<jes_unc_split[s_unc]<<endl;
@@ -1006,19 +997,12 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                           }
                       }
 //filling variables
-        //nominal
+        //unc, pt_up, pt_dn,eta, phi, mass
                       jes_unc_split_Total.push_back(jes_unc_split[0]);jes_unc_split_Abs.push_back(jes_unc_split[1]); jes_unc_split_Abs_year.push_back(jes_unc_split[2]); jes_unc_split_BBEC1.push_back(jes_unc_split[3]); jes_unc_split_BBEC1_year.push_back(jes_unc_split[4]);jes_unc_split_EC2.push_back(jes_unc_split[5]); jes_unc_split_EC2_year.push_back(jes_unc_split[6]); jes_unc_split_FlavQCD.push_back(jes_unc_split[7]); jes_unc_split_HF.push_back(jes_unc_split[8]); jes_unc_split_HF_year.push_back(jes_unc_split[9]);jes_unc_split_RelBal.push_back(jes_unc_split[10]); jes_unc_split_RelSample_year.push_back(jes_unc_split[11]);
-              //pt up 
                       pt_jesup_split_Total.push_back(pt_jesup_split[0]);pt_jesup_split_Abs.push_back(pt_jesup_split[1]); pt_jesup_split_Abs_year.push_back(pt_jesup_split[2]); pt_jesup_split_BBEC1.push_back(pt_jesup_split[3]); pt_jesup_split_BBEC1_year.push_back(pt_jesup_split[4]);pt_jesup_split_EC2.push_back(pt_jesup_split[5]); pt_jesup_split_EC2_year.push_back(pt_jesup_split[6]); pt_jesup_split_FlavQCD.push_back(pt_jesup_split[7]); pt_jesup_split_HF.push_back(pt_jesup_split[8]); pt_jesup_split_HF_year.push_back(pt_jesup_split[9]);pt_jesup_split_RelBal.push_back(pt_jesup_split[10]); pt_jesup_split_RelSample_year.push_back(pt_jesup_split[11]);
-              //pt dn    
                       pt_jesdn_split_Total.push_back(pt_jesdn_split[0]);pt_jesdn_split_Abs.push_back(pt_jesdn_split[1]); pt_jesdn_split_Abs_year.push_back(pt_jesdn_split[2]); pt_jesdn_split_BBEC1.push_back(pt_jesdn_split[3]); pt_jesdn_split_BBEC1_year.push_back(pt_jesdn_split[4]);pt_jesdn_split_EC2.push_back(pt_jesdn_split[5]); pt_jesdn_split_EC2_year.push_back(pt_jesdn_split[6]); pt_jesdn_split_FlavQCD.push_back(pt_jesdn_split[7]); pt_jesdn_split_HF.push_back(pt_jesdn_split[8]); pt_jesdn_split_HF_year.push_back(pt_jesdn_split[9]);pt_jesdn_split_RelBal.push_back(pt_jesdn_split[10]); pt_jesdn_split_RelSample_year.push_back(pt_jesdn_split[11]);
-// eta
                       eta_jes_split_Total.push_back(eta_jes_split[0]);eta_jes_split_Abs.push_back(eta_jes_split[1]); eta_jes_split_Abs_year.push_back(eta_jes_split[2]); eta_jes_split_BBEC1.push_back(eta_jes_split[3]); eta_jes_split_BBEC1_year.push_back(eta_jes_split[4]);eta_jes_split_EC2.push_back(eta_jes_split[5]); eta_jes_split_EC2_year.push_back(eta_jes_split[6]); eta_jes_split_FlavQCD.push_back(eta_jes_split[7]); eta_jes_split_HF.push_back(eta_jes_split[8]); eta_jes_split_HF_year.push_back(eta_jes_split[9]);eta_jes_split_RelBal.push_back(eta_jes_split[10]); eta_jes_split_RelSample_year.push_back(eta_jes_split[11]);		
-
-// phi
                       phi_jes_split_Total.push_back(phi_jes_split[0]);phi_jes_split_Abs.push_back(phi_jes_split[1]); phi_jes_split_Abs_year.push_back(phi_jes_split[2]); phi_jes_split_BBEC1.push_back(phi_jes_split[3]); phi_jes_split_BBEC1_year.push_back(phi_jes_split[4]);phi_jes_split_EC2.push_back(phi_jes_split[5]); phi_jes_split_EC2_year.push_back(phi_jes_split[6]); phi_jes_split_FlavQCD.push_back(phi_jes_split[7]); phi_jes_split_HF.push_back(phi_jes_split[8]); phi_jes_split_HF_year.push_back(phi_jes_split[9]);phi_jes_split_RelBal.push_back(phi_jes_split[10]); phi_jes_split_RelSample_year.push_back(phi_jes_split[11]);		
-
-// mass
                       mass_jes_split_Total.push_back(mass_jes_split[0]);mass_jes_split_Abs.push_back(mass_jes_split[1]); mass_jes_split_Abs_year.push_back(mass_jes_split[2]); mass_jes_split_BBEC1.push_back(mass_jes_split[3]); mass_jes_split_BBEC1_year.push_back(mass_jes_split[4]);mass_jes_split_EC2.push_back(mass_jes_split[5]); mass_jes_split_EC2_year.push_back(mass_jes_split[6]); mass_jes_split_FlavQCD.push_back(mass_jes_split[7]); mass_jes_split_HF.push_back(mass_jes_split[8]); mass_jes_split_HF_year.push_back(mass_jes_split[9]);mass_jes_split_RelBal.push_back(mass_jes_split[10]); mass_jes_split_RelSample_year.push_back(mass_jes_split[11]);		
 
 	              jes_unc_split.clear(); pt_jesup_split.clear();pt_jesdn_split.clear();eta_jes_split.clear();phi_jes_split.clear();mass_jes_split.clear();
@@ -1038,25 +1022,14 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                 TauC_Inc_0j_EnergyWgt_nom = TauC(pt_nom, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
                 TauB_Inc_0j_pTWgt_jesup_Abs = TauB(pt_jesup_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
                 TauB_Inc_0j_pTWgt_nom = TauB(pt_nom, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-                cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesup_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesup_Abs<<endl;
-                cout<<"test print:->  TauB_Inc_0j_pTWgt_jesup_Abs  :   "<<TauB_Inc_0j_pTWgt_jesup_Abs<<endl;
+		pt_nom.clear();  
 
 
                 for( unsigned int k = 0; k< pt_jesup_split_Abs.size(); k++) {
                     if (pt_jesup_split_Abs[k]<30.0 || abs(eta_jes_split_Abs[k])>4.7) continue;
-		    cout<<"test print:->   pt_jesup_split_Abs["<<k<<"]:   "<<pt_jesup_split_Abs[k]<<endl;
-		    cout<<"test print:->   pt_jesup_split_Abs[((*jet_iscleanH4l)["<<k<<"])]:   "<<pt_jesup_split_Abs[((*jet_iscleanH4l)[k])]<<endl;
-		    cout<<"test print:->  pt_leadingjet_pt30_eta4p7:   "<<pt_leadingjet_pt30_eta4p7<<endl;
 		    TLorentzVector thisJet_jesup_Abs;
 		    thisJet_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
 
-//		    pat::Jet goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs; //=goodJets[k];
-                    //goodJets_JECJER_pt30_eta4p7_tmp.setP4(reco::Particle::PolarLorentzVector(jet_jer->Pt(), jet_jer->Eta(), jet_jer->Phi(), jet_jer->M()));
-//                    goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs.setP4(reco::Particle::PolarLorentzVector(pt_jesup_split_Abs[k],eta_jes_split_Abs[k],phi_jes_split_Abs[k],mass_jes_split_Abs[k]);
-//		    goodJets_JECJER_pt30_eta4p7_jesup_Abs.push_back(goodJets_JECJER_pt30_eta4p7_tmp_jesup_Abs);
-
-                    bool isclean_H4l=true;
-                    //if (isclean_H4l) {
                         njets_pt30_eta4p7_jesup_Abs+=1;  
 
                         if (thisJet_jesup_Abs.Pt()>jet1pt_jesup_Abs) {
@@ -1074,22 +1047,20 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                                 jet2pt2p5_jesup_Abs=thisJet_jesup_Abs.Pt(); jet2index2p5_jesup_Abs=k;
                             }
                         }
-                    //}
                 }
                 cout<<njets_pt30_eta4p7_jesup_Abs<<" jets (jesup_Abs)"<<endl;
 
-//		TLorentzVector Higgs;
-//                Higgs.SetPtEtaPhiM(pT4l, eta4l, phi4l, mass4l);
 
 		TLorentzVector Jet1_jesup_Abs, Jet1_2p5_jesup_Abs, Jet2_jesup_Abs, Jet2_2p5_jesup_Abs;
                 if (njets_pt30_eta4p7_jesup_Abs > 0) {
 		    Jet1_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[jet1index_jesup_Abs],eta_jes_split_Abs[jet1index_jesup_Abs],phi_jes_split_Abs[jet1index_jesup_Abs], mass_jes_split_Abs[jet1index_jesup_Abs]);
 
-
                     pt_leadingjet_pt30_eta4p7_jesup_Abs=Jet1_jesup_Abs.Pt(); 
                     pTj1_jesup_Abs=Jet1_jesup_Abs.Pt(); 
                     etaj1_jesup_Abs=Jet1_jesup_Abs.Eta();
                     yj1_jesup_Abs=Jet1_jesup_Abs.Rapidity();
+		    pT4lj_jesup_Abs=(Higgs+Jet1_jesup_Abs).Pt();
+		    mass4lj_jesup_Abs=(Higgs+Jet1_jesup_Abs).M();
 		    dPhiHj1_jesup_Abs=deltaPhi(Higgs.Phi(),Jet1_jesup_Abs.Phi());
                     dyHj1_jesup_Abs=TMath::Abs(rapidity4l-yj1_jesup_Abs);
                 }
@@ -1099,6 +1070,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     pTj2_jesup_Abs=Jet2_jesup_Abs.Pt();
                     etaj2_jesup_Abs=Jet2_jesup_Abs.Eta();
                     yj2_jesup_Abs=Jet2_jesup_Abs.Rapidity();
+                    pT4ljj_jesup_Abs=(Higgs+Jet1_jesup_Abs+Jet2_jesup_Abs).Pt();
+                    mass4ljj_jesup_Abs=(Higgs+Jet1_jesup_Abs+Jet2_jesup_Abs).M();
 		    mj1j2_jesup_Abs=(Jet1_jesup_Abs+Jet2_jesup_Abs).M();
                     dEtaj1j2_jesup_Abs=TMath::Abs(Jet1_jesup_Abs.Eta()-Jet2_jesup_Abs.Eta());
                     dPhij1j2_jesup_Abs=deltaPhi(Jet1_jesup_Abs.Phi(),Jet2_jesup_Abs.Phi());
@@ -1109,6 +1082,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     pt_leadingjet_pt30_eta2p5_jesup_Abs=Jet1_2p5_jesup_Abs.Pt();
                     pTj1_2p5_jesup_Abs=Jet1_2p5_jesup_Abs.Pt();
                     yj1_2p5_jesup_Abs=Jet1_2p5_jesup_Abs.Rapidity();
+                    pT4lj_2p5_jesup_Abs=(Higgs+Jet1_2p5_jesup_Abs).Pt();
+                    mass4lj_2p5_jesup_Abs=(Higgs+Jet1_2p5_jesup_Abs).M();
 		    dPhiHj1_2p5_jesup_Abs=deltaPhi(Higgs.Phi(),Jet1_2p5_jesup_Abs.Phi());
                     dyHj1_2p5_jesup_Abs=TMath::Abs(rapidity4l-yj1_2p5_jesup_Abs);
                 }
@@ -1116,6 +1091,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     Jet2_2p5_jesup_Abs.SetPtEtaPhiM(pt_jesup_split_Abs[jet2index2p5_jesup_Abs],eta_jes_split_Abs[jet2index2p5_jesup_Abs],phi_jes_split_Abs[jet2index2p5_jesup_Abs], mass_jes_split_Abs[jet2index2p5_jesup_Abs]);
                     pTj2_2p5_jesup_Abs=Jet2_2p5_jesup_Abs.Pt();
                     yj2_2p5_jesup_Abs=Jet2_2p5_jesup_Abs.Rapidity();
+                    pT4ljj_2p5_jesup_Abs=(Higgs+Jet1_2p5_jesup_Abs+Jet2_2p5_jesup_Abs).Pt();
+                    mass4ljj_2p5_jesup_Abs=(Higgs+Jet1_2p5_jesup_Abs+Jet2_2p5_jesup_Abs).M();
                     mj1j2_2p5_jesup_Abs=(Jet1_2p5_jesup_Abs+Jet2_2p5_jesup_Abs).M();                    
                     dEtaj1j2_2p5_jesup_Abs=TMath::Abs(Jet1_2p5_jesup_Abs.Eta()-Jet2_2p5_jesup_Abs.Eta());
                     dPhij1j2_2p5_jesup_Abs=deltaPhi(Jet1_2p5_jesup_Abs.Phi(),Jet2_2p5_jesup_Abs.Phi());
@@ -1124,14 +1101,11 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                 }
 
 		pt_jesup_split_Abs.clear();  
-		pt_nom.clear();  
 
 /////////////////
 // Abs dn start
                 TauC_Inc_0j_EnergyWgt_jesdn_Abs = TauC(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
                 TauB_Inc_0j_pTWgt_jesdn_Abs = TauB(pt_jesdn_split_Abs, eta_jes_split_Abs,phi_jes_split_Abs,mass_jes_split_Abs, Higgs);
-                cout<<"test print:->  TauC_Inc_0j_EnergyWgt_jesdn_Abs  :   "<<TauC_Inc_0j_EnergyWgt_jesdn_Abs<<endl;
-                cout<<"test print:->  TauB_Inc_0j_pTWgt_jesdn_Abs  :   "<<TauB_Inc_0j_pTWgt_jesdn_Abs<<endl;
 
 
                 for( unsigned int k = 0; k< pt_jesdn_split_Abs.size(); k++) {
@@ -1157,10 +1131,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                             }
                         }
                 }
-                cout<<njets_pt30_eta4p7_jesdn_Abs<<" jets (jesdn_Abs)"<<endl;
-              //  pt_jesdn_split_Abs.clear();
-// Filling Abs dn variables
 
+// Filling Abs dn variables
 
                 TLorentzVector Jet1_jesdn_Abs, Jet1_2p5_jesdn_Abs, Jet2_jesdn_Abs, Jet2_2p5_jesdn_Abs;
 
@@ -1170,6 +1142,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     pTj1_jesdn_Abs=Jet1_jesdn_Abs.Pt(); 
                     etaj1_jesdn_Abs=Jet1_jesdn_Abs.Eta();
                     yj1_jesdn_Abs=Jet1_jesdn_Abs.Rapidity();
+                    pT4lj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs).Pt();
+                    mass4lj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs).M();
                     dPhiHj1_jesdn_Abs=deltaPhi(Higgs.Phi(),Jet1_jesdn_Abs.Phi());
                     dyHj1_jesdn_Abs=TMath::Abs(rapidity4l-yj1_jesdn_Abs);
                 }    
@@ -1179,6 +1153,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     pTj2_jesdn_Abs=Jet2_jesdn_Abs.Pt();
                     etaj2_jesdn_Abs=Jet2_jesdn_Abs.Eta();
                     yj2_jesdn_Abs=Jet2_jesdn_Abs.Rapidity();
+                    pT4ljj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs+Jet2_jesdn_Abs).Pt();
+                    mass4ljj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs+Jet2_jesdn_Abs).M();
                     dEtaj1j2_jesdn_Abs=TMath::Abs(Jet1_jesdn_Abs.Eta()-Jet2_jesdn_Abs.Eta());
                     dPhij1j2_jesdn_Abs=deltaPhi(Jet1_jesdn_Abs.Phi(),Jet2_jesdn_Abs.Phi());
                     dPhiHj1j2_jesdn_Abs=deltaPhi(Higgs.Phi(),(Jet1_jesdn_Abs+Jet2_jesdn_Abs).Phi());
@@ -1188,6 +1164,8 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     pt_leadingjet_pt30_eta2p5_jesdn_Abs=Jet1_2p5_jesdn_Abs.Pt();
                     pTj1_2p5_jesdn_Abs=Jet1_2p5_jesdn_Abs.Pt();
                     yj1_2p5_jesdn_Abs=Jet1_2p5_jesdn_Abs.Rapidity();
+                    pT4lj_2p5_jesdn_Abs=(Higgs+Jet1_2p5_jesdn_Abs).Pt();
+                    mass4lj_2p5_jesdn_Abs=(Higgs+Jet1_2p5_jesdn_Abs).M();
 		    dPhiHj1_2p5_jesdn_Abs=deltaPhi(Higgs.Phi(),Jet1_2p5_jesdn_Abs.Phi());
                     dyHj1_2p5_jesdn_Abs=TMath::Abs(rapidity4l-yj1_2p5_jesdn_Abs);
                 }    
@@ -1195,17 +1173,16 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
                     Jet2_2p5_jesdn_Abs.SetPtEtaPhiM(pt_jesdn_split_Abs[jet2index2p5_jesdn_Abs],eta_jes_split_Abs[jet2index2p5_jesdn_Abs],phi_jes_split_Abs[jet2index2p5_jesdn_Abs], mass_jes_split_Abs[jet2index2p5_jesdn_Abs]);
                     pTj2_2p5_jesdn_Abs=Jet2_2p5_jesdn_Abs.Pt();
                     yj2_2p5_jesdn_Abs=Jet2_2p5_jesdn_Abs.Rapidity();
+                    pT4ljj_2p5_jesdn_Abs=(Higgs+Jet1_2p5_jesdn_Abs+Jet2_2p5_jesdn_Abs).Pt();
+                    mass4ljj_2p5_jesdn_Abs=(Higgs+Jet1_2p5_jesdn_Abs+Jet2_2p5_jesdn_Abs).M();
                     mj1j2_2p5_jesdn_Abs=(Jet1_2p5_jesdn_Abs+Jet2_2p5_jesdn_Abs).M();     
                     dEtaj1j2_2p5_jesdn_Abs=TMath::Abs(Jet1_2p5_jesdn_Abs.Eta()-Jet2_2p5_jesdn_Abs.Eta());
 	            dPhij1j2_2p5_jesdn_Abs=deltaPhi(Jet1_2p5_jesdn_Abs.Phi(),Jet2_2p5_jesdn_Abs.Phi());
                     dPhiHj1j2_2p5_jesdn_Abs=deltaPhi(Higgs.Phi(),(Jet1_2p5_jesdn_Abs+Jet2_2p5_jesdn_Abs).Phi());
 
                 }    
-		cout <<"pTj1_2p5_jesdn_Abs:              "<<pTj1_2p5_jesdn_Abs<<endl;
-		cout <<"mj1j2_2p5_jesdn_Abs:              "<<mj1j2_2p5_jesdn_Abs<<endl;
-		cout <<"dPhiHj1j2_2p5_jesdn_Abs:              "<<dPhiHj1j2_2p5_jesdn_Abs<<endl;
 
-                pt_jesdn_split_Abs.clear(); 
+                pt_jesdn_split_Abs.clear();
 
 		eta_jes_split_Abs.clear();
 		phi_jes_split_Abs.clear();
@@ -1213,7 +1190,47 @@ float pTj1_jesdn_Abs, pt_leadingjet_pt30_eta4p7_jesdn_Abs,pTj2_jesdn_Abs,etaj1_j
 
 
 //////////////////////////////////////////////////////////////////////////////
+//    Starting Abs_year
 //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         if (!isMC || (isMC && (isSignal || (!isSignal && (passedZ4lSelection ||passedZXCRSelection)))) )
