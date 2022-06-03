@@ -373,8 +373,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     std::vector<JetCorrectionUncertainty*> splittedUncerts_;
 
     bool doM4lSkim = true;
-    float GENmassZZLow = 105.0;
-    float GENmassZZHigh = 160.0; 
+    float GENmass4l_lo = 105.0;
+    float mass4l_lo = 105.0;
+    float GENmass4l_hi = 160.0; 
+    float mass4l_hi = 160.0; 
 
 
 // JEC split
@@ -1724,10 +1726,11 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 
     std::set<TString> runlumieventSet;
-    //for (Long64_t i=0;i<nentries; i++) {
-    for (Long64_t i=0;i<10000; i++) {  // temp
+    for (Long64_t i=0;i<nentries; i++) {
+    //for (Long64_t i=0;i<10000; i++) {  // temp
+
 	// do a Skim
-	//if ( doM4lSkim && (GENmass4l<GENmassZZLow || GENmass4l>GENmassZZHigh) && !(passedFullSelection==1 && mass4l>GENmassZZLow && mass4l<GENmassZZHigh) ) continue;
+	if ( doM4lSkim && (GENmass4l<GENmass4l_lo || GENmass4l>GENmass4l_hi) && !(passedFullSelection==1 && mass4l>mass4l_lo && mass4l<mass4l_hi) ) continue;
 
         lep_dataMC_new.clear();
         lep_dataMCErr_new.clear();
