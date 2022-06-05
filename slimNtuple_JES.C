@@ -98,7 +98,8 @@ float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float>
 
 
 //void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
-void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false, const bool & applyJEC_ = true) {
+//void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false, const bool & applyJEC_ = true) {
+void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false, const bool & applyJEC_ = true) {
     std::cout<<"year: "<<_year_<<"; name_DS: "<<_name_DS_<<"; isMC: "<<isMC<<"; isSignal: "<<isSignal<<"; _Test: "<<_Test<<std::endl;
 
     //gROOT->ProcessLine("gSystem->Load(\"AddIncludePath(\"-I$CMSSW_BASE/src/WoW/JECUncertaintySources/\")");
@@ -802,10 +803,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // Abs JES 
 // jesup_Abs
-    newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_Abs", &njets_pt30_eta4p7_jesup_Abs, "njets_pt30_eta4p7_jesup_Abs/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Abs", &TauC_Inc_0j_EnergyWgt_jesup_Abs, "TauC_Inc_0j_EnergyWgt_jesup_Abs/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Abs", &TauB_Inc_0j_pTWgt_jesup_Abs, "TauB_Inc_0j_pTWgt_jesup_Abs/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_Abs", &njets_pt30_eta2p5_jesup_Abs, "njets_pt30_eta2p5_jesup_Abs/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_Abs",&pt_leadingjet_pt30_eta4p7_jesup_Abs,"pt_leadingjet_pt30_eta4p7_jesup_Abs/F");
     newtree->Branch("pTj1_jesup_Abs",&pTj1_jesup_Abs,"pTj1_jesup_Abs/F");
     newtree->Branch("etaj1_jesup_Abs",&etaj1_jesup_Abs,"etaj1_jesup_Abs/F");
@@ -839,10 +840,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_Abs",&dPhij1j2_2p5_jesup_Abs,"dPhij1j2_2p5_jesup_Abs/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_Abs",&dPhiHj1j2_2p5_jesup_Abs,"dPhiHj1j2_2p5_jesup_Abs/F");
 // jesdn_Abs
-    newtree->Branch("njets_pt30_eta4p7_jesdn_Abs", &njets_pt30_eta4p7_jesdn_Abs, "njets_pt30_eta4p7_jesdn_Abs/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_Abs", &njets_pt30_eta4p7_jesdn_Abs, "njets_pt30_eta4p7_jesdn_Abs/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs", &TauC_Inc_0j_EnergyWgt_jesdn_Abs, "TauC_Inc_0j_EnergyWgt_jesdn_Abs/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs", &TauB_Inc_0j_pTWgt_jesdn_Abs, "TauB_Inc_0j_pTWgt_jesdn_Abs/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_Abs", &njets_pt30_eta2p5_jesdn_Abs, "njets_pt30_eta2p5_jesdn_Abs/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_Abs", &njets_pt30_eta2p5_jesdn_Abs, "njets_pt30_eta2p5_jesdn_Abs/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_Abs",&pt_leadingjet_pt30_eta4p7_jesdn_Abs,"pt_leadingjet_pt30_eta4p7_jesdn_Abs/F");
     newtree->Branch("pTj1_jesdn_Abs",&pTj1_jesdn_Abs,"pTj1_jesdn_Abs/F");
     newtree->Branch("etaj1_jesdn_Abs",&etaj1_jesdn_Abs,"etaj1_jesdn_Abs/F");
@@ -879,10 +880,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // Abs_year JES 
 // jesup_Abs_year
-    newtree->Branch("njets_pt30_eta4p7_jesup_Abs_year", &njets_pt30_eta4p7_jesup_Abs_year, "njets_pt30_eta4p7_jesup_Abs_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_Abs_year", &njets_pt30_eta4p7_jesup_Abs_year, "njets_pt30_eta4p7_jesup_Abs_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Abs_year", &TauC_Inc_0j_EnergyWgt_jesup_Abs_year, "TauC_Inc_0j_EnergyWgt_jesup_Abs_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Abs_year", &TauB_Inc_0j_pTWgt_jesup_Abs_year, "TauB_Inc_0j_pTWgt_jesup_Abs_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_Abs_year", &njets_pt30_eta2p5_jesup_Abs_year, "njets_pt30_eta2p5_jesup_Abs_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_Abs_year", &njets_pt30_eta2p5_jesup_Abs_year, "njets_pt30_eta2p5_jesup_Abs_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_Abs_year",&pt_leadingjet_pt30_eta4p7_jesup_Abs_year,"pt_leadingjet_pt30_eta4p7_jesup_Abs_year/F");
     newtree->Branch("pTj1_jesup_Abs_year",&pTj1_jesup_Abs_year,"pTj1_jesup_Abs_year/F");
     newtree->Branch("etaj1_jesup_Abs_year",&etaj1_jesup_Abs_year,"etaj1_jesup_Abs_year/F");
@@ -916,10 +917,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_Abs_year",&dPhij1j2_2p5_jesup_Abs_year,"dPhij1j2_2p5_jesup_Abs_year/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_Abs_year",&dPhiHj1j2_2p5_jesup_Abs_year,"dPhiHj1j2_2p5_jesup_Abs_year/F");
 // jesdn_Abs_year
-    newtree->Branch("njets_pt30_eta4p7_jesdn_Abs_year", &njets_pt30_eta4p7_jesdn_Abs_year, "njets_pt30_eta4p7_jesdn_Abs_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_Abs_year", &njets_pt30_eta4p7_jesdn_Abs_year, "njets_pt30_eta4p7_jesdn_Abs_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Abs_year", &TauC_Inc_0j_EnergyWgt_jesdn_Abs_year, "TauC_Inc_0j_EnergyWgt_jesdn_Abs_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Abs_year", &TauB_Inc_0j_pTWgt_jesdn_Abs_year, "TauB_Inc_0j_pTWgt_jesdn_Abs_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_Abs_year", &njets_pt30_eta2p5_jesdn_Abs_year, "njets_pt30_eta2p5_jesdn_Abs_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_Abs_year", &njets_pt30_eta2p5_jesdn_Abs_year, "njets_pt30_eta2p5_jesdn_Abs_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_Abs_year",&pt_leadingjet_pt30_eta4p7_jesdn_Abs_year,"pt_leadingjet_pt30_eta4p7_jesdn_Abs_year/F");
     newtree->Branch("pTj1_jesdn_Abs_year",&pTj1_jesdn_Abs_year,"pTj1_jesdn_Abs_year/F");
     newtree->Branch("etaj1_jesdn_Abs_year",&etaj1_jesdn_Abs_year,"etaj1_jesdn_Abs_year/F");
@@ -956,10 +957,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // BBEC1 JES 
 // jesup_BBEC1
-    newtree->Branch("njets_pt30_eta4p7_jesup_BBEC1", &njets_pt30_eta4p7_jesup_BBEC1, "njets_pt30_eta4p7_jesup_BBEC1/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_BBEC1", &njets_pt30_eta4p7_jesup_BBEC1, "njets_pt30_eta4p7_jesup_BBEC1/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_BBEC1", &TauC_Inc_0j_EnergyWgt_jesup_BBEC1, "TauC_Inc_0j_EnergyWgt_jesup_BBEC1/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_BBEC1", &TauB_Inc_0j_pTWgt_jesup_BBEC1, "TauB_Inc_0j_pTWgt_jesup_BBEC1/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_BBEC1", &njets_pt30_eta2p5_jesup_BBEC1, "njets_pt30_eta2p5_jesup_BBEC1/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_BBEC1", &njets_pt30_eta2p5_jesup_BBEC1, "njets_pt30_eta2p5_jesup_BBEC1/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_BBEC1",&pt_leadingjet_pt30_eta4p7_jesup_BBEC1,"pt_leadingjet_pt30_eta4p7_jesup_BBEC1/F");
     newtree->Branch("pTj1_jesup_BBEC1",&pTj1_jesup_BBEC1,"pTj1_jesup_BBEC1/F");
     newtree->Branch("etaj1_jesup_BBEC1",&etaj1_jesup_BBEC1,"etaj1_jesup_BBEC1/F");
@@ -993,10 +994,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_BBEC1",&dPhij1j2_2p5_jesup_BBEC1,"dPhij1j2_2p5_jesup_BBEC1/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_BBEC1",&dPhiHj1j2_2p5_jesup_BBEC1,"dPhiHj1j2_2p5_jesup_BBEC1/F");
 // jesdn_BBEC1
-    newtree->Branch("njets_pt30_eta4p7_jesdn_BBEC1", &njets_pt30_eta4p7_jesdn_BBEC1, "njets_pt30_eta4p7_jesdn_BBEC1/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_BBEC1", &njets_pt30_eta4p7_jesdn_BBEC1, "njets_pt30_eta4p7_jesdn_BBEC1/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_BBEC1", &TauC_Inc_0j_EnergyWgt_jesdn_BBEC1, "TauC_Inc_0j_EnergyWgt_jesdn_BBEC1/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_BBEC1", &TauB_Inc_0j_pTWgt_jesdn_BBEC1, "TauB_Inc_0j_pTWgt_jesdn_BBEC1/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_BBEC1", &njets_pt30_eta2p5_jesdn_BBEC1, "njets_pt30_eta2p5_jesdn_BBEC1/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_BBEC1", &njets_pt30_eta2p5_jesdn_BBEC1, "njets_pt30_eta2p5_jesdn_BBEC1/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_BBEC1",&pt_leadingjet_pt30_eta4p7_jesdn_BBEC1,"pt_leadingjet_pt30_eta4p7_jesdn_BBEC1/F");
     newtree->Branch("pTj1_jesdn_BBEC1",&pTj1_jesdn_BBEC1,"pTj1_jesdn_BBEC1/F");
     newtree->Branch("etaj1_jesdn_BBEC1",&etaj1_jesdn_BBEC1,"etaj1_jesdn_BBEC1/F");
@@ -1033,10 +1034,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // BBEC1_year JES 
 // jesup_BBEC1_year
-    newtree->Branch("njets_pt30_eta4p7_jesup_BBEC1_year", &njets_pt30_eta4p7_jesup_BBEC1_year, "njets_pt30_eta4p7_jesup_BBEC1_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_BBEC1_year", &njets_pt30_eta4p7_jesup_BBEC1_year, "njets_pt30_eta4p7_jesup_BBEC1_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_BBEC1_year", &TauC_Inc_0j_EnergyWgt_jesup_BBEC1_year, "TauC_Inc_0j_EnergyWgt_jesup_BBEC1_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_BBEC1_year", &TauB_Inc_0j_pTWgt_jesup_BBEC1_year, "TauB_Inc_0j_pTWgt_jesup_BBEC1_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_BBEC1_year", &njets_pt30_eta2p5_jesup_BBEC1_year, "njets_pt30_eta2p5_jesup_BBEC1_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_BBEC1_year", &njets_pt30_eta2p5_jesup_BBEC1_year, "njets_pt30_eta2p5_jesup_BBEC1_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_BBEC1_year",&pt_leadingjet_pt30_eta4p7_jesup_BBEC1_year,"pt_leadingjet_pt30_eta4p7_jesup_BBEC1_year/F");
     newtree->Branch("pTj1_jesup_BBEC1_year",&pTj1_jesup_BBEC1_year,"pTj1_jesup_BBEC1_year/F");
     newtree->Branch("etaj1_jesup_BBEC1_year",&etaj1_jesup_BBEC1_year,"etaj1_jesup_BBEC1_year/F");
@@ -1070,10 +1071,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_BBEC1_year",&dPhij1j2_2p5_jesup_BBEC1_year,"dPhij1j2_2p5_jesup_BBEC1_year/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_BBEC1_year",&dPhiHj1j2_2p5_jesup_BBEC1_year,"dPhiHj1j2_2p5_jesup_BBEC1_year/F");
 // jesdn_BBEC1_year
-    newtree->Branch("njets_pt30_eta4p7_jesdn_BBEC1_year", &njets_pt30_eta4p7_jesdn_BBEC1_year, "njets_pt30_eta4p7_jesdn_BBEC1_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_BBEC1_year", &njets_pt30_eta4p7_jesdn_BBEC1_year, "njets_pt30_eta4p7_jesdn_BBEC1_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_BBEC1_year", &TauC_Inc_0j_EnergyWgt_jesdn_BBEC1_year, "TauC_Inc_0j_EnergyWgt_jesdn_BBEC1_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_BBEC1_year", &TauB_Inc_0j_pTWgt_jesdn_BBEC1_year, "TauB_Inc_0j_pTWgt_jesdn_BBEC1_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_BBEC1_year", &njets_pt30_eta2p5_jesdn_BBEC1_year, "njets_pt30_eta2p5_jesdn_BBEC1_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_BBEC1_year", &njets_pt30_eta2p5_jesdn_BBEC1_year, "njets_pt30_eta2p5_jesdn_BBEC1_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_BBEC1_year",&pt_leadingjet_pt30_eta4p7_jesdn_BBEC1_year,"pt_leadingjet_pt30_eta4p7_jesdn_BBEC1_year/F");
     newtree->Branch("pTj1_jesdn_BBEC1_year",&pTj1_jesdn_BBEC1_year,"pTj1_jesdn_BBEC1_year/F");
     newtree->Branch("etaj1_jesdn_BBEC1_year",&etaj1_jesdn_BBEC1_year,"etaj1_jesdn_BBEC1_year/F");
@@ -1110,10 +1111,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // EC2 JES 
 // jesup_EC2
-    newtree->Branch("njets_pt30_eta4p7_jesup_EC2", &njets_pt30_eta4p7_jesup_EC2, "njets_pt30_eta4p7_jesup_EC2/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_EC2", &njets_pt30_eta4p7_jesup_EC2, "njets_pt30_eta4p7_jesup_EC2/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_EC2", &TauC_Inc_0j_EnergyWgt_jesup_EC2, "TauC_Inc_0j_EnergyWgt_jesup_EC2/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_EC2", &TauB_Inc_0j_pTWgt_jesup_EC2, "TauB_Inc_0j_pTWgt_jesup_EC2/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_EC2", &njets_pt30_eta2p5_jesup_EC2, "njets_pt30_eta2p5_jesup_EC2/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_EC2", &njets_pt30_eta2p5_jesup_EC2, "njets_pt30_eta2p5_jesup_EC2/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_EC2",&pt_leadingjet_pt30_eta4p7_jesup_EC2,"pt_leadingjet_pt30_eta4p7_jesup_EC2/F");
     newtree->Branch("pTj1_jesup_EC2",&pTj1_jesup_EC2,"pTj1_jesup_EC2/F");
     newtree->Branch("etaj1_jesup_EC2",&etaj1_jesup_EC2,"etaj1_jesup_EC2/F");
@@ -1147,10 +1148,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_EC2",&dPhij1j2_2p5_jesup_EC2,"dPhij1j2_2p5_jesup_EC2/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_EC2",&dPhiHj1j2_2p5_jesup_EC2,"dPhiHj1j2_2p5_jesup_EC2/F");
 // jesdn_EC2
-    newtree->Branch("njets_pt30_eta4p7_jesdn_EC2", &njets_pt30_eta4p7_jesdn_EC2, "njets_pt30_eta4p7_jesdn_EC2/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_EC2", &njets_pt30_eta4p7_jesdn_EC2, "njets_pt30_eta4p7_jesdn_EC2/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_EC2", &TauC_Inc_0j_EnergyWgt_jesdn_EC2, "TauC_Inc_0j_EnergyWgt_jesdn_EC2/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_EC2", &TauB_Inc_0j_pTWgt_jesdn_EC2, "TauB_Inc_0j_pTWgt_jesdn_EC2/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_EC2", &njets_pt30_eta2p5_jesdn_EC2, "njets_pt30_eta2p5_jesdn_EC2/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_EC2", &njets_pt30_eta2p5_jesdn_EC2, "njets_pt30_eta2p5_jesdn_EC2/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_EC2",&pt_leadingjet_pt30_eta4p7_jesdn_EC2,"pt_leadingjet_pt30_eta4p7_jesdn_EC2/F");
     newtree->Branch("pTj1_jesdn_EC2",&pTj1_jesdn_EC2,"pTj1_jesdn_EC2/F");
     newtree->Branch("etaj1_jesdn_EC2",&etaj1_jesdn_EC2,"etaj1_jesdn_EC2/F");
@@ -1187,10 +1188,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // EC2_year JES 
 // jesup_EC2_year
-    newtree->Branch("njets_pt30_eta4p7_jesup_EC2_year", &njets_pt30_eta4p7_jesup_EC2_year, "njets_pt30_eta4p7_jesup_EC2_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_EC2_year", &njets_pt30_eta4p7_jesup_EC2_year, "njets_pt30_eta4p7_jesup_EC2_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_EC2_year", &TauC_Inc_0j_EnergyWgt_jesup_EC2_year, "TauC_Inc_0j_EnergyWgt_jesup_EC2_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_EC2_year", &TauB_Inc_0j_pTWgt_jesup_EC2_year, "TauB_Inc_0j_pTWgt_jesup_EC2_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_EC2_year", &njets_pt30_eta2p5_jesup_EC2_year, "njets_pt30_eta2p5_jesup_EC2_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_EC2_year", &njets_pt30_eta2p5_jesup_EC2_year, "njets_pt30_eta2p5_jesup_EC2_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_EC2_year",&pt_leadingjet_pt30_eta4p7_jesup_EC2_year,"pt_leadingjet_pt30_eta4p7_jesup_EC2_year/F");
     newtree->Branch("pTj1_jesup_EC2_year",&pTj1_jesup_EC2_year,"pTj1_jesup_EC2_year/F");
     newtree->Branch("etaj1_jesup_EC2_year",&etaj1_jesup_EC2_year,"etaj1_jesup_EC2_year/F");
@@ -1224,10 +1225,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_EC2_year",&dPhij1j2_2p5_jesup_EC2_year,"dPhij1j2_2p5_jesup_EC2_year/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_EC2_year",&dPhiHj1j2_2p5_jesup_EC2_year,"dPhiHj1j2_2p5_jesup_EC2_year/F");
 // jesdn_EC2_year
-    newtree->Branch("njets_pt30_eta4p7_jesdn_EC2_year", &njets_pt30_eta4p7_jesdn_EC2_year, "njets_pt30_eta4p7_jesdn_EC2_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_EC2_year", &njets_pt30_eta4p7_jesdn_EC2_year, "njets_pt30_eta4p7_jesdn_EC2_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_EC2_year", &TauC_Inc_0j_EnergyWgt_jesdn_EC2_year, "TauC_Inc_0j_EnergyWgt_jesdn_EC2_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_EC2_year", &TauB_Inc_0j_pTWgt_jesdn_EC2_year, "TauB_Inc_0j_pTWgt_jesdn_EC2_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_EC2_year", &njets_pt30_eta2p5_jesdn_EC2_year, "njets_pt30_eta2p5_jesdn_EC2_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_EC2_year", &njets_pt30_eta2p5_jesdn_EC2_year, "njets_pt30_eta2p5_jesdn_EC2_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_EC2_year",&pt_leadingjet_pt30_eta4p7_jesdn_EC2_year,"pt_leadingjet_pt30_eta4p7_jesdn_EC2_year/F");
     newtree->Branch("pTj1_jesdn_EC2_year",&pTj1_jesdn_EC2_year,"pTj1_jesdn_EC2_year/F");
     newtree->Branch("etaj1_jesdn_EC2_year",&etaj1_jesdn_EC2_year,"etaj1_jesdn_EC2_year/F");
@@ -1264,10 +1265,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // FlavQCD JES 
 // jesup_FlavQCD
-    newtree->Branch("njets_pt30_eta4p7_jesup_FlavQCD", &njets_pt30_eta4p7_jesup_FlavQCD, "njets_pt30_eta4p7_jesup_FlavQCD/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_FlavQCD", &njets_pt30_eta4p7_jesup_FlavQCD, "njets_pt30_eta4p7_jesup_FlavQCD/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_FlavQCD", &TauC_Inc_0j_EnergyWgt_jesup_FlavQCD, "TauC_Inc_0j_EnergyWgt_jesup_FlavQCD/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_FlavQCD", &TauB_Inc_0j_pTWgt_jesup_FlavQCD, "TauB_Inc_0j_pTWgt_jesup_FlavQCD/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_FlavQCD", &njets_pt30_eta2p5_jesup_FlavQCD, "njets_pt30_eta2p5_jesup_FlavQCD/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_FlavQCD", &njets_pt30_eta2p5_jesup_FlavQCD, "njets_pt30_eta2p5_jesup_FlavQCD/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_FlavQCD",&pt_leadingjet_pt30_eta4p7_jesup_FlavQCD,"pt_leadingjet_pt30_eta4p7_jesup_FlavQCD/F");
     newtree->Branch("pTj1_jesup_FlavQCD",&pTj1_jesup_FlavQCD,"pTj1_jesup_FlavQCD/F");
     newtree->Branch("etaj1_jesup_FlavQCD",&etaj1_jesup_FlavQCD,"etaj1_jesup_FlavQCD/F");
@@ -1301,10 +1302,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_FlavQCD",&dPhij1j2_2p5_jesup_FlavQCD,"dPhij1j2_2p5_jesup_FlavQCD/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_FlavQCD",&dPhiHj1j2_2p5_jesup_FlavQCD,"dPhiHj1j2_2p5_jesup_FlavQCD/F");
 // jesdn_FlavQCD
-    newtree->Branch("njets_pt30_eta4p7_jesdn_FlavQCD", &njets_pt30_eta4p7_jesdn_FlavQCD, "njets_pt30_eta4p7_jesdn_FlavQCD/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_FlavQCD", &njets_pt30_eta4p7_jesdn_FlavQCD, "njets_pt30_eta4p7_jesdn_FlavQCD/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_FlavQCD", &TauC_Inc_0j_EnergyWgt_jesdn_FlavQCD, "TauC_Inc_0j_EnergyWgt_jesdn_FlavQCD/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_FlavQCD", &TauB_Inc_0j_pTWgt_jesdn_FlavQCD, "TauB_Inc_0j_pTWgt_jesdn_FlavQCD/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_FlavQCD", &njets_pt30_eta2p5_jesdn_FlavQCD, "njets_pt30_eta2p5_jesdn_FlavQCD/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_FlavQCD", &njets_pt30_eta2p5_jesdn_FlavQCD, "njets_pt30_eta2p5_jesdn_FlavQCD/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_FlavQCD",&pt_leadingjet_pt30_eta4p7_jesdn_FlavQCD,"pt_leadingjet_pt30_eta4p7_jesdn_FlavQCD/F");
     newtree->Branch("pTj1_jesdn_FlavQCD",&pTj1_jesdn_FlavQCD,"pTj1_jesdn_FlavQCD/F");
     newtree->Branch("etaj1_jesdn_FlavQCD",&etaj1_jesdn_FlavQCD,"etaj1_jesdn_FlavQCD/F");
@@ -1341,10 +1342,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // HF JES 
 // jesup_HF
-    newtree->Branch("njets_pt30_eta4p7_jesup_HF", &njets_pt30_eta4p7_jesup_HF, "njets_pt30_eta4p7_jesup_HF/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_HF", &njets_pt30_eta4p7_jesup_HF, "njets_pt30_eta4p7_jesup_HF/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_HF", &TauC_Inc_0j_EnergyWgt_jesup_HF, "TauC_Inc_0j_EnergyWgt_jesup_HF/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_HF", &TauB_Inc_0j_pTWgt_jesup_HF, "TauB_Inc_0j_pTWgt_jesup_HF/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_HF", &njets_pt30_eta2p5_jesup_HF, "njets_pt30_eta2p5_jesup_HF/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_HF", &njets_pt30_eta2p5_jesup_HF, "njets_pt30_eta2p5_jesup_HF/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_HF",&pt_leadingjet_pt30_eta4p7_jesup_HF,"pt_leadingjet_pt30_eta4p7_jesup_HF/F");
     newtree->Branch("pTj1_jesup_HF",&pTj1_jesup_HF,"pTj1_jesup_HF/F");
     newtree->Branch("etaj1_jesup_HF",&etaj1_jesup_HF,"etaj1_jesup_HF/F");
@@ -1378,10 +1379,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_HF",&dPhij1j2_2p5_jesup_HF,"dPhij1j2_2p5_jesup_HF/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_HF",&dPhiHj1j2_2p5_jesup_HF,"dPhiHj1j2_2p5_jesup_HF/F");
 // jesdn_HF
-    newtree->Branch("njets_pt30_eta4p7_jesdn_HF", &njets_pt30_eta4p7_jesdn_HF, "njets_pt30_eta4p7_jesdn_HF/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_HF", &njets_pt30_eta4p7_jesdn_HF, "njets_pt30_eta4p7_jesdn_HF/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_HF", &TauC_Inc_0j_EnergyWgt_jesdn_HF, "TauC_Inc_0j_EnergyWgt_jesdn_HF/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_HF", &TauB_Inc_0j_pTWgt_jesdn_HF, "TauB_Inc_0j_pTWgt_jesdn_HF/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_HF", &njets_pt30_eta2p5_jesdn_HF, "njets_pt30_eta2p5_jesdn_HF/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_HF", &njets_pt30_eta2p5_jesdn_HF, "njets_pt30_eta2p5_jesdn_HF/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_HF",&pt_leadingjet_pt30_eta4p7_jesdn_HF,"pt_leadingjet_pt30_eta4p7_jesdn_HF/F");
     newtree->Branch("pTj1_jesdn_HF",&pTj1_jesdn_HF,"pTj1_jesdn_HF/F");
     newtree->Branch("etaj1_jesdn_HF",&etaj1_jesdn_HF,"etaj1_jesdn_HF/F");
@@ -1418,10 +1419,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // HF_year JES 
 // jesup_HF_year
-    newtree->Branch("njets_pt30_eta4p7_jesup_HF_year", &njets_pt30_eta4p7_jesup_HF_year, "njets_pt30_eta4p7_jesup_HF_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_HF_year", &njets_pt30_eta4p7_jesup_HF_year, "njets_pt30_eta4p7_jesup_HF_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_HF_year", &TauC_Inc_0j_EnergyWgt_jesup_HF_year, "TauC_Inc_0j_EnergyWgt_jesup_HF_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_HF_year", &TauB_Inc_0j_pTWgt_jesup_HF_year, "TauB_Inc_0j_pTWgt_jesup_HF_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_HF_year", &njets_pt30_eta2p5_jesup_HF_year, "njets_pt30_eta2p5_jesup_HF_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_HF_year", &njets_pt30_eta2p5_jesup_HF_year, "njets_pt30_eta2p5_jesup_HF_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_HF_year",&pt_leadingjet_pt30_eta4p7_jesup_HF_year,"pt_leadingjet_pt30_eta4p7_jesup_HF_year/F");
     newtree->Branch("pTj1_jesup_HF_year",&pTj1_jesup_HF_year,"pTj1_jesup_HF_year/F");
     newtree->Branch("etaj1_jesup_HF_year",&etaj1_jesup_HF_year,"etaj1_jesup_HF_year/F");
@@ -1455,10 +1456,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_HF_year",&dPhij1j2_2p5_jesup_HF_year,"dPhij1j2_2p5_jesup_HF_year/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_HF_year",&dPhiHj1j2_2p5_jesup_HF_year,"dPhiHj1j2_2p5_jesup_HF_year/F");
 // jesdn_HF_year
-    newtree->Branch("njets_pt30_eta4p7_jesdn_HF_year", &njets_pt30_eta4p7_jesdn_HF_year, "njets_pt30_eta4p7_jesdn_HF_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_HF_year", &njets_pt30_eta4p7_jesdn_HF_year, "njets_pt30_eta4p7_jesdn_HF_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_HF_year", &TauC_Inc_0j_EnergyWgt_jesdn_HF_year, "TauC_Inc_0j_EnergyWgt_jesdn_HF_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_HF_year", &TauB_Inc_0j_pTWgt_jesdn_HF_year, "TauB_Inc_0j_pTWgt_jesdn_HF_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_HF_year", &njets_pt30_eta2p5_jesdn_HF_year, "njets_pt30_eta2p5_jesdn_HF_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_HF_year", &njets_pt30_eta2p5_jesdn_HF_year, "njets_pt30_eta2p5_jesdn_HF_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_HF_year",&pt_leadingjet_pt30_eta4p7_jesdn_HF_year,"pt_leadingjet_pt30_eta4p7_jesdn_HF_year/F");
     newtree->Branch("pTj1_jesdn_HF_year",&pTj1_jesdn_HF_year,"pTj1_jesdn_HF_year/F");
     newtree->Branch("etaj1_jesdn_HF_year",&etaj1_jesdn_HF_year,"etaj1_jesdn_HF_year/F");
@@ -1495,10 +1496,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // RelBal JES 
 // jesup_RelBal
-    newtree->Branch("njets_pt30_eta4p7_jesup_RelBal", &njets_pt30_eta4p7_jesup_RelBal, "njets_pt30_eta4p7_jesup_RelBal/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_RelBal", &njets_pt30_eta4p7_jesup_RelBal, "njets_pt30_eta4p7_jesup_RelBal/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_RelBal", &TauC_Inc_0j_EnergyWgt_jesup_RelBal, "TauC_Inc_0j_EnergyWgt_jesup_RelBal/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_RelBal", &TauB_Inc_0j_pTWgt_jesup_RelBal, "TauB_Inc_0j_pTWgt_jesup_RelBal/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_RelBal", &njets_pt30_eta2p5_jesup_RelBal, "njets_pt30_eta2p5_jesup_RelBal/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_RelBal", &njets_pt30_eta2p5_jesup_RelBal, "njets_pt30_eta2p5_jesup_RelBal/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_RelBal",&pt_leadingjet_pt30_eta4p7_jesup_RelBal,"pt_leadingjet_pt30_eta4p7_jesup_RelBal/F");
     newtree->Branch("pTj1_jesup_RelBal",&pTj1_jesup_RelBal,"pTj1_jesup_RelBal/F");
     newtree->Branch("etaj1_jesup_RelBal",&etaj1_jesup_RelBal,"etaj1_jesup_RelBal/F");
@@ -1532,10 +1533,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_RelBal",&dPhij1j2_2p5_jesup_RelBal,"dPhij1j2_2p5_jesup_RelBal/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_RelBal",&dPhiHj1j2_2p5_jesup_RelBal,"dPhiHj1j2_2p5_jesup_RelBal/F");
 // jesdn_RelBal
-    newtree->Branch("njets_pt30_eta4p7_jesdn_RelBal", &njets_pt30_eta4p7_jesdn_RelBal, "njets_pt30_eta4p7_jesdn_RelBal/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_RelBal", &njets_pt30_eta4p7_jesdn_RelBal, "njets_pt30_eta4p7_jesdn_RelBal/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_RelBal", &TauC_Inc_0j_EnergyWgt_jesdn_RelBal, "TauC_Inc_0j_EnergyWgt_jesdn_RelBal/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_RelBal", &TauB_Inc_0j_pTWgt_jesdn_RelBal, "TauB_Inc_0j_pTWgt_jesdn_RelBal/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_RelBal", &njets_pt30_eta2p5_jesdn_RelBal, "njets_pt30_eta2p5_jesdn_RelBal/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_RelBal", &njets_pt30_eta2p5_jesdn_RelBal, "njets_pt30_eta2p5_jesdn_RelBal/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_RelBal",&pt_leadingjet_pt30_eta4p7_jesdn_RelBal,"pt_leadingjet_pt30_eta4p7_jesdn_RelBal/F");
     newtree->Branch("pTj1_jesdn_RelBal",&pTj1_jesdn_RelBal,"pTj1_jesdn_RelBal/F");
     newtree->Branch("etaj1_jesdn_RelBal",&etaj1_jesdn_RelBal,"etaj1_jesdn_RelBal/F");
@@ -1572,10 +1573,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // RelSample_year JES 
 // jesup_RelSample_year
-    newtree->Branch("njets_pt30_eta4p7_jesup_RelSample_year", &njets_pt30_eta4p7_jesup_RelSample_year, "njets_pt30_eta4p7_jesup_RelSample_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_RelSample_year", &njets_pt30_eta4p7_jesup_RelSample_year, "njets_pt30_eta4p7_jesup_RelSample_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_RelSample_year", &TauC_Inc_0j_EnergyWgt_jesup_RelSample_year, "TauC_Inc_0j_EnergyWgt_jesup_RelSample_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_RelSample_year", &TauB_Inc_0j_pTWgt_jesup_RelSample_year, "TauB_Inc_0j_pTWgt_jesup_RelSample_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_RelSample_year", &njets_pt30_eta2p5_jesup_RelSample_year, "njets_pt30_eta2p5_jesup_RelSample_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_RelSample_year", &njets_pt30_eta2p5_jesup_RelSample_year, "njets_pt30_eta2p5_jesup_RelSample_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_RelSample_year",&pt_leadingjet_pt30_eta4p7_jesup_RelSample_year,"pt_leadingjet_pt30_eta4p7_jesup_RelSample_year/F");
     newtree->Branch("pTj1_jesup_RelSample_year",&pTj1_jesup_RelSample_year,"pTj1_jesup_RelSample_year/F");
     newtree->Branch("etaj1_jesup_RelSample_year",&etaj1_jesup_RelSample_year,"etaj1_jesup_RelSample_year/F");
@@ -1609,10 +1610,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_RelSample_year",&dPhij1j2_2p5_jesup_RelSample_year,"dPhij1j2_2p5_jesup_RelSample_year/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_RelSample_year",&dPhiHj1j2_2p5_jesup_RelSample_year,"dPhiHj1j2_2p5_jesup_RelSample_year/F");
 // jesdn_RelSample_year
-    newtree->Branch("njets_pt30_eta4p7_jesdn_RelSample_year", &njets_pt30_eta4p7_jesdn_RelSample_year, "njets_pt30_eta4p7_jesdn_RelSample_year/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_RelSample_year", &njets_pt30_eta4p7_jesdn_RelSample_year, "njets_pt30_eta4p7_jesdn_RelSample_year/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_RelSample_year", &TauC_Inc_0j_EnergyWgt_jesdn_RelSample_year, "TauC_Inc_0j_EnergyWgt_jesdn_RelSample_year/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_RelSample_year", &TauB_Inc_0j_pTWgt_jesdn_RelSample_year, "TauB_Inc_0j_pTWgt_jesdn_RelSample_year/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_RelSample_year", &njets_pt30_eta2p5_jesdn_RelSample_year, "njets_pt30_eta2p5_jesdn_RelSample_year/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_RelSample_year", &njets_pt30_eta2p5_jesdn_RelSample_year, "njets_pt30_eta2p5_jesdn_RelSample_year/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_RelSample_year",&pt_leadingjet_pt30_eta4p7_jesdn_RelSample_year,"pt_leadingjet_pt30_eta4p7_jesdn_RelSample_year/F");
     newtree->Branch("pTj1_jesdn_RelSample_year",&pTj1_jesdn_RelSample_year,"pTj1_jesdn_RelSample_year/F");
     newtree->Branch("etaj1_jesdn_RelSample_year",&etaj1_jesdn_RelSample_year,"etaj1_jesdn_RelSample_year/F");
@@ -1649,10 +1650,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 // Total JES 
 // jesup_Total
-    newtree->Branch("njets_pt30_eta4p7_jesup_Total", &njets_pt30_eta4p7_jesup_Total, "njets_pt30_eta4p7_jesup_Total/F");
+    newtree->Branch("njets_pt30_eta4p7_jesup_Total", &njets_pt30_eta4p7_jesup_Total, "njets_pt30_eta4p7_jesup_Total/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesup_Total", &TauC_Inc_0j_EnergyWgt_jesup_Total, "TauC_Inc_0j_EnergyWgt_jesup_Total/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesup_Total", &TauB_Inc_0j_pTWgt_jesup_Total, "TauB_Inc_0j_pTWgt_jesup_Total/F");
-    newtree->Branch("njets_pt30_eta2p5_jesup_Total", &njets_pt30_eta2p5_jesup_Total, "njets_pt30_eta2p5_jesup_Total/F");
+    newtree->Branch("njets_pt30_eta2p5_jesup_Total", &njets_pt30_eta2p5_jesup_Total, "njets_pt30_eta2p5_jesup_Total/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesup_Total",&pt_leadingjet_pt30_eta4p7_jesup_Total,"pt_leadingjet_pt30_eta4p7_jesup_Total/F");
     newtree->Branch("pTj1_jesup_Total",&pTj1_jesup_Total,"pTj1_jesup_Total/F");
     newtree->Branch("etaj1_jesup_Total",&etaj1_jesup_Total,"etaj1_jesup_Total/F");
@@ -1686,10 +1687,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     newtree->Branch("dPhij1j2_2p5_jesup_Total",&dPhij1j2_2p5_jesup_Total,"dPhij1j2_2p5_jesup_Total/F"); 
     newtree->Branch("dPhiHj1j2_2p5_jesup_Total",&dPhiHj1j2_2p5_jesup_Total,"dPhiHj1j2_2p5_jesup_Total/F");
 // jesdn_Total
-    newtree->Branch("njets_pt30_eta4p7_jesdn_Total", &njets_pt30_eta4p7_jesdn_Total, "njets_pt30_eta4p7_jesdn_Total/F");
+    newtree->Branch("njets_pt30_eta4p7_jesdn_Total", &njets_pt30_eta4p7_jesdn_Total, "njets_pt30_eta4p7_jesdn_Total/I");
     newtree->Branch("TauC_Inc_0j_EnergyWgt_jesdn_Total", &TauC_Inc_0j_EnergyWgt_jesdn_Total, "TauC_Inc_0j_EnergyWgt_jesdn_Total/F");
     newtree->Branch("TauB_Inc_0j_pTWgt_jesdn_Total", &TauB_Inc_0j_pTWgt_jesdn_Total, "TauB_Inc_0j_pTWgt_jesdn_Total/F");
-    newtree->Branch("njets_pt30_eta2p5_jesdn_Total", &njets_pt30_eta2p5_jesdn_Total, "njets_pt30_eta2p5_jesdn_Total/F");
+    newtree->Branch("njets_pt30_eta2p5_jesdn_Total", &njets_pt30_eta2p5_jesdn_Total, "njets_pt30_eta2p5_jesdn_Total/I");
     newtree->Branch("pt_leadingjet_pt30_eta4p7_jesdn_Total",&pt_leadingjet_pt30_eta4p7_jesdn_Total,"pt_leadingjet_pt30_eta4p7_jesdn_Total/F");
     newtree->Branch("pTj1_jesdn_Total",&pTj1_jesdn_Total,"pTj1_jesdn_Total/F");
     newtree->Branch("etaj1_jesdn_Total",&etaj1_jesdn_Total,"etaj1_jesdn_Total/F");
@@ -1726,8 +1727,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 
     std::set<TString> runlumieventSet;
-    for (Long64_t i=0;i<nentries; i++) {
-    //for (Long64_t i=0;i<10000; i++) {  // temp
+//    for (Long64_t i=0;i<nentries; i++) {
+    for (Long64_t i=0;i<10000; i++) {  // temp
 	// do a Skim
 	//if ( doM4lSkim && (GENmass4l<GENmass4l_lo || GENmass4l>GENmass4l_hi) && !(passedFullSelection==1 && mass4l>mass4l_lo && mass4l<mass4l_hi) ) continue;
 	//if ( doM4lSkim && ((GENmass4l<GENmass4l_lo || GENmass4l>GENmass4l_hi) || (mass4l<mass4l_lo || mass4l>mass4l_hi)) ) continue;
@@ -1861,6 +1862,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                 for( unsigned int k = 0; k<(*jet_iscleanH4l).size(); k++) {
                     if ((*jet_pt)[k]<30.0 || abs((*jet_eta)[k])>4.7) continue;
                     thisJet.SetPtEtaPhiM((*jet_pt)[((*jet_iscleanH4l)[k])],(*jet_eta)[((*jet_iscleanH4l)[k])],(*jet_phi)[((*jet_iscleanH4l)[k])],(*jet_mass)[((*jet_iscleanH4l)[k])]);
+
 		    // validation variable pTj1
 		    if ((*jet_pt)[((*jet_iscleanH4l)[k])] > pTj1) {
 			pTj1 = (*jet_pt)[((*jet_iscleanH4l)[k])];
