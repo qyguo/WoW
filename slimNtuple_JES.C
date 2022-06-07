@@ -114,8 +114,11 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     //string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/" + whichYear[year-2016] + "/MC/";
     //string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/";
     //string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/preVFP/GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8/";
-    string pre_name1 = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/";
-    string pre_name = (pre_name1 + _name_DS_).c_str();
+    //string pre_name1 = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/";
+    string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/data/";
+//    string pre_name = (pre_name1 + _name_DS_).c_str();
+    ///publicfs/cms/data/hzz/jtahir/UL2016/data/data_UL2016_preVFP_noDuplicates.root
+    // /publicfs/cms/data/hzz/jtahir/UL2016/data/data_UL2016_postVFP_noDuplicates.root
     //string pre_name = "/afs/cern.ch/user/t/tjavaid/workspace/BUF_ntuplizer/UL/fresh/CMSSW_10_6_26/src/";
 //    if (year==2016)    pre_name="";
 //    else if (year==-2016) //UL16APV
@@ -422,7 +425,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
          uncSources.push_back("RelativeSample_2018");
          }
     }
-    if(applyJEC_ && isMC)
+    //if(applyJEC_ && isMC)
+    if(applyJEC_)
     {
       for (unsigned s_unc = 0; s_unc < uncSources.size(); s_unc++)
 	{
@@ -1735,8 +1739,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 
     std::set<TString> runlumieventSet;
-//    for (Long64_t i=0;i<nentries; i++) {
-    for (Long64_t i=0;i<10000; i++) {  // temp
+    for (Long64_t i=0;i<nentries; i++) {
+//    for (Long64_t i=0;i<10000; i++) {  // temp
 //    for (Long64_t i=0;i<100000; i++) {  // temp
 	// do a Skim
 	//if ( doM4lSkim && (GENmass4l<GENmass4l_lo || GENmass4l>GENmass4l_hi) && !(passedFullSelection==1 && mass4l>mass4l_lo && mass4l<mass4l_hi) ) continue;
@@ -1856,7 +1860,8 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 //	cout <<"(*GENlep_MomId)[0]:    "<<(*GENlep_MomId)[0]<<endl;
 //	cout <<"(*GENlep_MomMomId)[0]:    "<<(*GENlep_MomMomId)[0]<<endl;
 
-	if (passedFullSelection) {
+	//if (passedFullSelection) {
+	if (isMC && passedFullSelection) {
 	isH4l = ( (((*lep_genindex)[passedFullSelection*lep_Hindex[0]]>-0.5)*(*GENlep_MomMomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[0]])]==25 && ((*lep_genindex)[passedFullSelection*lep_Hindex[0]]>-0.5)*(*GENlep_MomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[0]])]==23 && ((*lep_genindex)[passedFullSelection*lep_Hindex[1]]>-0.5)*(*GENlep_MomMomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[1]])]==25 && ((*lep_genindex)[passedFullSelection*lep_Hindex[1]]>-0.5)*(*GENlep_MomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[1]])]==23 && ((*lep_genindex)[passedFullSelection*lep_Hindex[2]]>-0.5)*(*GENlep_MomMomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[2]])]==25 && ((*lep_genindex)[passedFullSelection*lep_Hindex[2]]>-0.5)*(*GENlep_MomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[2]])]==23 && ((*lep_genindex)[passedFullSelection*lep_Hindex[3]]>-0.5)*(*GENlep_MomMomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[3]])]==25 && ((*lep_genindex)[passedFullSelection*lep_Hindex[3]]>-0.5)*(*GENlep_MomId)[max(0,(*lep_genindex)[passedFullSelection*lep_Hindex[3]])]==23) );
 	}
 
