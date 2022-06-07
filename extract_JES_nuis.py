@@ -76,7 +76,8 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
     cut_m4l_reco = {"2e2mu":"(mass2e2mu>"+str(m4l_low)+" && mass2e2mu<"+str(m4l_high)+")","4mu":"(mass4mu>"+str(m4l_low)+" && mass4mu<"+str(m4l_high)+")","4e":"(mass4e>"+str(m4l_low)+" && mass4e<"+str(m4l_high)+")"}
 #    recoweight = "genWeight*pileupWeight*dataMCWeight_new"
 
-    weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"k_qqZZ_qcd_M*k_qqZZ_ewk","bkg_ggzz":"k_ggZZ","bkg_zjets":"1.0"}
+    #weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"k_qqZZ_qcd_M*k_qqZZ_ewk","bkg_ggzz":"k_ggZZ","bkg_zjets":"1.0"}
+    weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_qqZZ_qcd_M*k_qqZZ_ewk)","bkg_ggzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_ggZZ)","bkg_zjets":"1.0"}
 
     for x_point in x_points:
         for channel in channels:
