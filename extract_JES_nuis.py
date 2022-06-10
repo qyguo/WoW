@@ -12,8 +12,9 @@ from LoadData import *
 #from Utils import *
 
 
-if (not os.path.exists("datacardInputs")):
-    os.system("mkdir -p datacardInputs")
+#if (not os.path.exists("datacardInputs/"+year+"/"+obsName)):
+#    #os.system("mkdir -p datacardInputs")
+#    os.system("mkdir -p datacardInputs/"+year+"/"+obsname+"")
 
 
 def parseOptions():
@@ -31,7 +32,7 @@ def parseOptions():
     #parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|1160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     #parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
-    parser.add_option('',   '--year',  dest='YEAR',  type='string',default='2016',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    parser.add_option('',   '--year',  dest='YEAR',  type='string',default='2017',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
     parser.add_option('', '--bkg',      dest='BKG',type='string',default='', help='run with the type of zz background to float zz or qq_gg ')
     parser.add_option('',   '--debug',  dest='DEBUG',  type='int',default=0,   help='0 if debug false, else debug True')
     global opt, args
@@ -48,37 +49,29 @@ def computeRatio(nominal, upVar, dnVar):
         elif up_ratio == dn_ratio:
             return str(dn_ratio)
         else:
-            return str(dn_ratio)+'/'+str(up_ratio)
-            #return str(up_ratio)+'/'+str(dn_ratio)
+            #return str(dn_ratio)+'/'+str(up_ratio)
+            return str(up_ratio)+'/'+str(dn_ratio)
 
 
 
 def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
-#def extract_JES_nuis(x,nbins, obsName, obs_bins, DEBUG = 0):
-    #x_points = [124, 126]
-    x_points = [124,126,130]
-    #x_points = [125]
+    #x_points = [124,125,126]
+    x_points = [125]
 #    x_points = [124]
     channels=['4mu','2e2mu','4e']
-    #channels=['4e']
-    #channels=['4mu']
-#    modes=['ggH_powheg_JHUgen_','VBF_powheg_JHUgen_','ZH_powheg_JHUgen_','WH_powheg_JHUgen_','ttH_powheg_JHUgen_']
-#    RootFile, Tree, nEvents, sumw = GrabMCTrees(opt.YEAR)
-#    procs=['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz','bkg_zjets']
-    #JES_nuis = ['Abs','Abs_year','BBEC1','BBEC1_year','EC2','EC2_year','FlavQCD','HF','HF_year','RelBal','RelSample_year', 'Total']
-    #JES_nuis = ['Abs'] 
-    #JES_nuis = ['FlavQCD'] 
 #    procs = ['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
-    #procs = ['trueH'] #,'out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
-   # procs = ['fakeH'] #,'out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
-    procs = ['trueH','out_trueH','fakeH','bkg_qqzz'] #,'bkg_ggzz']
-    proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1 && nZXCRFailedLeptons==2)"}
+    procs=['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz','bkg_zjets']
+    #procs = ['out_trueH'] #,'bkg_ggzz']
+    #procs = ['bkg_ggzz']
+
+    #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1 && nZXCRFailedLeptons==2)"}
+    proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
     cut_m4l_reco = {"2e2mu":"(mass2e2mu>"+str(m4l_low)+" && mass2e2mu<"+str(m4l_high)+")","4mu":"(mass4mu>"+str(m4l_low)+" && mass4mu<"+str(m4l_high)+")","4e":"(mass4e>"+str(m4l_low)+" && mass4e<"+str(m4l_high)+")"}
 #    recoweight = "genWeight*pileupWeight*dataMCWeight_new"
 
     #weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"k_qqZZ_qcd_M*k_qqZZ_ewk","bkg_ggzz":"k_ggZZ","bkg_zjets":"1.0"}
     weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_qqZZ_qcd_M*k_qqZZ_ewk)","bkg_ggzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_ggZZ)","bkg_zjets":"1.0"}
-
+#    int stop=0;
     for x_point in x_points:
         for channel in channels:
             for proc in procs:
@@ -90,26 +83,30 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    recoweight = weights[proc]
 
 		print "proc: ", proc, "    recoweight:    ",recoweight
-                for i in range(0,len(SamplesMC[opt.YEAR])):
-                    sample = SamplesMC[opt.YEAR][i].rstrip('.root')
-		    if(sample.startswith("GluGluHToZZTo4")): continue # temporary, FIXME
+		if (proc=='bkg_zjets'): samples = SamplesData[opt.YEAR]
+		else: samples =SamplesMC[opt.YEAR]
+                for i in range(0,len(samples)):
+                    sample = samples[i].rstrip('.root')
+
 		    print "sample is :   ", sample
 
+                    if((proc!='bkg_zjets' and proc!='bkg_ggzz') and (not sample.startswith('ZZTo4L') and (not str(x_point) in sample))): continue
+                    if((proc=='bkg_qqzz') and (not sample.startswith('ZZTo4L'))): continue # and (not str(x_point) in sample))): continue
+                    if((proc=='bkg_ggzz' and proc!='bkg_zjets' and proc!='bkg_qqzz' and (proc!='trueH' or proc!='out_trueH' or proc!='fakeH')) and (not sample.startswith('GluGluToContin'))): continue # and (not str(x_point) in sample))): continue
+                    if ((proc!='bkg_zjets' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH' or proc=='out_trueH' or proc=='fakeH') and ((sample.startswith('ZZTo4L') or sample.startswith('GluGluToContin')))): continue
 
-                    if((not sample.startswith("ZZTo4L") and (not str(x_point) in sample))): continue
-       	            if ((proc=='trueH' or proc=='out_trueH' or proc=='fakeH') and ((sample.startswith("ZZTo4L") or sample.startswith("GluGluToContin")))): continue
-                    #if ((proc=='bkg_qqzz') and (("HToZZTo4L" in sample) or ("WH" in sample) or ("ZH" in sample) or ("ttH" in sample) or sample.startswith("GluGluToContin") )): continue
-                    if ((proc=='bkg_qqzz') and (not sample.startswith("ZZTo4L") )): continue
-                    if ((proc=='bkg_ggzz') and (not channel in sample)): continue
-                    RootFile[sample] = TFile(dirMC[opt.YEAR]+'/'+sample+'.root',"READ")
+#		    print "dirMC[opt.YEAR]:",   dirMC[opt.YEAR]
+                    RootFile[sample] = TFile(dirMC[opt.YEAR]+'/'+sample+'.root',"READ")  # currently, all files in the same directory
         	    RootFile_list.append(dirMC[opt.YEAR]+'/'+sample+'.root')
                 files = [ROOT.TFile(i) for i in RootFile_list]
 		print "files are:  ", files
 
-                trees = [i.Get("Ana/passedEvents") for i in files]
-        	print "proc name:    ", proc 
+		if(proc=='bkg_zjets'): trees = [i.Get("passedEvents") for i in files]
+                else: trees = [i.Get("Ana/passedEvents") for i in files]
         	print "RootFile_list:    ", RootFile_list
-        	print "trees[0]		", trees[0]
+		print "trees are:   ", trees
+
+#        	print "trees[0]		", trees[0]
 		for recobin in range(len(obs_bins)-1):
 		    obs_reco_low = obs_bins[recobin]
     		    obs_reco_high = obs_bins[recobin+1]
@@ -121,6 +118,9 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    #cut_nom = "("+weights["sig"]+")*("+cutobs_reco+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
 
 		    #processBin_nom = proc+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
+
+		    if (not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): x_point=125 # temporary fix for bkg
+
 		    processBin_nom = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
 		    nom[processBin_nom] = 0.0; 
 		
@@ -128,6 +128,9 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    Histos[processBin_nom].Sumw2()
 
 		    for nuis in JES_nuis:
+
+#                        skey= "nom_%s"  % nuis
+
 		        processBin_jesup_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
 		        processBin_jesdn_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
 		        processBin_ratio_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
@@ -145,9 +148,22 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			print "cutobs_reco_nuis_up:  " , cutobs_reco_nuis_up			
 			print "cutobs_reco_nuis_dn:  " , cutobs_reco_nuis_dn			
 
-			up[processBin_jesup_nuis] = 0.0; # Abs_year[processBin_jesup_nuis] = 0.0;
-			dn[processBin_jesdn_nuis] = 0.0; # Abs_year[processBin_jesdn_nuis] = 0.0;
+			#up[processBin_jesup_nuis] = 0.0; # Abs_year[processBin_jesup_nuis] = 0.0;
+			#dn[processBin_jesdn_nuis] = 0.0; # Abs_year[processBin_jesdn_nuis] = 0.0;
 		        ratio[processBin_ratio_nuis] = 0.0;
+			if (nuis=="Abs"): up_Abs[processBin_jesup_nuis]=0.0; dn_Abs[processBin_jesdn_nuis]=0.0;ratio_Abs[processBin_ratio_nuis]=0.0;
+			if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis]=0.0; dn_Abs_year[processBin_jesdn_nuis]=0.0;ratio_Abs_year[processBin_ratio_nuis]=0.0;
+			if (nuis=="BBEC1"): up_BBEC1[processBin_jesup_nuis]=0.0; dn_BBEC1[processBin_jesdn_nuis]=0.0;ratio_BBEC1[processBin_ratio_nuis]=0.0;
+			if (nuis=="BBEC1_year"): up_BBEC1_year[processBin_jesup_nuis]=0.0; dn_BBEC1_year[processBin_jesdn_nuis]=0.0;ratio_BBEC1_year[processBin_ratio_nuis]=0.0;
+			if (nuis=="EC2"): up_EC2[processBin_jesup_nuis]=0.0; dn_EC2[processBin_jesdn_nuis]=0.0;ratio_EC2[processBin_ratio_nuis]=0.0;
+			if (nuis=="EC2_year"): up_EC2_year[processBin_jesup_nuis]=0.0; dn_EC2_year[processBin_jesdn_nuis]=0.0;ratio_EC2_year[processBin_ratio_nuis]=0.0;
+			if (nuis=="FlavQCD"): up_FlavQCD[processBin_jesup_nuis]=0.0; dn_FlavQCD[processBin_jesdn_nuis]=0.0;ratio_FlavQCD[processBin_ratio_nuis]=0.0;
+			if (nuis=="HF"): up_HF[processBin_jesup_nuis]=0.0; dn_HF[processBin_jesdn_nuis]=0.0;ratio_HF[processBin_ratio_nuis]=0.0;
+			if (nuis=="HF_year"): up_HF_year[processBin_jesup_nuis]=0.0; dn_HF_year[processBin_jesdn_nuis]=0.0;ratio_HF_year[processBin_ratio_nuis]=0.0;
+			if (nuis=="RelBal"): up_RelBal[processBin_jesup_nuis]=0.0; dn_RelBal[processBin_jesdn_nuis]=0.0;ratio_RelBal[processBin_ratio_nuis]=0.0;
+			if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis]=0.0; dn_RelSample_year[processBin_jesdn_nuis]=0.0;ratio_RelSample_year[processBin_ratio_nuis]=0.0;
+			if (nuis=="Total"): up_Total[processBin_jesup_nuis]=0.0; dn_Total[processBin_jesdn_nuis]=0.0;ratio_Total[processBin_ratio_nuis]=0.0;
+
 
 			cut_nuis_up = "("+recoweight+")*("+cutobs_reco_nuis_up+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
 			cut_nuis_dn = "("+recoweight+")*("+cutobs_reco_nuis_dn+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
@@ -175,44 +191,122 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 #			print "yield_jesdn_nuis:   ", yield_jesdn_nuis
 			
 			nom[processBin_nom] = yield_nom 
-			up[processBin_jesup_nuis] = yield_jesup_nuis 
-			dn[processBin_jesdn_nuis] = yield_jesdn_nuis 
+			if (nuis=="Abs"): up_Abs[processBin_jesup_nuis] = yield_jesup_nuis; dn_Abs[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Abs[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_Abs_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Abs_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="BBEC1"): up_BBEC1[processBin_jesup_nuis] = yield_jesup_nuis; dn_BBEC1[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_BBEC1[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="BBEC1_year"): up_BBEC1_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_BBEC1_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_BBEC1_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="EC2"): up_EC2[processBin_jesup_nuis] = yield_jesup_nuis; dn_EC2[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_EC2[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="EC2_year"): up_EC2_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_EC2_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_EC2_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="FlavQCD"): up_FlavQCD[processBin_jesup_nuis] = yield_jesup_nuis; dn_FlavQCD[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_FlavQCD[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="HF"): up_HF[processBin_jesup_nuis] = yield_jesup_nuis; dn_HF[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_HF[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="HF_year"): up_HF_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_HF_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_HF_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="RelBal"): up_RelBal[processBin_jesup_nuis] = yield_jesup_nuis; dn_RelBal[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_RelBal[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_RelSample_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_RelSample_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			if (nuis=="Total"): up_Total[processBin_jesup_nuis] = yield_jesup_nuis; dn_Total[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Total[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			#up[processBin_jesup_nuis] = yield_jesup_nuis 
+			#dn[processBin_jesdn_nuis] = yield_jesdn_nuis 
 #		        print "ratio:    ", computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)	
-			ratio[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+			#ratio[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 
+## interpolation part
+#    for channel in channels:
+#        for proc in procs:
+#	    if(not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): continue
+#            for recobin in range(len(obs_bins)-1):
+#                for nuis in JES_nuis:
+#		    key_nom_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)
+#                    key_jesup_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
+#                    key_jesdn_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
+#		    key_ratio_nuis = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
+#    		    nom_points = []; jesUp_points = []; jesDn_points = [];
+#                    for x_point in x_points:
+#                        key_nom = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
+#                        key_jesup = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
+#                        key_jesdn = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
+#			nom_points.append(nom[key_nom]); 
+#			if (nuis=="Abs"): jesUp_points.append(up_Abs[key_jesup]); jesDn_points.append(dn_Abs[key_jesdn]); 
+#			if (nuis=="Abs_year"): jesUp_points.append(up_Abs_year[key_jesup]); jesDn_points.append(dn_Abs_year[key_jesdn]); 
+#			if (nuis=="BBEC1"): jesUp_points.append(up_BBEC1[key_jesup]); jesDn_points.append(dn_BBEC1[key_jesdn]); 
+#			if (nuis=="BBEC1_year"): jesUp_points.append(up_BBEC1_year[key_jesup]); jesDn_points.append(dn_BBEC1_year[key_jesdn]); 
+#			if (nuis=="EC2"): jesUp_points.append(up_EC2[key_jesup]); jesDn_points.append(dn_EC2[key_jesdn]); 
+#			if (nuis=="EC2_year"): jesUp_points.append(up_EC2_year[key_jesup]); jesDn_points.append(dn_EC2_year[key_jesdn]); 
+#			if (nuis=="FlavQCD"): jesUp_points.append(up_FlavQCD[key_jesup]); jesDn_points.append(dn_FlavQCD[key_jesdn]); 
+#			if (nuis=="HF"): jesUp_points.append(up_HF[key_jesup]); jesDn_points.append(dn_HF[key_jesdn]); 
+#			if (nuis=="HF_year"): jesUp_points.append(up_HF_year[key_jesup]); jesDn_points.append(dn_HF_year[key_jesdn]); 
+#			if (nuis=="RelBal"): jesUp_points.append(up_RelBal[key_jesup]); jesDn_points.append(dn_RelBal[key_jesdn]); 
+#			if (nuis=="RelSample_year"): jesUp_points.append(up_RelSample_year[key_jesup]); jesDn_points.append(dn_RelSample_year[key_jesdn]); 
+#			if (nuis=="Total"): jesUp_points.append(up_Total[key_jesup]); jesDn_points.append(dn_Total[key_jesdn]); 
+#
+#		    print "nom_points:   ", nom_points
+#		    print "jesUp_points:   ", jesUp_points
+#		    print "jesDn_points:   ", jesDn_points			
+#		    spl_jesUp_points  = interpolate.splrep(x_points, jesUp_points, k=2)
+#		    spl_jesDn_points  = interpolate.splrep(x_points, jesDn_points, k=2)
+#		    spl_nom_points  = interpolate.splrep(x_points, nom_points, k=2)
+#		  
+#		    #up[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points))
+#		    #dn[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points))
+#		    nom[key_nom_125pt38] = float(interpolate.splev(125.38, spl_nom_points))
+#		    #ratio[key_ratio_nuis] = computeRatio(nom[key_nom_125pt38],up[key_jesup_125pt38],dn[key_jesdn_125pt38])
+#		    if (nuis=="Abs"): up_Abs[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_Abs[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_Abs[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_Abs[key_jesup_125pt38],dn_Abs[key_jesdn_125pt38]);
+#		    if (nuis=="Abs_year"): up_Abs_year[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_Abs_year[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_Abs_year[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_Abs_year[key_jesup_125pt38],dn_Abs_year[key_jesdn_125pt38]);
+#		    if (nuis=="BBEC1"): up_BBEC1[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_BBEC1[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_BBEC1[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_BBEC1[key_jesup_125pt38],dn_BBEC1[key_jesdn_125pt38]);
+#		    if (nuis=="BBEC1_year"): up_BBEC1_year[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_BBEC1_year[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_BBEC1_year[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_BBEC1_year[key_jesup_125pt38],dn_BBEC1_year[key_jesdn_125pt38]);
+#		    if (nuis=="EC2"): up_EC2[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_EC2[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_EC2[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_EC2[key_jesup_125pt38],dn_EC2[key_jesdn_125pt38]);
+#		    if (nuis=="EC2_year"): up_EC2_year[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_EC2_year[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_EC2_year[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_EC2_year[key_jesup_125pt38],dn_EC2_year[key_jesdn_125pt38]);
+#		    if (nuis=="FlavQCD"): up_FlavQCD[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_FlavQCD[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_FlavQCD[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_FlavQCD[key_jesup_125pt38],dn_FlavQCD[key_jesdn_125pt38]);
+#		    if (nuis=="HF"): up_HF[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_HF[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_HF[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_HF[key_jesup_125pt38],dn_HF[key_jesdn_125pt38]);
+#		    if (nuis=="HF_year"): up_HF_year[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_HF_year[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_HF_year[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_HF_year[key_jesup_125pt38],dn_HF_year[key_jesdn_125pt38]);
+#		    if (nuis=="RelBal"): up_RelBal[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_RelBal[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_RelBal[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_RelBal[key_jesup_125pt38],dn_RelBal[key_jesdn_125pt38]);
+#		    if (nuis=="RelSample_year"): up_RelSample_year[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_RelSample_year[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_RelSample_year[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_RelSample_year[key_jesup_125pt38],dn_RelSample_year[key_jesdn_125pt38]);
+#		    if (nuis=="Total"): up_Total[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_Total[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_Total[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_Total[key_jesup_125pt38],dn_Total[key_jesdn_125pt38]);
+#
 
-    for channel in channels:
-        for proc in procs:
-	    if(not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): continue
-            for recobin in range(len(obs_bins)-1):
-                for nuis in JES_nuis:
-		    key_nom_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)
-                    key_jesup_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
-                    key_jesdn_125pt38 = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
-		    key_ratio_nuis = proc+'_125.38_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
-    		    nom_points = []; jesUp_points = []; jesDn_points = [];
-                    for x_point in x_points:
-                        key_nom = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
-                        key_jesup = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
-                        key_jesdn = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
-			nom_points.append(nom[key_nom]); jesUp_points.append(up[key_jesup]); jesDn_points.append(dn[key_jesdn]); 
-
-		    print "nom_points:   ", nom_points
-		    print "jesUp_points:   ", jesUp_points
-		    print "jesDn_points:   ", jesDn_points			
-		    spl_jesUp_points  = interpolate.splrep(x_points, jesUp_points, k=2)
-		    spl_jesDn_points  = interpolate.splrep(x_points, jesDn_points, k=2)
-		    spl_nom_points  = interpolate.splrep(x_points, nom_points, k=2)
-		  
-		    up[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points))
-		    dn[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points))
-		    nom[key_nom_125pt38] = float(interpolate.splev(125.38, spl_nom_points))
-		    ratio[key_ratio_nuis] = computeRatio(nom[key_nom_125pt38],up[key_jesup_125pt38],dn[key_jesdn_125pt38])
-
-#    print "nom dictionary:  ", nom
-#    print "up dictionary:  ",up
-#    print "dn dictionary:  ",dn
-    print "ratio dictionary:    ", ratio
+        #with open('datacardInputs/inputs_JESnuis_'+opt.OBSNAME+'_'+channel+'_'+proc+'_'+year+'.py', 'w') as f:
+    with open('datacardInputs/'+year+'/'+obs_reco+'/inputs_JESnuis_'+opt.OBSNAME+'.py', 'w') as f:
+        f.write('obsName = "'+str(opt.OBSNAME)+'" \n')
+        f.write('obs_bins = '+str(obs_bins)+' \n')
+        f.write('JES uncertainty sources = '+str(JES_nuis)+' \n')
+        f.write('yield_nom = '+str(nom)+' \n')
+        #f.write('yield_up = '+str(up)+' \n')
+        #f.write('yield_dn = '+str(dn)+' \n')
+        #f.write('nuis_impact = '+str(ratio)+' \n')
+        f.write('yield_up_Abs = '+str(up_Abs)+' \n')
+        f.write('yield_dn_Abs = '+str(dn_Abs)+' \n')
+        f.write('nuis_Abs = '+str(ratio_Abs)+' \n')
+        f.write('yield_up_Abs_year = '+str(up_Abs_year)+' \n')
+        f.write('yield_dn_Abs_year = '+str(dn_Abs_year)+' \n')
+        f.write('nuis_Abs_year = '+str(ratio_Abs_year)+' \n')
+        f.write('yield_up_BBEC1 = '+str(up_BBEC1)+' \n')
+        f.write('yield_dn_BBEC1 = '+str(dn_BBEC1)+' \n')
+        f.write('nuis_BBEC1 = '+str(ratio_BBEC1)+' \n')
+        f.write('yield_up_BBEC1_year = '+str(up_BBEC1_year)+' \n')
+        f.write('yield_dn_BBEC1_year = '+str(dn_BBEC1_year)+' \n')
+        f.write('nuis_BBEC1_year = '+str(ratio_BBEC1_year)+' \n')
+        f.write('yield_up_EC2 = '+str(up_EC2)+' \n')
+        f.write('yield_dn_EC2 = '+str(dn_EC2)+' \n')
+        f.write('nuis_EC2 = '+str(ratio_EC2)+' \n')
+        f.write('yield_up_EC2_year = '+str(up_EC2_year)+' \n')
+        f.write('yield_dn_EC2_year = '+str(dn_EC2_year)+' \n')
+        f.write('nuis_EC2_year = '+str(ratio_EC2_year)+' \n')
+        f.write('yield_up_FlavQCD = '+str(up_FlavQCD)+' \n')
+        f.write('yield_dn_FlavQCD = '+str(dn_FlavQCD)+' \n')
+        f.write('nuis_FlavQCD = '+str(ratio_FlavQCD)+' \n')
+        f.write('yield_up_HF = '+str(up_HF)+' \n')
+        f.write('yield_dn_HF = '+str(dn_HF)+' \n')
+        f.write('nuis_HF = '+str(ratio_HF)+' \n')
+        f.write('yield_up_HF_year = '+str(up_HF_year)+' \n')
+        f.write('yield_dn_HF_year = '+str(dn_HF_year)+' \n')
+        f.write('nuis_HF_year = '+str(ratio_HF_year)+' \n')
+        f.write('yield_up_RelBal = '+str(up_RelBal)+' \n')
+        f.write('yield_dn_RelBal = '+str(dn_RelBal)+' \n')
+        f.write('nuis_RelBal = '+str(ratio_RelBal)+' \n')
+        f.write('yield_up_RelSample_year = '+str(up_RelSample_year)+' \n')
+        f.write('yield_dn_RelSample_year = '+str(dn_RelSample_year)+' \n')
+        f.write('nuis_RelSample_year = '+str(ratio_RelSample_year)+' \n')
+        f.write('yield_up_Total = '+str(up_Total)+' \n')
+        f.write('yield_dn_Total = '+str(dn_Total)+' \n')
+        f.write('nuis_Total = '+str(ratio_Total)+' \n')
 
 
 
@@ -231,38 +325,36 @@ if __name__ == "__main__":
     nbins = len(observableBins)
     
     obs_reco = opt.OBSNAME 
+    year = opt.YEAR
 
+    if (not os.path.exists("datacardInputs/"+year+"/"+obs_reco)):
+    #os.system("mkdir -p datacardInputs")
+        os.system("mkdir -p datacardInputs/"+year+"/"+obs_reco+"")
+
+
+ 
     m4l_low = 105.0
     m4l_high = 160.0
     m4l_bins = 35
 
-    year = opt.YEAR
     print "year being processed: ",year
 
     Histos = {}
     nom = {}
-    up = {}
-    dn = {}
+    #up = {}
+    #dn = {}
+    up_Abs = {}; up_Abs_year = {}; up_BBEC1 = {}; up_BBEC1_year = {}; up_EC2 = {}; up_EC2_year = {}; up_FlavQCD = {}; up_HF = {}; up_HF_year = {}; up_RelBal = {}; up_RelSample_year = {}; up_Total = {};
+    dn_Abs = {}; dn_Abs_year = {}; dn_BBEC1 = {}; dn_BBEC1_year = {}; dn_EC2 = {}; dn_EC2_year = {}; dn_FlavQCD = {}; dn_HF = {}; dn_HF_year = {}; dn_RelBal = {}; dn_RelSample_year = {}; dn_Total = {};
+    ratio_Abs = {}; ratio_Abs_year = {}; ratio_BBEC1 = {}; ratio_BBEC1_year = {}; ratio_EC2 = {}; ratio_EC2_year = {}; ratio_FlavQCD = {}; ratio_HF = {}; ratio_HF_year = {}; ratio_RelBal = {}; ratio_RelSample_year = {}; ratio_Total = {};
+
     ratio = {} 
 
 
-    JES_nuis = ['Abs'] 
+   # JES_nuis = ['Abs'] 
+    JES_nuis = ['Abs','Abs_year','BBEC1','BBEC1_year','EC2','EC2_year','FlavQCD','HF','HF_year','RelBal','RelSample_year', 'Total']
     print("Obs Name: {:15}  nBins: {:2}  bins: {}".format(opt.OBSNAME, nbins, observableBins))
 
     extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, opt.DEBUG)
-    #extract_JES_nuis(125.38, nbins, opt.OBSNAME, obs_bins, opt.DEBUG)
-
-    ext=''
-    with open('datacardInputs/inputs_JESnuis_'+opt.OBSNAME+'_'+year+'.py', 'w') as f:
-        f.write('obsName = "'+str(opt.OBSNAME)+'" \n')
-        f.write('obs_bins = '+str(obs_bins)+' \n')
-        f.write('JES uncertainty sources = '+str(JES_nuis)+' \n')
-        f.write('yield_nom = '+str(nom)+' \n')
-        f.write('yield_up = '+str(up)+' \n')
-        f.write('yield_dn = '+str(dn)+' \n')
-        f.write('nuis_impact = '+str(ratio)+' \n')    
-
-
    
 
 
