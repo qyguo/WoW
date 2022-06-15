@@ -42,6 +42,9 @@ def computeRatio(nominal, upVar, dnVar):
     if nominal == 0:
         return '-'
     else:
+	if(upVar<nominal and dnVar<nominal):
+	    dnVar=min(upVar,dnVar)
+	    upVar=nominal+(nominal-dnVar);  # test for hack for 1st reco bin
         dn_ratio = round(dnVar/nominal,3)
         up_ratio = round(upVar/nominal,3)
         if up_ratio==dn_ratio and up_ratio==1.000:
@@ -49,8 +52,8 @@ def computeRatio(nominal, upVar, dnVar):
         elif up_ratio == dn_ratio:
             return str(dn_ratio)
         else:
-            #return str(dn_ratio)+'/'+str(up_ratio)
-            return str(up_ratio)+'/'+str(dn_ratio)
+            return str(dn_ratio)+'/'+str(up_ratio)
+            #return str(up_ratio)+'/'+str(dn_ratio)
 
 
 
@@ -58,9 +61,11 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
     #x_points = [124,125,126]
     x_points = [125]
 #    x_points = [124]
-    channels=['4mu','2e2mu','4e']
+    #channels=['4mu','2e2mu','4e']
+    channels=['2e2mu']
 #    procs = ['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
     procs=['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz','bkg_zjets']
+    #procs=['trueH','out_trueH','fakeH']
     #procs = ['out_trueH'] #,'bkg_ggzz']
     #procs = ['bkg_ggzz']
 
@@ -122,18 +127,25 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    if (not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): x_point=125 # temporary fix for bkg
 
 		    processBin_nom = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
+		    #processBin_nom_Hproc = 'Hproc_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
 		    nom[processBin_nom] = 0.0; 
+		    #nom[processBin_nom_Hproc] = 0.0;  # defined to sum-up the Higgs involved processes (trueH, fakeH, out_trueH) 
 		
     		    Histos[processBin_nom] = TH1D(processBin_nom,processBin_nom, m4l_bins, m4l_low, m4l_high)
 		    Histos[processBin_nom].Sumw2()
 
+    		    #Histos[processBin_nom_Hproc] = TH1D(processBin_nom_Hproc,processBin_nom_Hproc, m4l_bins, m4l_low, m4l_high)
+		    #Histos[processBin_nom_Hproc].Sumw2()
+
 		    for nuis in JES_nuis:
 
-#                        skey= "nom_%s"  % nuis
 
 		        processBin_jesup_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
 		        processBin_jesdn_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
 		        processBin_ratio_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
+
+
+
 
 			Histos[processBin_jesup_nuis] = TH1D(processBin_jesup_nuis,processBin_jesup_nuis, m4l_bins, m4l_low, m4l_high)
 			Histos[processBin_jesup_nuis].Sumw2()
@@ -173,7 +185,7 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			print "cut_nuis_dn :   ", cut_nuis_dn 
 
 			yield_nom = 0.;	yield_jesup_nuis = 0.; yield_jesdn_nuis = 0.;
-
+		#	yield_nom_Hproc=0;
 			for tree in trees:
 			    print "tree is:   ", tree
 
@@ -184,12 +196,19 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			    yield_nom+=Histos[processBin_nom].Integral()
 			    yield_jesup_nuis+=Histos[processBin_jesup_nuis].Integral()
 			    yield_jesdn_nuis+=Histos[processBin_jesdn_nuis].Integral()
-
+#			    if (proc=='trueH' or proc=='out_trueH' or proc=='fakeH'):
+#				yield_nom_Hproc+=yield_nom
+#                            print "proc name.......:", proc
+#                            print "yield_nom:   ", yield_nom
+#                            print "yield_nom_Hproc:   ", yield_nom_Hproc	
+#
 #			print "reading finished   ......."
+#			print "proc name.......:", proc
 #			print "yield_nom:   ", yield_nom
+#			print "yield_nom_Hproc:   ", yield_nom_Hproc
 #			print "yield_jesup_nuis:   ", yield_jesup_nuis
 #			print "yield_jesdn_nuis:   ", yield_jesdn_nuis
-			
+##       		
 			nom[processBin_nom] = yield_nom 
 			if (nuis=="Abs"): up_Abs[processBin_jesup_nuis] = yield_jesup_nuis; dn_Abs[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Abs[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 			if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_Abs_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Abs_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
@@ -204,9 +223,102 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_RelSample_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_RelSample_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 			if (nuis=="Total"): up_Total[processBin_jesup_nuis] = yield_jesup_nuis; dn_Total[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Total[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 			#up[processBin_jesup_nuis] = yield_jesup_nuis 
-			#dn[processBin_jesdn_nuis] = yield_jesdn_nuis 
+       		#dn[processBin_jesdn_nuis] = yield_jesdn_nuis 
 #		        print "ratio:    ", computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)	
 			#ratio[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
+
+
+## combing the H processes
+    for x_point in x_points:
+        for channel in channels:
+            for recobin in range(len(obs_bins)-1):
+		processBin_nom_Hproc = 'Hproc_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
+		nom[processBin_nom_Hproc]=0;
+		yield_nom_Hproc=0;
+       	        for proc in procs:
+                    if(not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): continue
+		    processBin_nom = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)
+		    yield_nom_Hproc+=nom[processBin_nom]
+		    #nom[processBin_nom_Hproc]=0;
+#		    print "processBin_nom  ", processBin_nom
+#		    print "nom[processBin_nom]  ", nom[processBin_nom]
+#		    print "yield_nom_Hproc   ", yield_nom_Hproc
+    	        nom[processBin_nom_Hproc]=yield_nom_Hproc;    
+		print "processBin_nom_Hproc  ", processBin_nom_Hproc
+		print "nom[processBin_nom_Hproc]  ", nom[processBin_nom_Hproc] 
+
+
+## JES nuis
+  	        #yield_jesup_nuis_Hproc=0; yield_jesdn_nuis_Hproc=0;
+		for nuis in JES_nuis:
+                    processBin_jesup_nuis_Hproc = 'Hproc_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
+                    processBin_jesdn_nuis_Hproc = 'Hproc_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
+                    processBin_ratio_nuis_Hproc = 'Hproc_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
+
+            	    ratio[processBin_ratio_nuis_Hproc] = 0.0;
+                    if (nuis=="Abs"): up_Abs[processBin_jesup_nuis_Hproc]=0.0; dn_Abs[processBin_jesdn_nuis_Hproc]=0.0;ratio_Abs[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis_Hproc]=0.0; dn_Abs_year[processBin_jesdn_nuis_Hproc]=0.0;ratio_Abs_year[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="BBEC1"): up_BBEC1[processBin_jesup_nuis_Hproc]=0.0; dn_BBEC1[processBin_jesdn_nuis_Hproc]=0.0;ratio_BBEC1[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="BBEC1_year"): up_BBEC1_year[processBin_jesup_nuis_Hproc]=0.0; dn_BBEC1_year[processBin_jesdn_nuis_Hproc]=0.0;ratio_BBEC1_year[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="EC2"): up_EC2[processBin_jesup_nuis_Hproc]=0.0; dn_EC2[processBin_jesdn_nuis_Hproc]=0.0;ratio_EC2[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="EC2_year"): up_EC2_year[processBin_jesup_nuis_Hproc]=0.0; dn_EC2_year[processBin_jesdn_nuis_Hproc]=0.0;ratio_EC2_year[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="FlavQCD"): up_FlavQCD[processBin_jesup_nuis_Hproc]=0.0; dn_FlavQCD[processBin_jesdn_nuis_Hproc]=0.0;ratio_FlavQCD[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="HF"): up_HF[processBin_jesup_nuis_Hproc]=0.0; dn_HF[processBin_jesdn_nuis_Hproc]=0.0;ratio_HF[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="HF_year"): up_HF_year[processBin_jesup_nuis_Hproc]=0.0; dn_HF_year[processBin_jesdn_nuis_Hproc]=0.0;ratio_HF_year[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="RelBal"): up_RelBal[processBin_jesup_nuis_Hproc]=0.0; dn_RelBal[processBin_jesdn_nuis_Hproc]=0.0;ratio_RelBal[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis_Hproc]=0.0; dn_RelSample_year[processBin_jesdn_nuis_Hproc]=0.0;ratio_RelSample_year[processBin_ratio_nuis_Hproc]=0.0;
+                    if (nuis=="Total"): up_Total[processBin_jesup_nuis_Hproc]=0.0; dn_Total[processBin_jesdn_nuis_Hproc]=0.0;ratio_Total[processBin_ratio_nuis_Hproc]=0.0;
+ 
+		    yield_jesup_nuis_Hproc=0; yield_jesdn_nuis_Hproc=0;
+
+                    for proc in procs:
+                        if(not (proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): continue
+                        processBin_jesup_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesup_'+nuis
+                        processBin_jesdn_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
+                        #processBin_ratio_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
+			#yield_jesup_nuis_Hproc+=	
+
+			if (nuis=="Abs"): yield_jesup_nuis_Hproc+=up_Abs[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_Abs[processBin_jesdn_nuis];
+			if (nuis=="Abs_year"): yield_jesup_nuis_Hproc+=up_Abs_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_Abs_year[processBin_jesdn_nuis];
+			if (nuis=="BBEC1"): yield_jesup_nuis_Hproc+=up_BBEC1[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_BBEC1[processBin_jesdn_nuis];
+			if (nuis=="BBEC1_year"): yield_jesup_nuis_Hproc+=up_BBEC1_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_BBEC1_year[processBin_jesdn_nuis];
+			if (nuis=="EC2"): yield_jesup_nuis_Hproc+=up_EC2[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_EC2[processBin_jesdn_nuis];
+			if (nuis=="EC2_year"): yield_jesup_nuis_Hproc+=up_EC2_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_EC2_year[processBin_jesdn_nuis];
+			if (nuis=="FlavQCD"): yield_jesup_nuis_Hproc+=up_FlavQCD[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_FlavQCD[processBin_jesdn_nuis];
+			if (nuis=="HF"): yield_jesup_nuis_Hproc+=up_HF[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_HF[processBin_jesdn_nuis];
+			if (nuis=="HF_year"): yield_jesup_nuis_Hproc+=up_HF_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_HF_year[processBin_jesdn_nuis];
+			if (nuis=="RelBal"): yield_jesup_nuis_Hproc+=up_RelBal[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_RelBal[processBin_jesdn_nuis];
+			if (nuis=="RelSample_year"): yield_jesup_nuis_Hproc+=up_RelSample_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_RelSample_year[processBin_jesdn_nuis];
+			if (nuis=="Total"): yield_jesup_nuis_Hproc+=up_Total[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_Total[processBin_jesdn_nuis];
+
+#			print "proc: ", proc
+#			print "processBin_jesup_nuis", processBin_jesup_nuis
+#			print "processBin_jesdn_nuis", processBin_jesdn_nuis
+#			print "up_Abs[processBin_jesup_nuis]", up_Abs[processBin_jesup_nuis]
+#			print "dn_Abs[processBin_jesdn_nuis]", dn_Abs[processBin_jesdn_nuis]
+#		        print "yield_jesup_nuis_Hproc:  ", yield_jesup_nuis_Hproc	
+#			print "yield_jesdn_nuis_Hproc: ", yield_jesdn_nuis_Hproc
+#		    print "outside loop:  "
+#		    print "nuis:    ", nuis		    
+#		    print "yield_jesup_nuis_Hproc: ", yield_jesup_nuis_Hproc
+#		    print "yield_jesdn_nuis_Hproc: ", yield_jesdn_nuis_Hproc
+
+   
+    		    if (nuis=="Abs"): up_Abs[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_Abs[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_Abs[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_Abs_year[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_Abs_year[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="BBEC1"): up_BBEC1[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_BBEC1[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_BBEC1[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="BBEC1_year"): up_BBEC1_year[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_BBEC1_year[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_BBEC1_year[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="EC2"): up_EC2[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_EC2[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_EC2[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="EC2_year"): up_EC2_year[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_EC2_year[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_EC2_year[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="FlavQCD"): up_FlavQCD[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_FlavQCD[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_FlavQCD[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="HF"): up_HF[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_HF[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_HF[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="HF_year"): up_HF_year[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_HF_year[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_HF_year[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="RelBal"): up_RelBal[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_RelBal[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_RelBal[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_RelSample_year[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_RelSample_year[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+                    if (nuis=="Total"): up_Total[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_Total[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_Total[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
+    
+
+
 
 ## interpolation part
 #    for channel in channels:
@@ -350,8 +462,8 @@ if __name__ == "__main__":
     ratio = {} 
 
 
-   # JES_nuis = ['Abs'] 
-    JES_nuis = ['Abs','Abs_year','BBEC1','BBEC1_year','EC2','EC2_year','FlavQCD','HF','HF_year','RelBal','RelSample_year', 'Total']
+    JES_nuis = ['Abs'] 
+    #JES_nuis = ['Abs','Abs_year','BBEC1','BBEC1_year','EC2','EC2_year','FlavQCD','HF','HF_year','RelBal','RelSample_year', 'Total']
     print("Obs Name: {:15}  nBins: {:2}  bins: {}".format(opt.OBSNAME, nbins, observableBins))
 
     extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, opt.DEBUG)
