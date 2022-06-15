@@ -51,6 +51,9 @@ def computeRatio(nominal, upVar, dnVar):
              return '-'
         elif up_ratio == dn_ratio:
             return str(dn_ratio)
+        elif dn_ratio > 1 and up_ratio==1.0: # hack for zeroth bin odd values 
+	    up_ratio= (1 - (dn_ratio - 1));
+	    return str(dn_ratio)+'/'+str(up_ratio)
         else:
             return str(dn_ratio)+'/'+str(up_ratio)
             #return str(up_ratio)+'/'+str(dn_ratio)
@@ -118,7 +121,11 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    obs_gen_lowest = obs_bins[0]
     		    obs_gen_highest = obs_bins[len(obs_bins)-1]
 
-		    cutobs_reco = "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
+		    # hack for bin0
+		    if (recobin==0 and obs_reco=="pt_leadingjet_pt30_eta4p7"): 
+		        cutobs_reco = "(njets_pt30_eta4p7==0)" #+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
+		    else:
+		        cutobs_reco = "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
 		    cut_nom = "("+recoweight+")*("+cutobs_reco+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
 		    #cut_nom = "("+weights["sig"]+")*("+cutobs_reco+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
 
@@ -154,9 +161,13 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 
 			#print "processBin_jesup_nuis:     ", processBin_jesup_nuis
 			#print "processBin_jesdn_nuis:     ", processBin_jesdn_nuis
-
-			cutobs_reco_nuis_up = "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
-			cutobs_reco_nuis_dn = "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
+                    # hack for bin0
+			if (recobin==0 and obs_reco=="pt_leadingjet_pt30_eta4p7"):
+			    cutobs_reco_nuis_up = "njets_pt30_eta4p7_jesup_"+nuis+"==0"
+			    cutobs_reco_nuis_dn = "njets_pt30_eta4p7_jesdn_"+nuis+"==0"
+			else:
+			    cutobs_reco_nuis_up = "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
+			    cutobs_reco_nuis_dn = "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
 			print "cutobs_reco_nuis_up:  " , cutobs_reco_nuis_up			
 			print "cutobs_reco_nuis_dn:  " , cutobs_reco_nuis_dn			
 
