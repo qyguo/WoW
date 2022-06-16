@@ -74,8 +74,15 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1 && nZXCRFailedLeptons==2)"}
     proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
+    #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"(passedFullSelection!=1 && passedZ4lSelection==1)","bkg_ggzz":"(passedFullSelection!=1 && passedZ4lSelection==1)","bkg_zjets":"(passedFullSelection!=1 && passedZXCRSelection==1)"}  # test
+    #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"(passedFullSelection!=1)","bkg_ggzz":"(passedFullSelection!=1)","bkg_zjets":"(passedFullSelection!=1)"}
     cut_m4l_reco = {"2e2mu":"(mass2e2mu>"+str(m4l_low)+" && mass2e2mu<"+str(m4l_high)+")","4mu":"(mass4mu>"+str(m4l_low)+" && mass4mu<"+str(m4l_high)+")","4e":"(mass4e>"+str(m4l_low)+" && mass4e<"+str(m4l_high)+")"}
 #    recoweight = "genWeight*pileupWeight*dataMCWeight_new"
+
+    #cut_zerobin = {"pt_leadingjet_pt30_eta4p7":"(njets_pt30_eta4p7==0)", "pTj2":"(njets_pt30_eta4p7<=1)", "mj1j2":"(njets_pt30_eta4p7<=1)", "pT4lj":"(njets_pt30_eta4p7==0)","mass4lj":"(njets_pt30_eta4p7==0)","dPhiHj1":"(njets_pt30_eta4p7==0)","dyHj1":"(njets_pt30_eta4p7==0)","pT4ljj":"(njets_pt30_eta4p7<=1)","mass4ljj":"(njets_pt30_eta4p7<=1)","dEtaj1j2":"(njets_pt30_eta4p7<=1)","dPhij1j2":"(njets_pt30_eta4p7<=1)","dPhiHj1j2":"(njets_pt30_eta4p7<=1)"}
+    cut_zerobin = {"pt_leadingjet_pt30_eta4p7":"==0", "pTj2":"<=1", "mj1j2":"<=1", "pT4lj":"==0","mass4lj":"==0","dPhiHj1":"==0","dyHj1":"==0","pT4ljj":"<=1","mass4ljj":"<=1","dEtaj1j2":"<=1","dPhij1j2":"<=1","dPhiHj1j2":"<=1"}
+
+
 
     #weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"k_qqZZ_qcd_M*k_qqZZ_ewk","bkg_ggzz":"k_ggZZ","bkg_zjets":"1.0"}
     weights = {"sig":"genWeight*pileupWeight*dataMCWeight_new","bkg_qqzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_qqZZ_qcd_M*k_qqZZ_ewk)","bkg_ggzz":"(genWeight*pileupWeight*dataMCWeight_new)*(k_ggZZ)","bkg_zjets":"1.0"}
@@ -122,8 +129,10 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
     		    obs_gen_highest = obs_bins[len(obs_bins)-1]
 
 		    # hack for bin0
-		    if (recobin==0 and obs_reco=="pt_leadingjet_pt30_eta4p7"): 
-		        cutobs_reco = "(njets_pt30_eta4p7==0)" #+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
+		    #if (recobin==0): 
+		    if (recobin==0 and (not "Tau" in obs_reco)): 
+			cutobs_reco = "njets_pt30_eta4p7"+cut_zerobin[obs_reco]
+			print "zero bin, obs name:  ", cutobs_reco
 		    else:
 		        cutobs_reco = "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
 		    cut_nom = "("+recoweight+")*("+cutobs_reco+" && "+proc_selections[proc]+" && "+cut_m4l_reco[channel]+")"
@@ -162,17 +171,15 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			#print "processBin_jesup_nuis:     ", processBin_jesup_nuis
 			#print "processBin_jesdn_nuis:     ", processBin_jesdn_nuis
                     # hack for bin0
-			if (recobin==0 and obs_reco=="pt_leadingjet_pt30_eta4p7"):
-			    cutobs_reco_nuis_up = "njets_pt30_eta4p7_jesup_"+nuis+"==0"
-			    cutobs_reco_nuis_dn = "njets_pt30_eta4p7_jesdn_"+nuis+"==0"
+			if (recobin==0 and (not "Tau" in obs_reco)): 
+			    cutobs_reco_nuis_up = "njets_pt30_eta4p7_jesup_"+nuis+cut_zerobin[obs_reco]
+			    cutobs_reco_nuis_dn = "njets_pt30_eta4p7_jesdn_"+nuis+cut_zerobin[obs_reco]
 			else:
 			    cutobs_reco_nuis_up = "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
 			    cutobs_reco_nuis_dn = "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
 			print "cutobs_reco_nuis_up:  " , cutobs_reco_nuis_up			
 			print "cutobs_reco_nuis_dn:  " , cutobs_reco_nuis_dn			
 
-			#up[processBin_jesup_nuis] = 0.0; # Abs_year[processBin_jesup_nuis] = 0.0;
-			#dn[processBin_jesdn_nuis] = 0.0; # Abs_year[processBin_jesdn_nuis] = 0.0;
 		        ratio[processBin_ratio_nuis] = 0.0;
 			if (nuis=="Abs"): up_Abs[processBin_jesup_nuis]=0.0; dn_Abs[processBin_jesdn_nuis]=0.0;ratio_Abs[processBin_ratio_nuis]=0.0;
 			if (nuis=="Abs_year"): up_Abs_year[processBin_jesup_nuis]=0.0; dn_Abs_year[processBin_jesdn_nuis]=0.0;ratio_Abs_year[processBin_ratio_nuis]=0.0;
@@ -458,7 +465,8 @@ if __name__ == "__main__":
  
     m4l_low = 105.0
     m4l_high = 160.0
-    m4l_bins = 35
+    #m4l_bins = 35
+    m4l_bins = 70  ## temporary
 
     print "year being processed: ",year
 
