@@ -67,7 +67,8 @@ float dataMCErr_(float pt_, float eta_, TH2F* hMuScaleFacUnc)
 
 float TauC(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
 {
-	float TauC_j = 0; float TauC_jmax = 0;
+	//float TauC_j = 0; float TauC_jmax = 0;
+	float TauC_j = -9999; float TauC_jmax = -9999;
 	for( unsigned int k = 0; k< pt.size(); k++) {
 	    TLorentzVector theJet;
 	    theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
@@ -81,7 +82,8 @@ float TauC(vector<float> pt, vector<float> eta, vector<float> phi, vector<float>
 
 float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
 {
-        float TauB_j = 0; float TauB_jmax = 0;
+        //float TauB_j = 0; float TauB_jmax = 0;
+        float TauB_j = -9999; float TauB_jmax = -9999;
         for( unsigned int k = 0; k< pt.size(); k++) {
             TLorentzVector theJet;
             theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
@@ -114,9 +116,10 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     //string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/" + whichYear[year-2016] + "/MC/";
     //string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/";
     //string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/preVFP/GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8/";
-    //string pre_name1 = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/";
-    string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/data/";
-//    string pre_name = (pre_name1 + _name_DS_).c_str();
+    //string pre_name1 = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/preVFP/";
+    string pre_name1 = "/publicfs/cms/data/hzz/jtahir/UL2016/MC/";
+    //string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/data/";
+    string pre_name = (pre_name1 + _name_DS_).c_str();
     ///publicfs/cms/data/hzz/jtahir/UL2016/data/data_UL2016_preVFP_noDuplicates.root
     // /publicfs/cms/data/hzz/jtahir/UL2016/data/data_UL2016_postVFP_noDuplicates.root
     //string pre_name = "/afs/cern.ch/user/t/tjavaid/workspace/BUF_ntuplizer/UL/fresh/CMSSW_10_6_26/src/";
@@ -135,7 +138,9 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 //    string filename = (pre_name + name_DS + ".root").c_str();
     string filename = (pre_name + "/" + name_DS + ".root").c_str();
     //string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_2p5/").c_str(); 
-    string outputFile_Slimmed = ("Slimmed_2p5/"); //.c_str(); 
+    //string outputFile_Slimmed = ("Slimmed_2p5/"); //.c_str(); 
+    string outputFile_Slimmed = ("Slimmed_2p5_test/"); //.c_str(); 
+    //string outputFile_Slimmed = ("Slimmed_2p5/preVFP/"); //.c_str(); 
 
     std::cout<<"Year: "<<year<<std::endl;
     std::cout<<filename<<std::endl;
@@ -200,6 +205,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     Float_t         GENpT4ljj_2p5;
     Float_t         GENmass4ljj_2p5;
     Float_t         pT4lj_2p5;
+    Float_t         pt_leadingjet_pt30_eta2p5;
     Float_t         mass4lj_2p5;
     Float_t         pT4ljj_2p5;
     Float_t         mass4ljj_2p5;
@@ -486,6 +492,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     oldtree->SetBranchAddress("TauC_Inc_0j_EnergyWgt", &TauC_Inc_0j_EnergyWgt);
     oldtree->SetBranchAddress("TauB_Inc_0j_pTWgt", &TauB_Inc_0j_pTWgt);
     oldtree->SetBranchAddress("pt_leadingjet_pt30_eta4p7", &pt_leadingjet_pt30_eta4p7);
+    oldtree->SetBranchAddress("pt_leadingjet_pt30_eta2p5", &pt_leadingjet_pt30_eta2p5);
     oldtree->SetBranchAddress("pTj1_2p5", &pTj1_2p5);
     oldtree->SetBranchAddress("etaj1_2p5", &etaj1_2p5);
     oldtree->SetBranchAddress("phij1_2p5", &phij1_2p5);
@@ -708,6 +715,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
     oldtree->SetBranchStatus("GENlep_MomMomId",1);
     oldtree->SetBranchStatus("GENlep_MomId",1);
     oldtree->SetBranchStatus("lep_Hindex",1);
+    oldtree->SetBranchStatus("GENlep_Hindex",1);
     oldtree->SetBranchStatus("GENlep_id",1);
 
     oldtree->SetBranchStatus("GENmass4l",1);
@@ -1759,8 +1767,9 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
         GENmass4lj_2p5=-1.0;
         GENpT4ljj_2p5=-1.0;
         GENmass4ljj_2p5=-1.0;
-        pT4lj_2p5=-1.0;
-        mass4lj_2p5=-1.0;
+        //pT4lj_2p5=-1.0;
+        //pt_leadingjet_pt30_eta2p5=-1.0;
+        //mass4lj_2p5=-1.0;
         pT4ljj_2p5=-1.0;
         mass4ljj_2p5=-1.0;
         pT4lj_2p5_jesup=-1.0;
@@ -1868,7 +1877,6 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
 
 	if (redoJets) {
 
-           //     vector<float> goodJets_JECJER_pt30_eta4p7 {}; 
                 vector<float> jes_unc_split {};
 //up    
                 vector<float> pt_jesup_split {};
@@ -1911,6 +1919,19 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                             phi_jes_split.push_back(thisJet.Phi());
                             mass_jes_split.push_back(thisJet.M());
 
+/*
+                            if ((Event==513465 || Event==690154) && s_unc==0) {
+                                cout<<"Event:   "<< Event<<endl;
+                                cout<<"thisJet.Pt():   "<< thisJet.Pt()<<endl;
+                                cout<<"thisJet.Eta():   "<< thisJet.Eta()<<endl;
+                                cout<<"correction:   "<< singleContr_jes_unc<<endl;
+                                cout<<"from ntuples:  pT4l:   "<< pT4l<<endl;
+                                cout<<"from ntuples:  pt_leadingjet_pt30_eta2p5:   "<< pt_leadingjet_pt30_eta2p5<<endl;
+                                cout<<"from ntuples:  pT4lj_2p5:   "<< pT4lj_2p5<<endl;
+                                cout<<"from ntuples:  mass4lj_2p5:   "<< mass4lj_2p5<<endl;
+                                }
+
+*/
 //                            cout<<"Uncertainty source is:  uncSources["<<s_unc<<"]  "<<uncSources[s_unc]<<endl;
 //                            cout<<"thisJet.Pt():   "<<thisJet.Pt()<<endl;
 //                            cout<<"jes_unc_split["<<s_unc<<"]  "<<jes_unc_split[s_unc]<<endl;
@@ -1982,6 +2003,9 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                                 jet2pt2p5_jesup_Abs=thisJet_jesup_Abs.Pt(); jet2index2p5_jesup_Abs=k;
                             }
                         }
+//			cout<<"test:   Event   "<<Event<<endl;
+//			cout<<"test:   jet1pt_jesup_Abs"<<jet1pt_jesup_Abs<<endl;
+
                 }
 //                cout<<njets_pt30_eta4p7_jesup_Abs<<" jets (jesup_Abs)"<<endl;
 
@@ -2090,6 +2114,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_Abs=Jet2_jesdn_Abs.Rapidity();
                     pT4ljj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs+Jet2_jesdn_Abs).Pt();
                     mass4ljj_jesdn_Abs=(Higgs+Jet1_jesdn_Abs+Jet2_jesdn_Abs).M();
+		    mj1j2_jesdn_Abs=(Jet1_jesdn_Abs+Jet2_jesdn_Abs).M();
                     dEtaj1j2_jesdn_Abs=TMath::Abs(Jet1_jesdn_Abs.Eta()-Jet2_jesdn_Abs.Eta());
                     dPhij1j2_jesdn_Abs=deltaPhi(Jet1_jesdn_Abs.Phi(),Jet2_jesdn_Abs.Phi());
                     dPhiHj1j2_jesdn_Abs=deltaPhi(Higgs.Phi(),(Jet1_jesdn_Abs+Jet2_jesdn_Abs).Phi());
@@ -2261,6 +2286,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_Abs_year=Jet2_jesdn_Abs_year.Rapidity();
                     pT4ljj_jesdn_Abs_year=(Higgs+Jet1_jesdn_Abs_year+Jet2_jesdn_Abs_year).Pt();
                     mass4ljj_jesdn_Abs_year=(Higgs+Jet1_jesdn_Abs_year+Jet2_jesdn_Abs_year).M();
+		    mj1j2_jesdn_Abs_year=(Jet1_jesdn_Abs_year+Jet2_jesdn_Abs_year).M();
                     dEtaj1j2_jesdn_Abs_year=TMath::Abs(Jet1_jesdn_Abs_year.Eta()-Jet2_jesdn_Abs_year.Eta());
                     dPhij1j2_jesdn_Abs_year=deltaPhi(Jet1_jesdn_Abs_year.Phi(),Jet2_jesdn_Abs_year.Phi());
                     dPhiHj1j2_jesdn_Abs_year=deltaPhi(Higgs.Phi(),(Jet1_jesdn_Abs_year+Jet2_jesdn_Abs_year).Phi());
@@ -2432,6 +2458,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_BBEC1=Jet2_jesdn_BBEC1.Rapidity();
                     pT4ljj_jesdn_BBEC1=(Higgs+Jet1_jesdn_BBEC1+Jet2_jesdn_BBEC1).Pt();
                     mass4ljj_jesdn_BBEC1=(Higgs+Jet1_jesdn_BBEC1+Jet2_jesdn_BBEC1).M();
+		    mj1j2_jesdn_BBEC1=(Jet1_jesdn_BBEC1+Jet2_jesdn_BBEC1).M();
                     dEtaj1j2_jesdn_BBEC1=TMath::Abs(Jet1_jesdn_BBEC1.Eta()-Jet2_jesdn_BBEC1.Eta());
                     dPhij1j2_jesdn_BBEC1=deltaPhi(Jet1_jesdn_BBEC1.Phi(),Jet2_jesdn_BBEC1.Phi());
                     dPhiHj1j2_jesdn_BBEC1=deltaPhi(Higgs.Phi(),(Jet1_jesdn_BBEC1+Jet2_jesdn_BBEC1).Phi());
@@ -2604,6 +2631,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_BBEC1_year=Jet2_jesdn_BBEC1_year.Rapidity();
                     pT4ljj_jesdn_BBEC1_year=(Higgs+Jet1_jesdn_BBEC1_year+Jet2_jesdn_BBEC1_year).Pt();
                     mass4ljj_jesdn_BBEC1_year=(Higgs+Jet1_jesdn_BBEC1_year+Jet2_jesdn_BBEC1_year).M();
+		    mj1j2_jesdn_BBEC1_year=(Jet1_jesdn_BBEC1_year+Jet2_jesdn_BBEC1_year).M();
                     dEtaj1j2_jesdn_BBEC1_year=TMath::Abs(Jet1_jesdn_BBEC1_year.Eta()-Jet2_jesdn_BBEC1_year.Eta());
                     dPhij1j2_jesdn_BBEC1_year=deltaPhi(Jet1_jesdn_BBEC1_year.Phi(),Jet2_jesdn_BBEC1_year.Phi());
                     dPhiHj1j2_jesdn_BBEC1_year=deltaPhi(Higgs.Phi(),(Jet1_jesdn_BBEC1_year+Jet2_jesdn_BBEC1_year).Phi());
@@ -2776,6 +2804,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_EC2=Jet2_jesdn_EC2.Rapidity();
                     pT4ljj_jesdn_EC2=(Higgs+Jet1_jesdn_EC2+Jet2_jesdn_EC2).Pt();
                     mass4ljj_jesdn_EC2=(Higgs+Jet1_jesdn_EC2+Jet2_jesdn_EC2).M();
+		    mj1j2_jesdn_EC2=(Jet1_jesdn_EC2+Jet2_jesdn_EC2).M();
                     dEtaj1j2_jesdn_EC2=TMath::Abs(Jet1_jesdn_EC2.Eta()-Jet2_jesdn_EC2.Eta());
                     dPhij1j2_jesdn_EC2=deltaPhi(Jet1_jesdn_EC2.Phi(),Jet2_jesdn_EC2.Phi());
                     dPhiHj1j2_jesdn_EC2=deltaPhi(Higgs.Phi(),(Jet1_jesdn_EC2+Jet2_jesdn_EC2).Phi());
@@ -2948,6 +2977,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_EC2_year=Jet2_jesdn_EC2_year.Rapidity();
                     pT4ljj_jesdn_EC2_year=(Higgs+Jet1_jesdn_EC2_year+Jet2_jesdn_EC2_year).Pt();
                     mass4ljj_jesdn_EC2_year=(Higgs+Jet1_jesdn_EC2_year+Jet2_jesdn_EC2_year).M();
+		    mj1j2_jesdn_EC2_year=(Jet1_jesdn_EC2_year+Jet2_jesdn_EC2_year).M();
                     dEtaj1j2_jesdn_EC2_year=TMath::Abs(Jet1_jesdn_EC2_year.Eta()-Jet2_jesdn_EC2_year.Eta());
                     dPhij1j2_jesdn_EC2_year=deltaPhi(Jet1_jesdn_EC2_year.Phi(),Jet2_jesdn_EC2_year.Phi());
                     dPhiHj1j2_jesdn_EC2_year=deltaPhi(Higgs.Phi(),(Jet1_jesdn_EC2_year+Jet2_jesdn_EC2_year).Phi());
@@ -3121,6 +3151,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_FlavQCD=Jet2_jesdn_FlavQCD.Rapidity();
                     pT4ljj_jesdn_FlavQCD=(Higgs+Jet1_jesdn_FlavQCD+Jet2_jesdn_FlavQCD).Pt();
                     mass4ljj_jesdn_FlavQCD=(Higgs+Jet1_jesdn_FlavQCD+Jet2_jesdn_FlavQCD).M();
+		    mj1j2_jesdn_FlavQCD=(Jet1_jesdn_FlavQCD+Jet2_jesdn_FlavQCD).M();
                     dEtaj1j2_jesdn_FlavQCD=TMath::Abs(Jet1_jesdn_FlavQCD.Eta()-Jet2_jesdn_FlavQCD.Eta());
                     dPhij1j2_jesdn_FlavQCD=deltaPhi(Jet1_jesdn_FlavQCD.Phi(),Jet2_jesdn_FlavQCD.Phi());
                     dPhiHj1j2_jesdn_FlavQCD=deltaPhi(Higgs.Phi(),(Jet1_jesdn_FlavQCD+Jet2_jesdn_FlavQCD).Phi());
@@ -3293,6 +3324,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_HF=Jet2_jesdn_HF.Rapidity();
                     pT4ljj_jesdn_HF=(Higgs+Jet1_jesdn_HF+Jet2_jesdn_HF).Pt();
                     mass4ljj_jesdn_HF=(Higgs+Jet1_jesdn_HF+Jet2_jesdn_HF).M();
+		    mj1j2_jesdn_HF=(Jet1_jesdn_HF+Jet2_jesdn_HF).M();
                     dEtaj1j2_jesdn_HF=TMath::Abs(Jet1_jesdn_HF.Eta()-Jet2_jesdn_HF.Eta());
                     dPhij1j2_jesdn_HF=deltaPhi(Jet1_jesdn_HF.Phi(),Jet2_jesdn_HF.Phi());
                     dPhiHj1j2_jesdn_HF=deltaPhi(Higgs.Phi(),(Jet1_jesdn_HF+Jet2_jesdn_HF).Phi());
@@ -3465,6 +3497,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_HF_year=Jet2_jesdn_HF_year.Rapidity();
                     pT4ljj_jesdn_HF_year=(Higgs+Jet1_jesdn_HF_year+Jet2_jesdn_HF_year).Pt();
                     mass4ljj_jesdn_HF_year=(Higgs+Jet1_jesdn_HF_year+Jet2_jesdn_HF_year).M();
+		    mj1j2_jesdn_HF_year=(Jet1_jesdn_HF_year+Jet2_jesdn_HF_year).M();
                     dEtaj1j2_jesdn_HF_year=TMath::Abs(Jet1_jesdn_HF_year.Eta()-Jet2_jesdn_HF_year.Eta());
                     dPhij1j2_jesdn_HF_year=deltaPhi(Jet1_jesdn_HF_year.Phi(),Jet2_jesdn_HF_year.Phi());
                     dPhiHj1j2_jesdn_HF_year=deltaPhi(Higgs.Phi(),(Jet1_jesdn_HF_year+Jet2_jesdn_HF_year).Phi());
@@ -3637,6 +3670,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_RelBal=Jet2_jesdn_RelBal.Rapidity();
                     pT4ljj_jesdn_RelBal=(Higgs+Jet1_jesdn_RelBal+Jet2_jesdn_RelBal).Pt();
                     mass4ljj_jesdn_RelBal=(Higgs+Jet1_jesdn_RelBal+Jet2_jesdn_RelBal).M();
+		    mj1j2_jesdn_RelBal=(Jet1_jesdn_RelBal+Jet2_jesdn_RelBal).M();
                     dEtaj1j2_jesdn_RelBal=TMath::Abs(Jet1_jesdn_RelBal.Eta()-Jet2_jesdn_RelBal.Eta());
                     dPhij1j2_jesdn_RelBal=deltaPhi(Jet1_jesdn_RelBal.Phi(),Jet2_jesdn_RelBal.Phi());
                     dPhiHj1j2_jesdn_RelBal=deltaPhi(Higgs.Phi(),(Jet1_jesdn_RelBal+Jet2_jesdn_RelBal).Phi());
@@ -3809,6 +3843,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_RelSample_year=Jet2_jesdn_RelSample_year.Rapidity();
                     pT4ljj_jesdn_RelSample_year=(Higgs+Jet1_jesdn_RelSample_year+Jet2_jesdn_RelSample_year).Pt();
                     mass4ljj_jesdn_RelSample_year=(Higgs+Jet1_jesdn_RelSample_year+Jet2_jesdn_RelSample_year).M();
+		    mj1j2_jesdn_RelSample_year=(Jet1_jesdn_RelSample_year+Jet2_jesdn_RelSample_year).M();
                     dEtaj1j2_jesdn_RelSample_year=TMath::Abs(Jet1_jesdn_RelSample_year.Eta()-Jet2_jesdn_RelSample_year.Eta());
                     dPhij1j2_jesdn_RelSample_year=deltaPhi(Jet1_jesdn_RelSample_year.Phi(),Jet2_jesdn_RelSample_year.Phi());
                     dPhiHj1j2_jesdn_RelSample_year=deltaPhi(Higgs.Phi(),(Jet1_jesdn_RelSample_year+Jet2_jesdn_RelSample_year).Phi());
@@ -3981,6 +4016,7 @@ void slimNtuple_JES(const int & _year_=2016, const string & _name_DS_="ttH_HToZZ
                     yj2_jesdn_Total=Jet2_jesdn_Total.Rapidity();
                     pT4ljj_jesdn_Total=(Higgs+Jet1_jesdn_Total+Jet2_jesdn_Total).Pt();
                     mass4ljj_jesdn_Total=(Higgs+Jet1_jesdn_Total+Jet2_jesdn_Total).M();
+		    mj1j2_jesdn_Total=(Jet1_jesdn_Total+Jet2_jesdn_Total).M();
                     dEtaj1j2_jesdn_Total=TMath::Abs(Jet1_jesdn_Total.Eta()-Jet2_jesdn_Total.Eta());
                     dPhij1j2_jesdn_Total=deltaPhi(Jet1_jesdn_Total.Phi(),Jet2_jesdn_Total.Phi());
                     dPhiHj1j2_jesdn_Total=deltaPhi(Higgs.Phi(),(Jet1_jesdn_Total+Jet2_jesdn_Total).Phi());
