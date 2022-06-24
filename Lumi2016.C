@@ -64,12 +64,12 @@ float dataMCErr_(float pt_, float eta_, TH2F* hMuScaleFacUnc)
     return hMuScaleFacUnc->GetBinContent(hMuScaleFacUnc->FindBin(eta,pt));
 }
 
-void Lumi2016(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_M125_TuneCP2_13TeV-jhugenv7011-pythia8", const bool & isMC = true,  const bool & isSignal = true, const bool & _Test=false) {
-    std::cout<<"year: "<<_year_<<"; name_DS: "<<_name_DS_<<"; isMC: "<<isMC<<"; isSignal: "<<isSignal<<"; _Test: "<<_Test<<std::endl;
+void Lumi2016(const int & _year_=2016, const string & _name_DS_="GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5", const bool & isMC = true){
+    std::cout<<"year: "<<_year_<<"; name_DS: "<<_name_DS_<<"; isMC: "<<isMC<<std::endl;
 
     int year = _year_;
     int Year = TMath::Abs(year);
-    if (Year!=2016)    continue;
+    if (Year!=2016)    exit(EXIT_FAILURE);
 
     string pre_name = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/";
     if (year==2016)    pre_name="/eos/cms/store/group/phys_muon/TagAndProbe/HZZ4L/2016/UL/MC/postVFP/";
@@ -118,7 +118,7 @@ void Lumi2016(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_M
     Float_t Lumi_Curr;
     Float_t TotalLumi_2016;
     if (year==2016)    Lumi_Curr=16.81;
-    else if (year=-2016)    Lumi_Curr=19.52;
+    else if (year==-2016)    Lumi_Curr=19.52;
     TotalLumi_2016 = 16.81+19.52;
     Lumi_Weight=Lumi_Curr/TotalLumi_2016;
     oldtree->SetBranchStatus("*",1);
@@ -139,8 +139,8 @@ void Lumi2016(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L_M
         for (int ii=0; ii<7; ii++)
         {
             th[ii]->Write();
-            th_LimiWeight2016->Write();
         }
+        th_LimiWeight2016->Write();
     }
     TTree *newtree = oldtree->CloneTree(0);
     newtree->Branch("Lumi_Weight", &Lumi_Weight);
