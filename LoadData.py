@@ -9,11 +9,18 @@ dirMC = {}
 #dirMC['2017'] = '/eos/home-v/vmilosev/Skim_2018_HZZ/WoW/' # 2018 for now until we sort out the locations
 #dirMC['2016'] = '/eos/home-v/vmilosev/Skim_2018_HZZ/WoW/' # 2018 for now until we sort out the locations
 #dirMC['2018'] = '/eos/user/q/qguo/newNTuple_UL/2018/Slimmed_2p5/'
-dirMC['2018'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2018/Slimmed_2p5_JES/'
-dirMC['2017'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2017/Slimmed_2p5_JES/'
+#dirMC['2018'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2018/Slimmed_2p5_JES/'
+dirMC['2018'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2018/Slimmed_2p5_JES_3/'
+#dirMC['2017'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2017/Slimmed_2p5_JES/'
+dirMC['2017'] = '/publicfs/cms/data/hzz/guoqy/newNTuple_UL/2017/Slimmed_2p5_JES_3/'
 #dirMC['2016'] = '/eos/cms/store/group/phys_muon/TagAndProbe/HZZ4L/2016/UL/MC/postVFP/'
 #dirMC['2016'] = '/eos/cms/store/group/phys_muon/TagAndProbe/HZZ4L/2016/UL/MC/Slimmed_2p5/'   # postVFP
-dirMC['2016'] = 'Slimmed_2p5/'   # postVFP
+#dirMC['2016'] = 'Slimmed_2p5/'   # postVFP
+#dirMC['2016'] = 'Slimmed_2p5_JES/'   # postVFP
+dirMC['2016'] = 'Slimmed_2p5_premj1j2fix/'   # postVFP
+#dirMC['2016preVFP'] = 'Slimmed_2p5_premj1j2fix/'   # postVFP
+dirMC['2016preVFP'] = '/publicfs/cms/data/hzz/jtahir/UL2016/MC/preVFP/Slimmed_2p5_JES/'   # preVFP
+dirMC['2016postVFP'] = '/publicfs/cms/data/hzz/jtahir/UL2016/MC/postVFP/Slimmed_2p5_JES/'   # postVFP
 
 dirData_94 = '/eos/home-v/vmilosev/Skim_2018_HZZ/WoW/'  
 
@@ -23,81 +30,6 @@ SamplesMC = {}
 
 SamplesMC['2018'] = [
 ###
-#'GluGluHToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5_JES.root'
-]
-
-SamplesMC['2017'] = [
-#'GluGluHToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluHToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'GluGluToZH_HToZZTo4L_M125_TuneCP5_13TeV-jhugenv723-pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'VBF_HToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'WH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WminusH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WminusH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WminusH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WminusH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WminusH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WplusH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WplusH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WplusH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WplusH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-##'WplusH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ZH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-#'ttH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5_JES.root',
-'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5_JES.root'
-]
-
-SamplesMC['2016'] = [
 #'GluGluHToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
 #'GluGluHToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
 'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
@@ -124,16 +56,101 @@ SamplesMC['2016'] = [
 #'ttH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
 #'ttH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
 'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5.root'
+]
+
+SamplesMC['2017'] = [
+#'GluGluHToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'GluGluHToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'GluGluHToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'GluGluHToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'GluGluToZH_HToZZTo4L_M125_TuneCP5_13TeV-jhugenv723-pythia8_slimmed_newMuSF_add2p5.root',
+#'VBF_HToZZTo4L_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'VBF_HToZZTo4L_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'VBF_HToZZTo4L_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'VBF_HToZZTo4L_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'WH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'WH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'WH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'WH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WminusH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WminusH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WminusH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WminusH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WminusH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WplusH_HToZZTo4L_M120_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WplusH_HToZZTo4L_M124_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WplusH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WplusH_HToZZTo4L_M126_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+##'WplusH_HToZZTo4L_M130_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ZH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ZH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ZH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ZH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ttH_HToZZ_4LFilter_M120_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ttH_HToZZ_4LFilter_M124_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ttH_HToZZ_4LFilter_M126_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+#'ttH_HToZZ_4LFilter_M130_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5.root'
+]
+
+# FIXME with actual file names for preVFP
+SamplesMC['2016'] = [
+'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
 'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
 'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
-'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1_slimmed_newMuSF_add2p5.root'
+'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5.root'
 ]
+
+SamplesMC['2016preVFP'] = [
+'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5.root'
+]
+
+SamplesMC['2016postVFP'] = [
+'GluGluHToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'VBF_HToZZTo4L_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'WH_HToZZTo4L_M125_TuneCP5_13TeV_powheg2-minlo-HWJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'ttH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2_JHUGenV7011_pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo2e2mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4mu_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'GluGluToContinToZZTo4e_TuneCP5_13TeV-mcfm701-pythia8_slimmed_newMuSF_add2p5.root',
+'ZZTo4L_TuneCP5_13TeV_powheg_pythia8_slimmed_newMuSF_add2p5.root'
+]
+
+
 
 SamplesData = {}
 
-SamplesData['2016'] = ['data_UL2016_postVFP_noDuplicates_slimmed_bkg_add2p5.root']
-SamplesData['2017'] = ['DataUL2017_all_noDuplicates_slimmed_newMuSF_add2p5_JES.root']
-SamplesData['2018'] = ['DataUL2018_all_noDuplicates_slimmed_newMuSF_add2p5_JES.root']
+#SamplesData['2016preVFP'] = ['data_UL2016_preVFP_noDuplicates_slimmed_add2p5_bkg.root']  # FIXME with actual file name
+#SamplesData['2016postVFP'] = ['data_UL2016_postVFP_noDuplicates_slimmed_add2p5_bkg.root']
+#SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_add2p5_bkg.root']
+SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_newMuSF_add2p5_bkg.root']
+SamplesData['2017'] = ['DataUL2017_all_noDuplicates_slimmed_newMuSF_add2p5.root']
+SamplesData['2018'] = ['DataUL2018_all_noDuplicates_slimmed_newMuSF_add2p5.root']
 
 
 
