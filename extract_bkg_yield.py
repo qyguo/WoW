@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 #from library import list_files as DATA
 #from LoadData import *
 from LoadData_yield import *
+from zx_events import *
 #from JES_branches import *
 #from Input_Info import datacardInputs
 #from Utils import *
@@ -37,14 +38,15 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
     x_points = [125]
     channels=['4mu','2e2mu','4e']
     #procs=['bkg_zjets','trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
-    #procs=['bkg_zjets','bkg_qqzz','bkg_ggzz']
-    procs=['bkg_qqzz','bkg_ggzz']
+    procs=['bkg_zjets','bkg_qqzz','bkg_ggzz']
+    #procs=['bkg_qqzz','bkg_ggzz']
     #procs = ['bkg_zjets']
     #procs = ['bkg_ggzz']
 
 
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
     proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","bkg_zjets":"passedFullSelection==1"}
+    #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","bkg_zjets":"passedZXCRSelection==1"}
 
 
     cut_m4l_reco = {"2e2mu":"(mass2e2mu>0)","4mu":"(mass4mu>0)","4e":"(mass4e>0)"}
@@ -52,7 +54,8 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 
     #lumi = {"2016":35867.0,"2017":41370.0,"2018":58800.0}
     #lumi = {"2016":35900.0,"2017":41500.0,"2018":59700.0}
-    lumi = {"2016":35900.0,"2017":41500.0,"2018":58970.48}
+#    lumi = {"2016":35900.0,"2017":41500.0,"2018":58970.48}
+    lumi = {"2016":35900.0,"2017":41480.0,"2018":59830.0}  # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
     lumi_preVFP=19520; lumi_postVFP=16810;
 
     weights = {"sig":"genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection","bkg_qqzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_qqZZ_qcd_M*k_qqZZ_ewk)","bkg_ggzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_ggZZ)","bkg_zjets":"1.0"}
@@ -239,10 +242,14 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
                         nfill=100000
                         htemp = TH1F("htemp","htemp",1300,70,2000);
                         htemp.FillRandom("fsum",nfill);
-                        if (channel=="4e"): htemp.Scale(21.1/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
-                        if (channel=="4mu"): htemp.Scale(34.4/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
-                        if (channel=="2e2mu"): htemp.Scale(59.9/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
-                        if (channel=="4l"): htemp.Scale(115.4/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+			#htemp.Scale(21.1/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+			print "zx_events[opt.YEAR][channel]", zx_events[str(opt.YEAR)][channel]
+			htemp.Scale(zx_events[str(opt.YEAR)][channel]/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+		
+#                        if (channel=="4e"): htemp.Scale(21.1/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+#                        if (channel=="4mu"): htemp.Scale(34.4/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+#                        if (channel=="2e2mu"): htemp.Scale(59.9/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
+#                        if (channel=="4l"): htemp.Scale(115.4/htemp.Integral(htemp.FindBin(70),htemp.FindBin(2000)))
                         Histos[processBin_nom].FillRandom("fsum",nfill);
                         if (Histos[processBin_nom].Integral(Histos[processBin_nom].FindBin(105),Histos[processBin_nom].FindBin(160)) >0 ):
                             #Histos[processBin_nom].Scale(htemp.Integral(htemp.FindBin(105),htemp.FindBin(160))/Histos[processBin_nom].Integral(Histos[processBin_nom].FindBin(105),red_bkg.FindBin(160)))
