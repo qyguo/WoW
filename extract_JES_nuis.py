@@ -12,9 +12,9 @@ from LoadData import *
 #from Utils import *
 
 
-#if (not os.path.exists("datacardInputs/"+year+"/"+obsName)):
+#if (not os.path.exists("datacardInputs/"+opt.YEAR+"/"+obsName)):
 #    #os.system("mkdir -p datacardInputs")
-#    os.system("mkdir -p datacardInputs/"+year+"/"+obsname+"")
+#    os.system("mkdir -p datacardInputs/"+opt.YEAR+"/"+obsname+"")
 
 
 def parseOptions():
@@ -33,6 +33,7 @@ def parseOptions():
     parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|1160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     #parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     parser.add_option('',   '--year',  dest='YEAR',  type='string',default='2017',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    #parser.add_option('',   '--era',  dest='ERA',  type='string',default='2018',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
     parser.add_option('', '--bkg',      dest='BKG',type='string',default='', help='run with the type of zz background to float zz or qq_gg ')
     parser.add_option('',   '--debug',  dest='DEBUG',  type='int',default=0,   help='0 if debug false, else debug True')
     global opt, args
@@ -71,27 +72,49 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
     channels=['4mu','2e2mu','4e']
     #channels=['2e2mu']
     #channels=['4mu']
-    procs=['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz','bkg_zjets']
-#    procs = ['bkg_qqzz']
+    #procs=['trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz','bkg_zjets']
+    procs=['bkg_zjets','trueH','out_trueH','fakeH','bkg_qqzz','bkg_ggzz']
+    #procs = ['bkg_qqzz']
+    #procs = ['trueH']
 
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1 && nZXCRFailedLeptons==2)"}
-    proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
+
+    #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedZ4lSelection==1","bkg_ggzz":"passedZ4lSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
+    proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","bkg_zjets":"(passedZXCRSelection==1)"}
+
+
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"(passedFullSelection!=1 && passedZ4lSelection==1)","bkg_ggzz":"(passedFullSelection!=1 && passedZ4lSelection==1)","bkg_zjets":"(passedFullSelection!=1 && passedZXCRSelection==1)"}  # test
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"(passedFullSelection!=1)","bkg_ggzz":"(passedFullSelection!=1)","bkg_zjets":"(passedFullSelection!=1)"}
     cut_m4l_reco = {"2e2mu":"(mass2e2mu>="+str(m4l_low)+" && mass2e2mu<="+str(m4l_high)+")","4mu":"(mass4mu>="+str(m4l_low)+" && mass4mu<="+str(m4l_high)+")","4e":"(mass4e>="+str(m4l_low)+" && mass4e<="+str(m4l_high)+")"}
 
-    cut_zerobin = {"pt_leadingjet_pt30_eta4p7":"==0", "pTj2":"<=1", "mj1j2":"<=1", "pT4lj":"==0","mass4lj":"==0","dPhiHj1":"==0","dyHj1":"==0","pT4ljj":"<=1","mass4ljj":"<=1","dEtaj1j2":"<=1","dPhij1j2":"<=1","dPhiHj1j2":"<=1"}
+    cut_zerobin = {"pt_leadingjet_pt30_eta4p7":"==0", "pTj2":"<=1", "mj1j2":"<=1", "pT4lj":"==0","mass4lj":"==0","dPhiHj1":"==0","dyHj1":"==0","TauB_Inc_0j_pTWgt":"==0","TauC_Inc_0j_EnergyWgt":"==0","pT4ljj":"<=1","mass4ljj":"<=1","dEtaj1j2":"<=1","dPhij1j2":"<=1","dPhiHj1j2":"<=1"}
 
     #lumi = {"2016":35867.0,"2017":41370.0,"2018":58800.0}
-    lumi = {"2016":35900.0,"2017":41500.0,"2018":59700.0}
+    #lumi = {"2016":35900.0,"2017":41500.0,"2018":59700.0}
+    lumi = {"2016":35900.0,"2017":41480.0,"2018":59830.0}  # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
+    #lumi_part1=5.9+2.6 +2.3 +1.8 + 3.2;  #sum of luminosities of Run BCDEF 2016
+    #lumi_preVFP=5.444+2.399 +4.256 +4.054 + 2.691;  #sum of luminosities of Run BCDEF 2016 (preVFP) # from processed lumi
+    #lumi_postVFP=0.414 + 7.544 + 8.746;  # sum of luminosities of Run FGH (postVFP)
+    lumi_preVFP=19520; lumi_postVFP=16810;  # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
 
-    weights = {"sig":"genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection*"+str(lumi[opt.YEAR]),"bkg_qqzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_qqZZ_qcd_M*k_qqZZ_ewk)*"+str(lumi[opt.YEAR]),"bkg_ggzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_ggZZ)*"+str(lumi[opt.YEAR]),"bkg_zjets":"1.0"}
+#    lumiWt1 = (lumi_part1)/(lumi_part1+lumi_part2)
+#    lumiWt2 = (lumi_part2)/(lumi_part1+lumi_part2)
+    #return((lumi_part1*sf1+ lumi_part2*sf2)/(lumi_part1+lumi_part2),sqrt( (lumiWt1 * sfe1)**2  + (lumiWt2 * sfe2)**2 ))
+
+
+
+    #weights = {"sig":"genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection*"+str(lumi[opt.YEAR]),"bkg_qqzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_qqZZ_qcd_M*k_qqZZ_ewk)*"+str(lumi[opt.YEAR]),"bkg_ggzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_ggZZ)*"+str(lumi[opt.YEAR]),"bkg_zjets":"1.0"}
+    weights = {"sig":"genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection","bkg_qqzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_qqZZ_qcd_M*k_qqZZ_ewk)","bkg_ggzz":"(genWeight*pileupWeight*prefiringWeight*dataMCWeight_new*crossSection)*(k_ggZZ)","bkg_zjets":"1.0"}
 #    int stop=0;
+#    sumw = {};sumw_pre = {}; sumw_post = {} 
     for x_point in x_points:
         for channel in channels:
             for proc in procs:
     	        RootFile = {}
     	        RootFile_list = []
+		RootFile_list_pre = []
+		RootFile_list_post = []
+
 		if ((proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): 
 		    recoweight = weights["sig"]
 		else: 
@@ -100,7 +123,9 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		print "recoweight:    ",recoweight
 		if (proc=='bkg_zjets'): samples = SamplesData[opt.YEAR]
 		else: samples =SamplesMC[opt.YEAR]
-		sumw2 = []
+
+
+		sumw2 = []; sumw2_pre = []; sumw2_post = [];
                 for i in range(0,len(samples)):
                     sample = samples[i].rstrip('.root')
 
@@ -110,18 +135,43 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
                     if((proc=='bkg_ggzz' and proc!='bkg_zjets' and proc!='bkg_qqzz' and (proc!='trueH' or proc!='out_trueH' or proc!='fakeH')) and (not channel in sample)): continue # and (not str(x_point) in sample))): continue
                     if ((proc!='bkg_zjets' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH' or proc=='out_trueH' or proc=='fakeH') and ((sample.startswith('ZZTo4L') or sample.startswith('GluGluToContin')))): continue
 
-                    RootFile[sample] = TFile(dirMC[opt.YEAR]+'/'+sample+'.root',"READ")  # currently, all files in the same directory
-        	    RootFile_list.append(dirMC[opt.YEAR]+'/'+sample+'.root')
-		    print "sample is :   ", sample
-		    if (proc!='bkg_zjets'): sumw2.append(sumw[sample])
-                files = [ROOT.TFile(i) for i in RootFile_list]
-		print "proc:  ", proc, "  channel:   ", channel
-		print "files are:  ", files
+#                    RootFile[sample] = TFile(dirMC[opt.YEAR]+'/'+sample+'.root',"READ")  # currently, all files in the same directory
+#        	    RootFile_list.append(dirMC[opt.YEAR]+'/'+sample+'.root')
+		    if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+                        RootFile[sample] = TFile(dirMC[opt.YEAR]+'/'+sample+'.root',"READ")  # currently, all files in the same directory
+           	        RootFile_list.append(dirMC[opt.YEAR]+'/'+sample+'.root')
+		    else:
+		    #elif (opt.YEAR=='2016'):
+		        RootFile_pre[sample] = TFile(dirMC['2016preVFP']+'/'+sample+'.root',"READ")
+			RootFile_list_pre.append(dirMC['2016preVFP']+'/'+sample+'.root')   
+		        RootFile_post[sample] = TFile(dirMC['2016postVFP']+'/'+sample+'.root',"READ")
+			RootFile_list_post.append(dirMC['2016postVFP']+'/'+sample+'.root')   
 
-		if(proc=='bkg_zjets'): trees = [i.Get("passedEvents") for i in files]
-                else: trees = [i.Get("Ana/passedEvents") for i in files]
-        	print "RootFile_list:    ", RootFile_list
-		print "trees are:   ", trees
+		    print "sample is :   ", sample
+		    #if (proc!='bkg_zjets'): sumw2.append(sumw[sample])
+		    if (proc!='bkg_zjets' and (opt.YEAR=='2018' or opt.YEAR=='2017')): 
+			sumw2.append(sumw[sample])  # from keys to list, for onward use
+		    elif (proc!='bkg_zjets' and (opt.YEAR=='2016')): 
+			sumw2_pre.append(sumw_pre[sample]); sumw2_post.append(sumw_post[sample])
+#                files = [ROOT.TFile(i) for i in RootFile_list]
+		if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+                    files = [ROOT.TFile(i) for i in RootFile_list]
+		elif (opt.YEAR=='2016'):
+		    files_pre = [ROOT.TFile(i) for i in RootFile_list_pre]
+		    files_post = [ROOT.TFile(i) for i in RootFile_list_post]
+		#    print "proc:  ", proc, "  channel:   ", channel
+		    print "files_pre are:  ", files_pre
+		    print "files_post are:  ", files_post
+		print "proc:  ", proc, "  channel:   ", channel
+
+		if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+		    if(proc=='bkg_zjets'): trees = [i.Get("passedEvents") for i in files]
+                    else: trees = [i.Get("Ana/passedEvents") for i in files]
+		elif (opt.YEAR=='2016'):
+		    if(proc=='bkg_zjets'): trees_pre = [i.Get("passedEvents") for i in files_pre]; trees_post = [j.Get("passedEvents") for j in files_post];
+                    else: trees_pre = [i.Get("Ana/passedEvents") for i in files_pre]; trees_post = [j.Get("Ana/passedEvents") for j in files_post];
+
+
 		for recobin in range(len(obs_bins)-1):
 		    obs_reco_low = obs_bins[recobin]
     		    obs_reco_high = obs_bins[recobin+1]
@@ -130,7 +180,12 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 
 		    # hack for bin0
 		    if (recobin==0 and (not "Tau" in obs_reco and not "njets" in obs_reco)): 
+		    #if (recobin==0 and (not "njets" in obs_reco)): 
 			cutobs_reco = "njets_pt30_eta4p7"+cut_zerobin[obs_reco]
+			#if ("Tau" in obs_reco):
+			 #   cutobs_reco = "("+cutobs_reco+") && " + "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")" 
+#			if ("Tau" in obs_reco):
+#			    cutobs_reco = "("+cutobs_reco+") || " + "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")" 
 			print "zero bin, obs name:  ", cutobs_reco
 		    else:
 		        cutobs_reco = "("+obs_reco+">="+str(obs_reco_low)+" && "+obs_reco+"<"+str(obs_reco_high)+")"
@@ -145,9 +200,14 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		    nom[processBin_nom] = 0.0; 
 		    #nom[processBin_nom_Hproc] = 0.0;  # defined to sum-up the Higgs involved processes (trueH, fakeH, out_trueH) 
 		
-    		    Histos[processBin_nom] = TH1D(processBin_nom,processBin_nom, m4l_bins, m4l_low, m4l_high)
-		    Histos[processBin_nom].Sumw2()
-
+		    if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+    		        Histos[processBin_nom] = TH1D(processBin_nom,processBin_nom, m4l_bins, m4l_low, m4l_high)
+		        Histos[processBin_nom].Sumw2()
+		    elif (opt.YEAR=='2016'):
+			Histos[processBin_nom+'pre'] = TH1D(processBin_nom+'pre',processBin_nom+'pre', m4l_bins, m4l_low, m4l_high)
+			Histos[processBin_nom+'pre'].Sumw2()
+			Histos[processBin_nom+'post'] = TH1D(processBin_nom+'post',processBin_nom+'post', m4l_bins, m4l_low, m4l_high)
+			Histos[processBin_nom+'post'].Sumw2()
     		    #Histos[processBin_nom_Hproc] = TH1D(processBin_nom_Hproc,processBin_nom_Hproc, m4l_bins, m4l_low, m4l_high)
 		    #Histos[processBin_nom_Hproc].Sumw2()
 
@@ -157,18 +217,37 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 		        processBin_jesdn_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_jesdn_'+nuis
 		        processBin_ratio_nuis = proc+'_'+str(x_point)+'_'+obsName+'_'+channel+'_recobin'+str(recobin)+'_'+nuis
 
-			Histos[processBin_jesup_nuis] = TH1D(processBin_jesup_nuis,processBin_jesup_nuis, m4l_bins, m4l_low, m4l_high)
-			Histos[processBin_jesup_nuis].Sumw2()
-			Histos[processBin_jesdn_nuis] = TH1D(processBin_jesdn_nuis,processBin_jesdn_nuis, m4l_bins, m4l_low, m4l_high)
-			Histos[processBin_jesdn_nuis].Sumw2()
+			if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+			    Histos[processBin_jesup_nuis] = TH1D(processBin_jesup_nuis,processBin_jesup_nuis, m4l_bins, m4l_low, m4l_high)
+			    Histos[processBin_jesup_nuis].Sumw2()
+			    Histos[processBin_jesdn_nuis] = TH1D(processBin_jesdn_nuis,processBin_jesdn_nuis, m4l_bins, m4l_low, m4l_high)
+			    Histos[processBin_jesdn_nuis].Sumw2()
+			elif (opt.YEAR=='2016'):
+			    Histos[processBin_jesup_nuis+'pre'] = TH1D(processBin_jesup_nuis+'pre',processBin_jesup_nuis+'pre', m4l_bins, m4l_low, m4l_high)
+                            Histos[processBin_jesup_nuis+'pre'].Sumw2()
+                            Histos[processBin_jesdn_nuis+'pre'] = TH1D(processBin_jesdn_nuis+'pre',processBin_jesdn_nuis+'pre', m4l_bins, m4l_low, m4l_high)
+                            Histos[processBin_jesdn_nuis+'pre'].Sumw2()
+
+			    Histos[processBin_jesup_nuis+'post'] = TH1D(processBin_jesup_nuis+'post',processBin_jesup_nuis+'post', m4l_bins, m4l_low, m4l_high)
+                            Histos[processBin_jesup_nuis+'post'].Sumw2()
+                            Histos[processBin_jesdn_nuis+'post'] = TH1D(processBin_jesdn_nuis+'post',processBin_jesdn_nuis+'post', m4l_bins, m4l_low, m4l_high)
+                            Histos[processBin_jesdn_nuis+'post'].Sumw2()
+
 
                     # hack for bin0
 		        if (recobin==0 and (not "Tau" in obs_reco and not "njets" in obs_reco)): 
+		        #if (recobin==0 and (not "njets" in obs_reco)): 
 			    cutobs_reco_nuis_up = "njets_pt30_eta4p7_jesup_"+nuis+cut_zerobin[obs_reco]
 			    cutobs_reco_nuis_dn = "njets_pt30_eta4p7_jesdn_"+nuis+cut_zerobin[obs_reco]
+#                            if ("Tau" in obs_reco):
+#                                #cutobs_reco_nuis_up = "("+cutobs_reco_nuis_up+") && " + "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
+#                                #cutobs_reco_nuis_dn = "("+cutobs_reco_nuis_dn+") && " + "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
+#                                cutobs_reco_nuis_up = "("+cutobs_reco_nuis_up+") || " + "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
+#                                cutobs_reco_nuis_dn = "("+cutobs_reco_nuis_dn+") || " + "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
 			else:
 			    cutobs_reco_nuis_up = "("+obs_reco+"_jesup_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesup_"+nuis+"<"+str(obs_reco_high)+")"
 			    cutobs_reco_nuis_dn = "("+obs_reco+"_jesdn_"+nuis+">="+str(obs_reco_low)+" && "+obs_reco+"_jesdn_"+nuis+"<"+str(obs_reco_high)+")"
+
 			print "cutobs_reco_nuis_up:  " , cutobs_reco_nuis_up			
 			print "cutobs_reco_nuis_dn:  " , cutobs_reco_nuis_dn			
 
@@ -197,39 +276,72 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			yield_nom = 0.;	yield_jesup_nuis = 0.; yield_jesdn_nuis = 0.;
 		#	yield_nom_Hproc=0;
 			i=0;  # iterator to read sumw2 from corresponding root file, meant to work for signal proc. only
-			for tree in trees:
-			    if(proc=='bkg_zjets'):
-                                tree.Draw("mass4l >> "+processBin_nom,"("+cut_nom+")","goff")
-                                tree.Draw("mass4l >> "+processBin_jesup_nuis,"("+cut_nuis_up+")","goff")
-                                tree.Draw("mass4l >> "+processBin_jesdn_nuis,"("+cut_nuis_dn+")","goff")				
-			    else:
+	
+			if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+			    for tree in trees:
+			        if(proc=='bkg_zjets'):
+                                    tree.Draw("mass4l >> "+processBin_nom,"("+cut_nom+")","goff")
+                                    tree.Draw("mass4l >> "+processBin_jesup_nuis,"("+cut_nuis_up+")","goff")
+                                    tree.Draw("mass4l >> "+processBin_jesdn_nuis,"("+cut_nuis_dn+")","goff")				
+			        else:
+			            print "proc is:   ", proc
+			            print "channel is:   ", channel
+			            print "i:  ",i
+				    print "len(sumw2):    ", len(sumw2)
+			            print "sumw2[",i,"] : ", sumw2[i] 
+			            tree.Draw("mass4l >> "+processBin_nom,"("+cut_nom+"*("+str(lumi[opt.YEAR])+")/"+str(sumw2[i])+")","goff")
+			            tree.Draw("mass4l >> "+processBin_jesup_nuis,"("+cut_nuis_up+"*("+str(lumi[opt.YEAR])+")/"+str(sumw2[i])+")","goff")
+			            tree.Draw("mass4l >> "+processBin_jesdn_nuis,"("+cut_nuis_dn+"*("+str(lumi[opt.YEAR])+")/"+str(sumw2[i])+")","goff")
+			        i=i+1
 
-			        print "proc is:   ", proc
-			        print "channel is:   ", channel
-			        print "i:  ",i
-				print "len(sumw2):    ", len(sumw2)
-			        print "sumw2[",i,"] : ", sumw2[i] 
-			        tree.Draw("mass4l >> "+processBin_nom,"("+cut_nom+"/"+str(sumw2[i])+")","goff")
-			        tree.Draw("mass4l >> "+processBin_jesup_nuis,"("+cut_nuis_up+"/"+str(sumw2[i])+")","goff")
-			        tree.Draw("mass4l >> "+processBin_jesdn_nuis,"("+cut_nuis_dn+"/"+str(sumw2[i])+")","goff")
-			    i=i+1
+			        yield_nom+=Histos[processBin_nom].Integral()
+			        yield_jesup_nuis+=Histos[processBin_jesup_nuis].Integral()
+			        yield_jesdn_nuis+=Histos[processBin_jesdn_nuis].Integral()
 
-			    yield_nom+=Histos[processBin_nom].Integral()
-			    yield_jesup_nuis+=Histos[processBin_jesup_nuis].Integral()
-			    yield_jesdn_nuis+=Histos[processBin_jesdn_nuis].Integral()
+                        else:
+			    for pre_tree, post_tree in zip(trees_pre, trees_post):    
+				print "pre_tree is:  ", pre_tree
+				print "post_tree is:  ", post_tree
 
-#			    if (proc=='trueH' or proc=='out_trueH' or proc=='fakeH'):
-#				yield_nom_Hproc+=yield_nom
-#                            print "proc name.......:", proc
-#                            print "yield_nom:   ", yield_nom
-#                            print "yield_nom_Hproc:   ", yield_nom_Hproc	
-#
-#			print "reading finished   ......."
-#			print "proc name.......:", proc
-#			print "yield_nom:   ", yield_nom
-#			print "yield_nom_Hproc:   ", yield_nom_Hproc
-#			print "yield_jesup_nuis:   ", yield_jesup_nuis
-#			print "yield_jesdn_nuis:   ", yield_jesdn_nuis
+				if(proc=='bkg_zjets'):
+                                    pre_tree.Draw("mass4l >> "+processBin_nom+'pre',"("+cut_nom+")","goff")
+                                    pre_tree.Draw("mass4l >> "+processBin_jesup_nuis+'pre',"("+cut_nuis_up+")","goff")
+                                    pre_tree.Draw("mass4l >> "+processBin_jesdn_nuis+'pre',"("+cut_nuis_dn+")","goff")
+
+                                    post_tree.Draw("mass4l >> "+processBin_nom+'post',"("+cut_nom+")","goff")
+                                    post_tree.Draw("mass4l >> "+processBin_jesup_nuis+'post',"("+cut_nuis_up+")","goff")
+                                    post_tree.Draw("mass4l >> "+processBin_jesdn_nuis+'post',"("+cut_nuis_dn+")","goff")
+                                else:
+
+                                    print "proc is:   ", proc
+                                    print "channel is:   ", channel
+                                    print "i:  ",i
+                                    print "len(sumw2_pre):    ", len(sumw2_pre)
+                                    print "sumw2_pre[",i,"] : ", sumw2_pre[i]
+                                    print "len(sumw2_post):    ", len(sumw2_post)
+                                    print "sumw2_post[",i,"] : ", sumw2_post[i]
+
+                                    #pre_tree.Draw("mass4l >> "+processBin_nom+'pre',"("+cut_nom+"/"+str(sumw2_pre[i])+")","goff")
+                                    pre_tree.Draw("mass4l >> "+processBin_nom+'pre',"("+cut_nom+"*("+str(lumi_preVFP)+")/"+str(sumw2_pre[i])+")","goff")
+                                    #pre_tree.Draw("mass4l >> "+processBin_jesup_nuis+'pre',"("+cut_nuis_up+"/"+str(sumw2_pre[i])+")","goff")
+                                    pre_tree.Draw("mass4l >> "+processBin_jesup_nuis+'pre',"("+cut_nuis_up+"*("+str(lumi_preVFP)+")/"+str(sumw2_pre[i])+")","goff")
+                                    pre_tree.Draw("mass4l >> "+processBin_jesdn_nuis+'pre',"("+cut_nuis_dn+"*("+str(lumi_preVFP)+")/"+str(sumw2_pre[i])+")","goff")
+
+                                    post_tree.Draw("mass4l >> "+processBin_nom+'post',"("+cut_nom+"*("+str(lumi_postVFP)+")/"+str(sumw2_post[i])+")","goff")
+                                    post_tree.Draw("mass4l >> "+processBin_jesup_nuis+'post',"("+cut_nuis_up+"*("+str(lumi_postVFP)+")/"+str(sumw2_post[i])+")","goff")
+                                    post_tree.Draw("mass4l >> "+processBin_jesdn_nuis+'post',"("+cut_nuis_dn+"*("+str(lumi_postVFP)+")/"+str(sumw2_post[i])+")","goff")
+
+                                i=i+1
+
+				print "pre Integral", Histos[processBin_nom+'pre'].Integral()
+				print "post Integral", Histos[processBin_nom+'post'].Integral()
+
+				
+				yield_nom+= Histos[processBin_nom+'pre'].Integral() + Histos[processBin_nom+'post'].Integral()
+				yield_jesup_nuis+= Histos[processBin_jesup_nuis+'pre'].Integral() + Histos[processBin_jesup_nuis+'post'].Integral()
+				yield_jesdn_nuis+= Histos[processBin_jesdn_nuis+'pre'].Integral() + Histos[processBin_jesdn_nuis+'post'].Integral()
+
+
 ##       		
 			nom[processBin_nom] = yield_nom 
 			if (nuis=="Abs"): up_Abs[processBin_jesup_nuis] = yield_jesup_nuis; dn_Abs[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Abs[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
@@ -244,10 +356,6 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			if (nuis=="RelBal"): up_RelBal[processBin_jesup_nuis] = yield_jesup_nuis; dn_RelBal[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_RelBal[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 			if (nuis=="RelSample_year"): up_RelSample_year[processBin_jesup_nuis] = yield_jesup_nuis; dn_RelSample_year[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_RelSample_year[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 			if (nuis=="Total"): up_Total[processBin_jesup_nuis] = yield_jesup_nuis; dn_Total[processBin_jesdn_nuis] = yield_jesdn_nuis; ratio_Total[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
-			#up[processBin_jesup_nuis] = yield_jesup_nuis 
-       		#dn[processBin_jesdn_nuis] = yield_jesdn_nuis 
-#		        print "ratio:    ", computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)	
-			#ratio[processBin_ratio_nuis] = computeRatio(yield_nom,yield_jesup_nuis,yield_jesdn_nuis)
 
 
 ## combing the H processes
@@ -312,18 +420,6 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 			if (nuis=="RelBal"): yield_jesup_nuis_Hproc+=up_RelBal[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_RelBal[processBin_jesdn_nuis];
 			if (nuis=="RelSample_year"): yield_jesup_nuis_Hproc+=up_RelSample_year[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_RelSample_year[processBin_jesdn_nuis];
 			if (nuis=="Total"): yield_jesup_nuis_Hproc+=up_Total[processBin_jesup_nuis]; yield_jesdn_nuis_Hproc+=dn_Total[processBin_jesdn_nuis];
-
-#			print "proc: ", proc
-#			print "processBin_jesup_nuis", processBin_jesup_nuis
-#			print "processBin_jesdn_nuis", processBin_jesdn_nuis
-#			print "up_Abs[processBin_jesup_nuis]", up_Abs[processBin_jesup_nuis]
-#			print "dn_Abs[processBin_jesdn_nuis]", dn_Abs[processBin_jesdn_nuis]
-#		        print "yield_jesup_nuis_Hproc:  ", yield_jesup_nuis_Hproc	
-#			print "yield_jesdn_nuis_Hproc: ", yield_jesdn_nuis_Hproc
-#		    print "outside loop:  "
-#		    print "nuis:    ", nuis		    
-#		    print "yield_jesup_nuis_Hproc: ", yield_jesup_nuis_Hproc
-#		    print "yield_jesdn_nuis_Hproc: ", yield_jesdn_nuis_Hproc
 
    
     		    if (nuis=="Abs"): up_Abs[processBin_jesup_nuis_Hproc] = yield_jesup_nuis_Hproc; dn_Abs[processBin_jesdn_nuis_Hproc] = yield_jesdn_nuis_Hproc; ratio_Abs[processBin_ratio_nuis_Hproc] = computeRatio(yield_nom_Hproc,yield_jesup_nuis_Hproc,yield_jesdn_nuis_Hproc)
@@ -396,15 +492,12 @@ def extract_JES_nuis(nbins, obsName, obs_bins, DEBUG = 0):
 #		    if (nuis=="Total"): up_Total[key_jesup_125pt38] = float(interpolate.splev(125.38, spl_jesUp_points)); dn_Total[key_jesdn_125pt38] = float(interpolate.splev(125.38, spl_jesDn_points)); ratio_Total[key_ratio_nuis] =  computeRatio(nom[key_nom_125pt38],up_Total[key_jesup_125pt38],dn_Total[key_jesdn_125pt38]);
 #
 
-        #with open('datacardInputs/inputs_JESnuis_'+opt.OBSNAME+'_'+channel+'_'+proc+'_'+year+'.py', 'w') as f:
-    with open('datacardInputs/'+year+'/'+obs_reco+'/inputs_JESnuis_'+opt.OBSNAME+'.py', 'w') as f:
-        f.write('obsName = "'+str(opt.OBSNAME)+'" \n')
-        f.write('obs_bins = '+str(obs_bins)+' \n')
-        f.write('JES uncertainty sources = '+str(JES_nuis)+' \n')
+        #with open('datacardInputs/inputs_JESnuis_'+opt.OBSNAME+'_'+channel+'_'+proc+'_'+opt.YEAR+'.py', 'w') as f:
+    with open('datacardInputs/'+opt.YEAR+'/'+obs_reco+'/inputs_JESnuis_'+opt.OBSNAME+'.py', 'w') as f:
+        #f.write('obsName = "'+str(opt.OBSNAME)+'" \n')
+        #f.write('obs_bins = '+str(obs_bins)+' \n')
+        #f.write('JES uncertainty sources = '+str(JES_nuis)+' \n')
         f.write('yield_nom = '+str(nom)+' \n')
-        #f.write('yield_up = '+str(up)+' \n')
-        #f.write('yield_dn = '+str(dn)+' \n')
-        #f.write('nuis_impact = '+str(ratio)+' \n')
         f.write('yield_up_Abs = '+str(up_Abs)+' \n')
         f.write('yield_dn_Abs = '+str(dn_Abs)+' \n')
         f.write('nuis_Abs = '+str(ratio_Abs)+' \n')
@@ -459,11 +552,10 @@ if __name__ == "__main__":
     nbins = len(observableBins)
     
     obs_reco = opt.OBSNAME 
-    year = opt.YEAR
 
-    if (not os.path.exists("datacardInputs/"+year+"/"+obs_reco)):
+    if (not os.path.exists("datacardInputs/"+opt.YEAR+"/"+obs_reco)):
     #os.system("mkdir -p datacardInputs")
-        os.system("mkdir -p datacardInputs/"+year+"/"+obs_reco+"")
+        os.system("mkdir -p datacardInputs/"+opt.YEAR+"/"+obs_reco+"")
 
 
  
@@ -472,7 +564,7 @@ if __name__ == "__main__":
     m4l_bins = 35
     #m4l_bins = 70  ## temporary
 
-    print "year being processed: ",year
+    print "era being processed: ",opt.YEAR
 
     Histos = {}
     nom = {}
@@ -484,8 +576,18 @@ if __name__ == "__main__":
 
     ratio = {} 
 
-    RootFile, Tree, nEvents, sumw = GrabMCTrees(opt.YEAR)
-    print "sumw: ", sumw
+#    RootFile, Tree, nEvents, sumw = GrabMCTrees(opt.YEAR)
+#    print "sumw: ", sumw
+
+    if (opt.YEAR=='2018' or opt.YEAR=='2017'):
+        RootFile, Tree, nEvents, sumw = GrabMCTrees(opt.YEAR)
+    else:
+        print "getting trees from pre "
+        RootFile_pre, Tree_pre, nEvents_pre, sumw_pre = GrabMCTrees('2016preVFP')
+        print "getting trees from post "
+        RootFile_post, Tree_post, nEvents_post, sumw_post = GrabMCTrees('2016postVFP')
+
+
 
     #JES_nuis = ['Abs','FlavQCD'] 
     #JES_nuis = ['Abs'] 
