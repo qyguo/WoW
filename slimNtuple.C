@@ -68,8 +68,10 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     string name_DS = _name_DS_.c_str();
 
     //TString filename = prefix+".root";
-    string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
-    string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_2p5/").c_str(); 
+    //string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
+    //string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_2p5/").c_str(); 
+    string filename = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/ggh_amcatnloFXFX_gen.root";
+    string outputFile_Slimmed = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/";
 
     std::cout<<"Year: "<<year<<std::endl;
     std::cout<<filename<<std::endl;
@@ -251,13 +253,12 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     oldtree->SetBranchStatus("*",0); //Disables All Branches
     //Then enables only select branches
     //
-    if (isMC){
-        oldtree->SetBranchStatus("lep_id",1);
-        oldtree->SetBranchStatus("lep_pt",1);
-        oldtree->SetBranchStatus("lep_eta",1);
-        oldtree->SetBranchStatus("lep_dataMC",1);
-        oldtree->SetBranchStatus("lep_dataMCErr",1);
-    }
+    //
+    oldtree->SetBranchStatus("lep_id",1);
+    oldtree->SetBranchStatus("lep_pt",1);
+    oldtree->SetBranchStatus("lep_eta",1);
+    oldtree->SetBranchStatus("lep_dataMC",1);
+    oldtree->SetBranchStatus("lep_dataMCErr",1);
 
     oldtree->SetBranchStatus("Run",1);
     oldtree->SetBranchStatus("LumiSect",1);
@@ -271,6 +272,15 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     oldtree->SetBranchStatus("passedZ4lZXCRSelection",1);
     oldtree->SetBranchStatus("passedZXCRSelection",1);
     oldtree->SetBranchStatus("nZXCRFailedLeptons",1);
+
+    oldtree->SetBranchStatus("met",1);
+    oldtree->SetBranchStatus("lep_phi",1);
+    oldtree->SetBranchStatus("lep_mass",1);
+    oldtree->SetBranchStatus("lep_tightId",1);
+    oldtree->SetBranchStatus("lep_RelIsoNoFSR",1);
+    oldtree->SetBranchStatus("lep_matchedR03_PdgId",1);
+    oldtree->SetBranchStatus("lep_matchedR03_MomId",1);
+    oldtree->SetBranchStatus("lep_matchedR03_MomMomId",1);
 
     oldtree->SetBranchStatus("genWeight",1);
     oldtree->SetBranchStatus("pileupWeight",1);
