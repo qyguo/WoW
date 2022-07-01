@@ -541,7 +541,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
         if (i%100000==0) std::cout<<i<<"/"<<nentries<<std::endl;
         oldtree->GetEntry(i);
 
-        if (!isMC || (isMC && (isSignal || (!isSignal && (passedZ4lSelection ||passedZXCRSelection)))) )
+        if (!isMC || (isMC && (isSignal || (!isSignal && ( passedZXCRSelection||passedZ1LSelection )))) )
         {
             if (pT4l>0)
             {
@@ -597,7 +597,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
 
         if (isMC)
         {
-            if (isSignal || (!isSignal && (passedZ4lSelection ||passedZXCRSelection)))
+            if (isSignal || (!isSignal && (passedZXCRSelection || passedZ1LSelection)))
             {
                 for(Long64_t j=0; j<lep_pt->size(); j++)
                 {
@@ -653,7 +653,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
         {
             newtree->Fill();
         }
-        if (!isSignal && (passedZ4lSelection ||passedZXCRSelection))
+        if (!isSignal && (passedZ4lSelection || passedZXCRSelection || passedZ1LSelection))
         {
             newtree->Fill();////if only store the event passedFullSelection
         }
