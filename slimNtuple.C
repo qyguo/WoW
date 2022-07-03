@@ -68,10 +68,10 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     string name_DS = _name_DS_.c_str();
 
     //TString filename = prefix+".root";
-    //string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
-    //string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_2p5/").c_str(); 
-    string filename = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/ggh_amcatnloFXFX_gen.root";
-    string outputFile_Slimmed = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/";
+    string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
+    string outputFile_Slimmed = (pre_name + whichYear[year-2016] + "Slimmed_ZX/").c_str(); 
+    //string filename = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/ggh_amcatnloFXFX_gen.root";
+    //string outputFile_Slimmed = "/publicfs/cms/data/hzz/guoqy/newNTuple_UL/ggh_amcatnloFXFX_ntuple/";
 
     std::cout<<"Year: "<<year<<std::endl;
     std::cout<<filename<<std::endl;
@@ -247,8 +247,10 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
     
     Bool_t passedZ4lSelection;
     Bool_t passedZXCRSelection;
+    Bool_t passedZ1LSelection;
     oldtree->SetBranchAddress("passedZ4lSelection", &passedZ4lSelection);
     oldtree->SetBranchAddress("passedZXCRSelection", &passedZXCRSelection);
+    oldtree->SetBranchAddress("passedZ1LSelection", &passedZ1LSelection);
 
     oldtree->SetBranchStatus("*",0); //Disables All Branches
     //Then enables only select branches
@@ -478,7 +480,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="bbH_HToZZTo4L
 
     //Create a new file + a clone of old tree in new file
     TFile *newfile = new TFile(
-            (outputFile_Slimmed+name_DS+"_slimmed_newMuSF_add2p5.root").c_str()
+            (outputFile_Slimmed+name_DS+"_slimmed_newMuSF_add2p5_ZX.root").c_str()
             ,"recreate");
     cout<<"Output file: "<<newfile->GetName()<<endl;
     if (isMC)
