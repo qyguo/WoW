@@ -148,7 +148,9 @@ SamplesData = {}
 #SamplesData['2016preVFP'] = ['data_UL2016_preVFP_noDuplicates_slimmed_add2p5_bkg.root']  # FIXME with actual file name
 #SamplesData['2016postVFP'] = ['data_UL2016_postVFP_noDuplicates_slimmed_add2p5_bkg.root']
 #SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_add2p5_bkg.root']
-SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_newMuSF_add2p5_bkg.root']
+
+#SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_newMuSF_add2p5_bkg.root']
+SamplesData['2016'] = ['data_UL2016_noDuplicates_slimmed_newMuSF_add2p5_sig.root']
 SamplesData['2017'] = ['DataUL2017_all_noDuplicates_slimmed_newMuSF_add2p5.root']
 SamplesData['2018'] = ['DataUL2018_all_noDuplicates_slimmed_newMuSF_add2p5.root']
 
