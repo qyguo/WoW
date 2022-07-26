@@ -58,10 +58,42 @@ void order_pt(vector<float> *GENlep_pt, vector<int> &order_index)
     }
 }
 
-void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo4L_M125_2017", const bool & isMC = true,  const bool & isSignal = true, const bool & _OldNtuple=false, const bool & _addNewVar=false, const bool & _Test = false) {
+float TauC(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
+{       
+        float TauC_j = 0; float TauC_jmax = 0; 
+        for( unsigned int k = 0; k< pt.size(); k++) {
+            TLorentzVector theJet;
+            theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
+            TauC_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())/(2*cosh(theJet.Rapidity() - H.Rapidity()));
+            if (TauC_j > TauC_jmax) {
+                TauC_jmax = TauC_j;
+                }
+        }
+    return TauC_jmax;
+}
+
+float TauB(vector<float> pt, vector<float> eta, vector<float> phi, vector<float> mass, TLorentzVector H)
+{
+        float TauB_j = 0; float TauB_jmax = 0;
+        for( unsigned int k = 0; k< pt.size(); k++) {
+            TLorentzVector theJet;
+            theJet.SetPtEtaPhiM(pt[k],eta[k],phi[k],mass[k]);
+            TauB_j = sqrt(theJet.Pt()*theJet.Pt() + theJet.M()*theJet.M())*exp(-1*(abs(theJet.Rapidity() - H.Rapidity())));
+            if (TauB_j > TauB_jmax) {
+                TauB_jmax = TauB_j;
+                }
+        }
+    return TauB_jmax;
+}
+
+
+
+//void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo4L_M125_2017", const bool & isMC = true,  const bool & isSignal = true, const bool & _OldNtuple=false, const bool & _addNewVar=false, const bool & _Test = false) {
+void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlops_GENonly", const bool & isMC = true,  const bool & isSignal = true, const bool & _OldNtuple=true, const bool & _addNewVar=true, const bool & _Test = false) {
 
     int year = _year_;
-    string pre_name = "root://cmsio5.rc.ufl.edu:1094//store/user/t2/users/ferrico/Qianying/";
+    //string pre_name = "root://cmsio5.rc.ufl.edu:1094//store/user/t2/users/ferrico/Qianying/";
+    string pre_name = "/publicfs/cms/data/hzz/jtahir/UL2016/CMSSW_10_6_26/src/WoW/";
     string whichYear[3] = {"2016/", "2017/", "2018/"};
     string MC__ = "MC/";
     if (!isMC) MC__ = "DATA/";
@@ -69,7 +101,8 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     string name_DS = _name_DS_.c_str();
 
     //TString filename = prefix+".root";
-    string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
+    //string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
+    string filename = (pre_name + name_DS + ".root").c_str();
     //filename = "Sync_106X_2018UL_30112021_-1ggH_V2.root";
 
     std::cout<<"Year: "<<year<<std::endl;
@@ -95,10 +128,18 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     std::cout<<nentries<<" total entries."<<std::endl;
 
     vector<int> order_index;
+    vector<float> pt_nom {};
+    vector<float> eta_nom {};
+    vector<float> phi_nom {};
+    vector<float> mass_nom {};
+
     TLorentzVector j1, j2, Higgs, hj, jj, hjj;
     TLorentzVector GENj1, GENj2, GENl1, GENl2, GENl3, GENl4, GENHiggs, GENhj, GENjj, GENhjj;
+    TLorentzVector GENj1_2p5, GENj2_2p5, GENhj_2p5, GENjj_2p5, GENhjj_2p5;
     float pTj2(-1.0), mj1j2(-1.0), dEtaj1j2(-99.0), dPhij1j2(-99.0), pT4lj(-1.0), mass4lj(-1.0), pT4ljj(-1.0), mass4ljj(-1.0);
-    float GENpTj2(-1.0), GENmj1j2(-1.0), GENdEtaj1j2(-99.0), GENdPhij1j2(-99.0), GENpT4lj(-1.0), GENmass4lj(-1.0), GENpT4ljj(-1.0), GENmass4ljj(-1.0);
+    float GENpTj2(-1.0), GENmj1j2(-1.0), GENdEtaj1j2(-99.0), GENdPhij1j2(-99.0), GENpT4lj(-1.0), GENmass4lj(-1.0), GENpT4ljj(-1.0), GENmass4ljj(-1.0), GEN_TauB_Inc_0j_pTWgt(-99), GEN_TauC_Inc_0j_EnergyWgt(-99);
+    float GENpTj2_2p5(-1.0), GENmj1j2_2p5(-1.0), GENdEtaj1j2_2p5(-99.0), GENdPhij1j2_2p5(-99.0), GENpT4lj_2p5(-1.0), GENmass4lj_2p5(-1.0), GENpT4ljj_2p5(-1.0), GENmass4ljj_2p5(-1.0);
+
 
     //ULong64_t Run, LumiSect, Event;
     //Bool_t          passedFullSelection;
@@ -149,6 +190,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
     jet_mass = 0;
 
     Int_t           GENnjets_pt30_eta4p7;
+    Int_t           GENnjets_pt30_eta2p5;
     vector<float>   *GENjet_pt;
     vector<float>   *GENjet_eta;
     vector<float>   *GENjet_phi;
@@ -187,6 +229,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
         oldtree->SetBranchAddress("mass4l", &mass4l);
 
         oldtree->SetBranchAddress("GENnjets_pt30_eta4p7", &GENnjets_pt30_eta4p7);
+        oldtree->SetBranchAddress("GENnjets_pt30_eta2p5", &GENnjets_pt30_eta2p5);
         oldtree->SetBranchAddress("GENjet_pt", &GENjet_pt);
         oldtree->SetBranchAddress("GENjet_eta", &GENjet_eta);
         oldtree->SetBranchAddress("GENjet_phi", &GENjet_phi);
@@ -246,7 +289,7 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
 
     oldtree->SetBranchStatus("genWeight",1);
     oldtree->SetBranchStatus("pileupWeight",1);
-    oldtree->SetBranchStatus("prefiringWeight",1);
+//    oldtree->SetBranchStatus("prefiringWeight",1);
     oldtree->SetBranchStatus("dataMCWeight",1);
     oldtree->SetBranchStatus("eventWeight",1);
     oldtree->SetBranchStatus("crossSection",1);
@@ -424,6 +467,16 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
         newtree->Branch("GENmass4lj", &GENmass4lj);
         newtree->Branch("GENpT4ljj", &GENpT4ljj);
         newtree->Branch("GENmass4ljj", &GENmass4ljj);
+        newtree->Branch("GENpTj2_2p5", &GENpTj2_2p5);
+        newtree->Branch("GENmj1j2_2p5", &GENmj1j2_2p5);
+        newtree->Branch("GENdEtaj1j2_2p5", &GENdEtaj1j2_2p5);
+        newtree->Branch("GENdPhij1j2_2p5", &GENdPhij1j2_2p5);
+        newtree->Branch("GENpT4lj_2p5", &GENpT4lj_2p5);
+        newtree->Branch("GENmass4lj_2p5", &GENmass4lj_2p5);
+        newtree->Branch("GENpT4ljj_2p5", &GENpT4ljj_2p5);
+        newtree->Branch("GENmass4ljj_2p5", &GENmass4ljj_2p5);
+        newtree->Branch("GEN_TauC_Inc_0j_EnergyWgt", &GEN_TauB_Inc_0j_pTWgt);
+        newtree->Branch("GEN_TauB_Inc_0j_pTWgt", &GEN_TauB_Inc_0j_pTWgt);
 
     }
 
@@ -433,10 +486,21 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
         if (_addNewVar && _OldNtuple)
         {
             order_index.clear();
+/*
+	    pt_nom.clear();
+	    eta_nom.clear();
+	    phi_nom.clear();
+	    mass_nom.clear();
+*/
+
             pTj2=-1.0; mj1j2=-1.0; dEtaj1j2=-99.0; dPhij1j2=-99.0;
             pT4lj=-1.0; mass4lj=-1.0; pT4ljj=-1.0; mass4ljj=-1.0;
             GENpTj2=-1.0; GENmj1j2=-1.0; GENdEtaj1j2=-99.0; GENdPhij1j2=-99.0;
             GENpT4lj=-1.0; GENmass4lj=-1.0; GENpT4ljj=-1.0; GENmass4ljj=-1.0;
+            GENpTj2_2p5=-1.0; GENmj1j2_2p5=-1.0; GENdEtaj1j2_2p5=-99.0; GENdPhij1j2_2p5=-99.0;
+            GENpT4lj_2p5=-1.0; GENmass4lj_2p5=-1.0; GENpT4ljj_2p5=-1.0; GENmass4ljj_2p5=-1.0;
+	    GEN_TauB_Inc_0j_pTWgt=-99, GEN_TauC_Inc_0j_EnergyWgt=-99;
+
         }
         //if (i>=2000000) continue;
         if (i>=20000&&_Test) break;
@@ -445,7 +509,8 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
 
         if (_addNewVar && _OldNtuple)
         {
-            if(njets_pt30_eta4p7>0)
+
+           if(njets_pt30_eta4p7>0)
             {
                 j1.SetPtEtaPhiM((*jet_pt)[jet1index],(*jet_eta)[jet1index],(*jet_phi)[jet1index],(*jet_mass)[jet1index]);
             }
@@ -475,15 +540,61 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
                 GENdEtaj1j2 = GENj1.Eta()-GENj2.Eta();
                 GENdPhij1j2 = GENj1.DeltaPhi(GENj2);
             }
+// 2p5
+            if(GENnjets_pt30_eta2p5>0)
+            {
+                order_pt(GENjet_pt, order_index);
+                int GENjet1index_2p5 = order_index[0];
+                GENj1_2p5.SetPtEtaPhiM((*GENjet_pt)[GENjet1index_2p5],(*GENjet_eta)[GENjet1index_2p5],(*GENjet_phi)[GENjet1index_2p5],(*GENjet_mass)[GENjet1index_2p5]);
+            }
+            if(GENnjets_pt30_eta2p5>1)
+            {
+                int GENjet2index_2p5 = order_index[1];
+                GENj2_2p5.SetPtEtaPhiM((*GENjet_pt)[GENjet2index_2p5],(*GENjet_eta)[GENjet2index_2p5],(*GENjet_phi)[GENjet2index_2p5],(*GENjet_mass)[GENjet2index_2p5]);
+                GENjj_2p5 = GENj1_2p5 + GENj2_2p5;
+
+                GENpTj2_2p5 = GENj2_2p5.Pt();
+                GENmj1j2_2p5 = GENjj_2p5.M();
+                GENdEtaj1j2_2p5 = GENj1_2p5.Eta()-GENj2_2p5.Eta();
+                GENdPhij1j2_2p5 = GENj1_2p5.DeltaPhi(GENj2_2p5);
+            }
+
+
+
+
 
             if(passedFiducialSelection)
             {
+                for (unsigned int k=0; k<(*GENjet_pt).size(); k++) {
+
+                    TLorentzVector thisGENJet;
+                    thisGENJet.SetPtEtaPhiM((*GENjet_pt)[k],(*GENjet_eta)[k],(*GENjet_phi)[k],(*GENjet_mass)[k]);
+
+                    if ((*GENjet_pt)[k]<30.0 || abs((*GENjet_eta)[k])>4.7) continue;
+                    
+                    pt_nom.push_back(thisGENJet.Pt());
+                    eta_nom.push_back(thisGENJet.Eta());
+                    phi_nom.push_back(thisGENJet.Phi());
+                    mass_nom.push_back(thisGENJet.M());
+                } 
+
+
                 GENl1.SetPtEtaPhiM((*GENlep_pt)[GENlep_Hindex[0]],(*GENlep_eta)[GENlep_Hindex[0]],(*GENlep_phi)[GENlep_Hindex[0]],(*GENlep_mass)[GENlep_Hindex[0]]);
                 GENl2.SetPtEtaPhiM((*GENlep_pt)[GENlep_Hindex[1]],(*GENlep_eta)[GENlep_Hindex[1]],(*GENlep_phi)[GENlep_Hindex[1]],(*GENlep_mass)[GENlep_Hindex[1]]);
                 GENl3.SetPtEtaPhiM((*GENlep_pt)[GENlep_Hindex[2]],(*GENlep_eta)[GENlep_Hindex[2]],(*GENlep_phi)[GENlep_Hindex[2]],(*GENlep_mass)[GENlep_Hindex[2]]);
                 GENl4.SetPtEtaPhiM((*GENlep_pt)[GENlep_Hindex[3]],(*GENlep_eta)[GENlep_Hindex[3]],(*GENlep_phi)[GENlep_Hindex[3]],(*GENlep_mass)[GENlep_Hindex[3]]);
 
                 GENHiggs = GENl1 + GENl2 + GENl3+ GENl4;
+
+                GEN_TauC_Inc_0j_EnergyWgt = TauC(pt_nom, eta_nom, phi_nom, mass_nom, GENHiggs);
+                GEN_TauB_Inc_0j_pTWgt = TauB(pt_nom, eta_nom, phi_nom, mass_nom, GENHiggs);
+
+                pt_nom.clear();
+                eta_nom.clear();
+                phi_nom.clear();
+                mass_nom.clear();
+
+
                 Float_t GENmass4l_ = GENHiggs.M();
                 //if((GENmass4l-GENmass4l_)>0.01)
                 //    cout<<"GENmass4l: "<<GENmass4l<<"; GENmass4l_: "<<GENmass4l_<<endl;
@@ -499,6 +610,21 @@ void slimNtuple(const int & _year_=2017, const string & _name_DS_="GluGluHToZZTo
                     GENpT4ljj = GENhjj.Pt();
                     GENmass4ljj = GENhjj.M();
                 }
+//2p5
+                if(GENnjets_pt30_eta2p5>0)
+                {
+                    GENhj_2p5 = GENj1_2p5 + GENHiggs;
+                    GENpT4lj_2p5 = GENhj_2p5.Pt();
+                    GENmass4lj_2p5 = GENhj_2p5.M();
+                }
+                if(GENnjets_pt30_eta2p5>1)
+                {
+                    GENhjj_2p5 = GENjj_2p5 + GENHiggs;
+                    GENpT4ljj_2p5 = GENhjj_2p5.Pt();
+                    GENmass4ljj_2p5 = GENhjj_2p5.M();
+                }
+
+
             }
 
             if(passedFullSelection)
