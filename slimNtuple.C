@@ -33,6 +33,33 @@
 #include "TClonesArray.h"
 #include "TCanvas.h"
 
+
+void order_pt(vector<float> GENlep_pt, vector<int> &order_index)
+{
+    vector<float> GENlep_pt_ordered;
+    GENlep_pt_ordered.clear();
+    order_index.clear();
+    for(unsigned int i=0; i<GENlep_pt.size(); i++)
+    {
+        if(GENlep_pt_ordered.size()==0 || GENlep_pt[i]<GENlep_pt_ordered[GENlep_pt_ordered.size()-1])
+        {
+            GENlep_pt_ordered.push_back(GENlep_pt[i]);
+            order_index.push_back(i);
+            continue;
+        }
+        for(unsigned int j=0; j<GENlep_pt_ordered.size(); j++)
+        {
+            if(GENlep_pt[i]>=GENlep_pt_ordered[j])
+            {
+                GENlep_pt_ordered.insert(GENlep_pt_ordered.begin()+j,GENlep_pt[i]);
+                order_index.insert(order_index.begin()+j, i);
+                break;
+            }
+        }
+    }
+}
+
+
 void order_pt(vector<float> *GENlep_pt, vector<int> &order_index)
 {
     vector<float> GENlep_pt_ordered;
@@ -103,6 +130,7 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
     //TString filename = prefix+".root";
     //string filename = (pre_name + whichYear[year-2016] + MC__ + name_DS + ".root").c_str();
     string filename = (pre_name + name_DS + ".root").c_str();
+    filename = "./Sync_106X_2018UL_28062022_-1gen.root";
     //filename = "Sync_106X_2018UL_30112021_-1ggH_V2.root";
 
     std::cout<<"Year: "<<year<<std::endl;
@@ -132,6 +160,11 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
     vector<float> eta_nom {};
     vector<float> phi_nom {};
     vector<float> mass_nom {};
+
+    vector<float> GENjet_pt_2p5;
+    vector<float> GENjet_eta_2p5;
+    vector<float> GENjet_phi_2p5;
+    vector<float> GENjet_mass_2p5;
 
     TLorentzVector j1, j2, Higgs, hj, jj, hjj;
     TLorentzVector GENj1, GENj2, GENl1, GENl2, GENl3, GENl4, GENHiggs, GENhj, GENjj, GENhjj;
@@ -492,6 +525,10 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
 	    phi_nom.clear();
 	    mass_nom.clear();
 */
+            GENjet_pt_2p5.clear();
+            GENjet_eta_2p5.clear();
+            GENjet_phi_2p5.clear();
+            GENjet_mass_2p5.clear();
 
             pTj2=-1.0; mj1j2=-1.0; dEtaj1j2=-99.0; dPhij1j2=-99.0;
             pT4lj=-1.0; mass4lj=-1.0; pT4ljj=-1.0; mass4ljj=-1.0;
@@ -499,7 +536,7 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
             GENpT4lj=-1.0; GENmass4lj=-1.0; GENpT4ljj=-1.0; GENmass4ljj=-1.0;
             GENpTj2_2p5=-1.0; GENmj1j2_2p5=-1.0; GENdEtaj1j2_2p5=-99.0; GENdPhij1j2_2p5=-99.0;
             GENpT4lj_2p5=-1.0; GENmass4lj_2p5=-1.0; GENpT4ljj_2p5=-1.0; GENmass4ljj_2p5=-1.0;
-	    GEN_TauB_Inc_0j_pTWgt=-99, GEN_TauC_Inc_0j_EnergyWgt=-99;
+	        GEN_TauB_Inc_0j_pTWgt=-99; GEN_TauC_Inc_0j_EnergyWgt=-99;
 
         }
         //if (i>=2000000) continue;
@@ -509,6 +546,18 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
 
         if (_addNewVar && _OldNtuple)
         {
+
+            for(int i=0; i<(*GENjet_pt).size(); i++)
+            {
+                if ((*GENjet_eta)[i]<2.5)
+                {   
+                    GENjet_pt_2p5.push_back((*GENjet_pt)[i]);
+                    GENjet_eta_2p5.push_back((*GENjet_eta)[i]);
+                    GENjet_phi_2p5.push_back((*GENjet_phi)[i]);
+                    GENjet_mass_2p5.push_back((*GENjet_mass)[i]);
+                }   
+            
+            }
 
            if(njets_pt30_eta4p7>0)
             {
@@ -543,14 +592,14 @@ void slimNtuple(const int & _year_=2016, const string & _name_DS_="testGGH_nnlop
 // 2p5
             if(GENnjets_pt30_eta2p5>0)
             {
-                order_pt(GENjet_pt, order_index);
+                order_pt(GENjet_pt_2p5, order_index);
                 int GENjet1index_2p5 = order_index[0];
-                GENj1_2p5.SetPtEtaPhiM((*GENjet_pt)[GENjet1index_2p5],(*GENjet_eta)[GENjet1index_2p5],(*GENjet_phi)[GENjet1index_2p5],(*GENjet_mass)[GENjet1index_2p5]);
+                GENj1_2p5.SetPtEtaPhiM(GENjet_pt_2p5[GENjet1index_2p5],GENjet_eta_2p5[GENjet1index_2p5],GENjet_phi_2p5[GENjet1index_2p5],GENjet_mass_2p5[GENjet1index_2p5]);
             }
             if(GENnjets_pt30_eta2p5>1)
             {
                 int GENjet2index_2p5 = order_index[1];
-                GENj2_2p5.SetPtEtaPhiM((*GENjet_pt)[GENjet2index_2p5],(*GENjet_eta)[GENjet2index_2p5],(*GENjet_phi)[GENjet2index_2p5],(*GENjet_mass)[GENjet2index_2p5]);
+                GENj2_2p5.SetPtEtaPhiM(GENjet_pt_2p5[GENjet2index_2p5],GENjet_eta_2p5[GENjet2index_2p5],GENjet_phi_2p5[GENjet2index_2p5],GENjet_mass_2p5[GENjet2index_2p5]);
                 GENjj_2p5 = GENj1_2p5 + GENj2_2p5;
 
                 GENpTj2_2p5 = GENj2_2p5.Pt();
