@@ -1,6 +1,9 @@
+#!/usr/bin/python
 import optparse
-import os
+import os, pwd, commands
 import sys
+#grootargs = []
+#sys.argv = grootargs
 import ROOT, re, string
 from ROOT import *
 from scipy import interpolate
@@ -21,36 +24,52 @@ from zx_contribution import *
 
 def parseOptions():
 
-    global opt, args, runAllSteps
+    global opt, args
 
     usage = ('usage: %prog [options]\n'
              + '%prog -h for help')
     parser = optparse.OptionParser(usage)
+
     parser.add_option('',   '--obsName',  dest='OBSNAME',  type='string',default='mass4l',   help='Name of the observable, supported: "inclusive", "pT4l", "eta4l", "massZ2", "nJets"')
     #parser.add_option('',   '--obsName',  dest='OBSNAME',  type='string',default='massZ1',   help='Name of the observable, supported: "inclusive", "pT4l", "eta4l", "massZ2", "nJets"')
     parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|105.0|160.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     #parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|70.0|1000.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     #parser.add_option('',   '--obsBins',  dest='OBSBINS',  type='string',default='|40.0|130.0|',   help='Bin boundaries for the diff. measurement separated by "|", e.g. as "|0|50|100|", use the defalut if empty string')
     #parser.add_option('',   '--era',  dest='ERA',  type='string',default='2018',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
-    parser.add_option('',   '--era',  dest='ERA',  type='string',default='2016',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
-    #parser.add_option('',   '--year',  dest='YEAR',  type='string',default='2017',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
-    parser.add_option('', '--bkg',      dest='BKG',type='string',default='', help='run with the type of zz background to float zz or qq_gg ')
-    parser.add_option('', '--range',      dest='RNG',type='string',default='signal', help='run with the type of mass window e.g. signal, full, low, high etc. ')
+    #parser.add_option('',   '--era',  dest='ERA',  type='string',default='2016',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    #parser.add_option('',   '--era',  dest='ERA',  type='string',default='2017',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    #parser.add_option('',   '--era',  dest='ERA',  type='string',default='Full',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    parser.add_option('',   '--era',  dest='ERA',  type='string',default='',   help='Era to analyze, e.g. 2016, 2017, 2018 or Full ')
+    #parser.add_option('', '--range',      dest='RNG',type='string',default='low', help='run with the type of mass window e.g. signal, full, low, high etc. ')
+    #parser.add_option('', '--range',      dest='RNG',type='string',default='signal', help='run with the type of mass window e.g. signal, full, low, high etc. ')
+    #parser.add_option('', '--range',      dest='RNG',type='string',default='high', help='run with the type of mass window e.g. signal, full, low, high etc. ')
+    #parser.add_option('', '--range',      dest='RNG',type='string',default='full', help='run with the type of mass window e.g. signal, full, low, high etc. ')
+    parser.add_option('', '--range',      dest='RNG',type='string',default='', help='run with the type of mass window e.g. signal, full, low, high etc. ')
     parser.add_option('',   '--debug',  dest='DEBUG',  type='int',default=0,   help='0 if debug false, else debug True')
+#    parser.add_option("-l",action="callback",callback=callback_rootargs)
+#    parser.add_option("-q",action="callback",callback=callback_rootargs)
+#    parser.add_option("-b",action="callback",callback=callback_rootargs)
+
     global opt, args
     (opt, args) = parser.parse_args()
 
-def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0): 
+#grootargs = []
+#def callback_rootargs(option, opt, value, parser):
+#    grootargs.append(opt)
+
+def extract_yields(nbins, obsName, obs_bins, channel, year, DEBUG = 0): 
 #xlabel, xunits, prelim, setLogX, setLogY,EventCat, mh, DEBUG = 0):
 #def plot_m4l(channel, var, mh, bin, low, high, m4llow, m4lhigh, xlabel, xunits, prelim, setLogX, setLogY,EventCat):
+
 
     x_points = [125]
 
     #procs=['trueH_XH','trueH','bkg_qqzz','obs_data','bkg_ggzz']
     #procs=['trueH_ggH','trueH_XH','trueH','bkg_qqzz','obs_data','bkg_ggzz']
 
-    procs=['bkg_ggzz','trueH_ggH','trueH_XH','trueH','bkg_qqzz','obs_data'] # OK
-
+    #procs=['bkg_ggzz','trueH_ggH','trueH_XH','trueH','bkg_qqzz','obs_data'] # OK
+    procs=['bkg_ggzz','trueH_ggH','trueH_VBF','trueH_WH','trueH_ZH','trueH_ttH','trueH_XH','trueH','bkg_qqzz','obs_data'] # OK
+    #procs=['trueH_VBF']
     #procs=['bkg_qqzz','bkg_ggzz']
     #procs=['bkg_qqzz','bkg_ggzz']
     #procs = ['obs_data']
@@ -63,7 +82,8 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"(passedZXCRSelection==1)"}
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedFullSelection==1"}
     #proc_selections = {"trueH":"passedFullSelection==1","trueH_XH":"passedFullSelection==1","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedFullSelection==1"}
-    proc_selections = {"trueH":"passedFullSelection==1","trueH_XH":"passedFullSelection==1","trueH_ggH":"passedFullSelection==1","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedFullSelection==1"}
+    #proc_selections = {"trueH":"passedFullSelection==1","trueH_XH":"passedFullSelection==1","trueH_ggH":"passedFullSelection==1","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedFullSelection==1"}
+    proc_selections = {"trueH":"passedFullSelection==1","trueH_XH":"passedFullSelection==1","trueH_ggH":"passedFullSelection==1","trueH_VBF":"passedFullSelection==1","trueH_WH":"passedFullSelection==1","trueH_ZH":"passedFullSelection==1","trueH_ttH":"passedFullSelection==1","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedFullSelection==1"}
     #proc_selections = {"trueH":"passedFullSelection==1 ","out_trueH":"(passedFullSelection==1 && passedFiducialSelection!=1)","fakeH":"isH4l!=1","bkg_qqzz":"passedFullSelection==1","bkg_ggzz":"passedFullSelection==1","obs_data":"passedZXCRSelection==1"}
 
 
@@ -97,6 +117,10 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
     sig_ggH_year = TH1D('sig_ggH_year', 'sig_ggH_year',m4l_bins,m4l_low,m4l_high)
     data_year = TH1D('data_year', 'data_year',m4l_bins,m4l_low,m4l_high)
 
+    sig_VBF_year = TH1D('sig_VBF_year', 'sig_VBF_year',m4l_bins,m4l_low,m4l_high)
+    sig_WH_year = TH1D('sig_WH_year', 'sig_WH_year',m4l_bins,m4l_low,m4l_high)
+    sig_ZH_year = TH1D('sig_ZH_year', 'sig_ZH_year',m4l_bins,m4l_low,m4l_high)
+    sig_ttH_year = TH1D('sig_ttH_year', 'sig_ttH_year',m4l_bins,m4l_low,m4l_high)
 
     Histos = {}
     nom = {}
@@ -124,7 +148,7 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
                 RootFile_list_post = []
 
 		#if ((proc=='trueH' or proc=='out_trueH' or proc=='fakeH')): 
-		if ((proc=='trueH' or proc=='trueH_XH' or proc=='trueH_ggH' or proc=='out_trueH' or proc=='fakeH')): 
+		if ((proc=='trueH' or proc=='trueH_XH' or proc=='trueH_ggH' or proc=='out_trueH' or proc=='fakeH' or proc=='trueH_VBF' or proc=='trueH_WH' or proc=='trueH_ZH' or proc=='trueH_ttH')): 
 		    recoweight = weights["sig"]
 		else: 
 		    recoweight = weights[proc]
@@ -149,6 +173,10 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
                     if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH' or proc=='trueH_XH' or proc=='out_trueH' or proc=='fakeH') and ((sample.startswith('ZZTo4L') or sample.startswith('GluGluToContin')))): continue
                     if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_XH') and ((sample.startswith('GluGluHToZZTo4L_M125') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
                     if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_ggH') and ((not sample.startswith('GluGluHToZZTo4L_M125') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
+                    if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_VBF') and ((not sample.startswith('VBF') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
+                    if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_WH') and ((not sample.startswith('WH') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
+                    if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_ZH') and ((not sample.startswith('ZH') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
+                    if ((proc!='obs_data' and proc!='bkg_qqzz' and proc!='bkg_ggzz') and (proc=='trueH_ttH') and ((not sample.startswith('ttH') or (sample.startswith('ZZTo4L')) or sample.startswith('GluGluToContin')))): continue
 
 		    if (year=='2018' or year=='2017'):
 			if (proc=='bkg_ggzz'):
@@ -271,6 +299,10 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
 				if(proc=='trueH'): sig_year.Add(Histos[processBin_nom]) 
 				if(proc=='trueH_XH'): sig_XH_year.Add(Histos[processBin_nom]) 
 				if(proc=='trueH_ggH'): sig_ggH_year.Add(Histos[processBin_nom]) 
+				if(proc=='trueH_VBF'): sig_VBF_year.Add(Histos[processBin_nom]) 
+				if(proc=='trueH_WH'): sig_WH_year.Add(Histos[processBin_nom]) 
+				if(proc=='trueH_ZH'): sig_ZH_year.Add(Histos[processBin_nom]) 
+				if(proc=='trueH_ttH'): sig_ttH_year.Add(Histos[processBin_nom]) 
 				if(proc=='bkg_qqzz'): qqzz_year.Add(Histos[processBin_nom]); irr_bkg_year.Add(Histos[processBin_nom]) 
 				if(proc=='bkg_ggzz'): ggzz_year.Add(Histos[processBin_nom]); irr_bkg_year.Add(Histos[processBin_nom]) 
 				#if(proc=='bkg_qqzz'): irr_bkg.Add(Histos[processBin_nom])
@@ -307,7 +339,8 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
 #                                print "sumw2_pre[",i,"] : ", sumw2_pre[i]
 #                                print "len(sumw2_post):    ", len(sumw2_post)
 #                                print "sumw2_post[",i,"] : ", sumw2_post[i]
-				if (proc=='trueH' or proc=='trueH_ggH' or proc=='trueH_XH'): # using only postVFP for signal reweighted to 36.33 
+				#if (proc=='trueH' or proc=='trueH_ggH' or proc=='trueH_XH'): # using only postVFP for signal reweighted to 36.33 
+				if (proc=='trueH' or proc=='trueH_ggH' or proc=='trueH_XH' or proc=='trueH_VBF' or proc=='trueH_WH' or proc=='trueH_ZH' or proc=='trueH_ttH'): # using only postVFP for signal reweighted to 36.33 
 				    post_tree.Draw("mass4l >> "+processBin_nom+'post',"("+cut_nom+"*("+str(lumi[year])+")/"+str(sumw2_post[i])+")","goff")
 				elif (proc=='bkg_ggzz' or proc=='bkg_qqzz'):
 			            pre_tree.Draw("mass4l >> "+processBin_nom+'pre',"("+cut_nom+"*("+str(lumi_preVFP)+")/"+str(sumw2_pre[i])+")","goff")
@@ -326,10 +359,14 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
 				if(proc!='trueH'): added_year.Add(Histos[processBin_nom])
 
 
-				if (proc=='trueH'): sig_year.Add(Histos[processBin_nom]); #added.Add(sig);
-				if (proc=='trueH_XH'): sig_XH_year.Add(Histos[processBin_nom]); #added.Add(sig);
-				if (proc=='trueH_ggH'): sig_ggH_year.Add(Histos[processBin_nom]); #added.Add(sig);
-				if (proc=="bkg_qqzz"):
+				if(proc=='trueH'): sig_year.Add(Histos[processBin_nom]); #added.Add(sig);
+				if(proc=='trueH_XH'): sig_XH_year.Add(Histos[processBin_nom]); #added.Add(sig);
+				if(proc=='trueH_ggH'): sig_ggH_year.Add(Histos[processBin_nom]); #added.Add(sig);
+                                if(proc=='trueH_VBF'): sig_VBF_year.Add(Histos[processBin_nom]) 
+                                if(proc=='trueH_WH'): sig_WH_year.Add(Histos[processBin_nom]) 
+                                if(proc=='trueH_ZH'): sig_ZH_year.Add(Histos[processBin_nom]) 
+                                if(proc=='trueH_ttH'): sig_ttH_year.Add(Histos[processBin_nom])
+				if(proc=="bkg_qqzz"):
 				    qqzz_year.Add(Histos[processBin_nom]) 
 				    irr_bkg_year.Add(Histos[processBin_nom]) 
                                 if (proc=='bkg_ggzz'): 
@@ -638,7 +675,7 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
 		    #nom[processBin_nom] = Histos[processBin_nom].Integral(1,m4l_bins)  #  nominal rate for cards
                                     
             
-    added.Add(added_year); red_bkg.Add(red_bkg_year); irr_bkg.Add(irr_bkg_year); qqzz.Add(qqzz_year); ggzz.Add(ggzz_year); sig.Add(sig_year); sig_XH.Add(sig_XH_year);sig_ggH.Add(sig_ggH_year); data.Add(data_year);
+    added.Add(added_year); red_bkg.Add(red_bkg_year); irr_bkg.Add(irr_bkg_year); qqzz.Add(qqzz_year); ggzz.Add(ggzz_year); sig.Add(sig_year); sig_XH.Add(sig_XH_year);sig_ggH.Add(sig_ggH_year); sig_VBF.Add(sig_VBF_year);sig_WH.Add(sig_WH_year);sig_ZH.Add(sig_ZH_year);sig_ttH.Add(sig_ttH_year);data.Add(data_year);
 #    return added_year, red_bkg_year, irr_bkg_year, qqzz_year, ggzz_year, sig_year, data_year;
     if (not os.path.exists("datacardInputs/"+year+"/"+obs_reco)):
         os.system("mkdir -p datacardInputs/"+year+"/"+obs_reco+"")
@@ -698,6 +735,7 @@ def extract_JES_nuis(nbins, obsName, obs_bins, channel, year, DEBUG = 0):
 if __name__ == "__main__":
     global opt, args
     parseOptions()
+    #sys.argv = grootargs
     observableBins = {0:(opt.OBSBINS.split("|")[1:(len(opt.OBSBINS.split("|"))-1)]),1:['0','inf']}[opt.OBSBINS=='inclusive']
     nbins = len(observableBins)
 
@@ -757,7 +795,8 @@ if __name__ == "__main__":
     savevar = opt.OBSNAME
 
     #lumiplot = {"2018":"59.8 fb^{-1}","2017":"41.5 fb^{-1}","2016":"35.9 fb^{-1}", "Full":"138 fb^{-1}"}
-    lumiplot = {"2018":"59.8 fb^{-1}","2017":"41.5 fb^{-1}","2016":"36.3 fb^{-1}", "Full":"138 fb^{-1}"}
+    #lumiplot = {"2018":"59.8 fb^{-1}","2017":"41.5 fb^{-1}","2016":"36.3 fb^{-1}", "Full":"138 fb^{-1}"}
+    lumiplot = {"2018":"59.8 fb^{-1}","2017":"41.5 fb^{-1}","2016":"36.31 fb^{-1}", "Full":"138 fb^{-1}"} # Reference : https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM
     lumiplot2018 = '58.8 fb^{-1}'
 
     fstates = {"4l":"m_{4l}","4e":"m_{4e}","4mu":"m_{4#mu}","2e2mu":"2e2#mu"}
@@ -779,6 +818,7 @@ if __name__ == "__main__":
     channels=['4mu','2e2mu','4e', '4l']
     #channels=['4mu'] #
     #channels=['4l'] #
+    #channels=['2e2mu'] #
 
     for channel in channels:
 
@@ -793,14 +833,18 @@ if __name__ == "__main__":
         ggzz = TH1D('ggzz', 'ggzz',m4l_bins,m4l_low,m4l_high)
         sig = TH1D('sig', 'sig',m4l_bins,m4l_low,m4l_high)
         sig_XH = TH1D('sig_XH', 'sig_XH',m4l_bins,m4l_low,m4l_high)
+        sig_VBF = TH1D('sig_VBF', 'sig_VBF',m4l_bins,m4l_low,m4l_high)
+        sig_WH = TH1D('sig_WH', 'sig_WH',m4l_bins,m4l_low,m4l_high)
+        sig_ZH = TH1D('sig_ZH', 'sig_ZH',m4l_bins,m4l_low,m4l_high)
+        sig_ttH = TH1D('sig_ttH', 'sig_ttH',m4l_bins,m4l_low,m4l_high)
         sig_ggH = TH1D('sig_ggH', 'sig_ggH',m4l_bins,m4l_low,m4l_high)
         data = TH1D('data', 'data',m4l_bins,m4l_low,m4l_high)
 
         for year in years:
-            #extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, channel, years, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
-            #extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, channel, year, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
-            extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, channel, year, opt.DEBUG) #, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
-            #extract_JES_nuis(nbins, opt.OBSNAME, obs_bins, year, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
+            #extract_yields(nbins, opt.OBSNAME, obs_bins, channel, years, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
+            #extract_yields(nbins, opt.OBSNAME, obs_bins, channel, year, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
+            extract_yields(nbins, opt.OBSNAME, obs_bins, channel, year, opt.DEBUG) #, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
+            #extract_yields(nbins, opt.OBSNAME, obs_bins, year, 'm_{4l}', 'GeV', True, False, False,"-1","125", opt.DEBUG)
     
     #        added.Add(added_year); red_bkg.Add(red_bkg_year); irr_bkg.Add(irr_bkg_year); qqzz.Add(qqzz_year); ggzz.Add(ggzz_year); sig.Add(sig_year); data.Add(data_year);
 
@@ -925,25 +969,34 @@ if __name__ == "__main__":
         data.Draw("ex0psame")
     
         #legend = TLegend(.62,.70,.90,.92)
-        legend = TLegend(.55,.70,.90,.92) # TJ
+        #legend = TLegend(.55,.70,.90,.92) # TJ
+        #legend = TLegend(.55,.70,.90,.91) # TJ, OK
+        #legend = TLegend(.52,.65,.92,.92) # TJ, looks OK
+        #legend = TLegend(.55,.69,.92,.92) # TJ, looks OK 2
+        #legend = TLegend(.54,.68,.92,.92) # TJ, looks OK 2
+        legend = TLegend(.54,.68,.90,.92) # TJ, looks OK 2
         #legend = TLegend(.2,.30,.52,.60)
         legend.AddEntry(data, 'Data', "ep")
         #legend.AddEntry(sig, 'm_{H} = 125 GeV', "f")
         #legend.AddEntry(sig, 'm_{H} = 125 GeV (gg#rightarrowH (POWHEG) + XH)', "f")
 
         #legend.AddEntry(sig_ggH, 'gg#rightarrowH (POWHEG) + XH   (m_{H} = 125 GeV)', "f")
-        legend.AddEntry(sig_ggH, 'gg#rightarrowH (POWHEG)   (m_{H} = 125 GeV)', "f")
+
+        #legend.AddEntry(sig_ggH, 'gg#rightarrowH (POWHEG)   (m_{H} = 125 GeV)', "f")
+        legend.AddEntry(sig_ggH, 'gg #rightarrow H   (m_{H} = 125 GeV)', "f")
 
         #legend.AddEntry(sig, 'gg#rightarrowH (POWHEG) + XH   (m_{H} = 125 GeV)', "f")
 
 
         #legend.AddEntry(sig_XH, 'm_{H} = 125 GeV (sub-dominant signal only)', "f")
-        legend.AddEntry(sig_XH, 'XH = VBF + VH + ttH   (m_{H} = 125 GeV)', "f")
+        #legend.AddEntry(sig_XH, 'XH = VBF + VH + ttH   (m_{H} = 125 GeV)', "f")
+        legend.AddEntry(sig_XH, 'XH = VBF + VH + ttH ', "f")
 #        legend.AddEntry(irr_bkg, 'Z#gamma*, ZZ', "f")
-        legend.AddEntry(qqzz, 'qq#rightarrowZZ', "f")
-        legend.AddEntry(ggzz, 'gg#rightarrowZZ', "f")
+        legend.AddEntry(qqzz, 'qq #rightarrow ZZ', "f")
+        legend.AddEntry(ggzz, 'gg #rightarrow ZZ', "f")
         #if (obsName=="mass4l"): legend.AddEntry(red_bkg, 'Z+X', "f")
         legend.AddEntry(red_bkg, 'Z+X', "f")
+	#legend.SetTextFont(45);
         legend.SetShadowColor(0);
         legend.SetFillColor(0);
         legend.SetLineColor(0);
@@ -953,6 +1006,7 @@ if __name__ == "__main__":
         latex2.SetNDC()
         latex2.SetTextSize(0.6*c1.GetTopMargin())
         latex2.SetTextFont(42)
+        #latex2.SetTextAlign(31) # align right
         latex2.SetTextAlign(31) # align right
     ##    latex2.DrawLatex(0.92, 0.94,lumiplot2016+" (13 TeV)")
     ##    latex2.DrawLatex(0.92, 0.94,lumiplot2017+" (13 TeV)")
@@ -976,9 +1030,15 @@ if __name__ == "__main__":
         if (obsName=='mass4l' and m4l_high>700.0): lastbin=m4l_bins+1  # ??
     
         print 'Signal:  ',sig.Integral(1,lastbin)
-        print 'Signal ggH:  ',sig_ggH.Integral(1,lastbin)
         print 'Signal   XH:  ',sig_XH.Integral(1,lastbin)
-        print 'Signal - XH  :  ',(sig.Integral(1,lastbin)-sig_XH.Integral(1,lastbin));
+        print 'Signal ggH:  ',sig_ggH.Integral(1,lastbin)
+        #print 'Signal   XH:  ',sig_XH.Integral(1,lastbin)
+#        print 'Signal - XH  :  ',(sig.Integral(1,lastbin)-sig_XH.Integral(1,lastbin));
+        print 'Signal VBF:  ',sig_VBF.Integral(1,lastbin)
+        print 'Signal WH:  ',sig_WH.Integral(1,lastbin)
+        print 'Signal ZH:  ',sig_ZH.Integral(1,lastbin)
+        print 'Signal ttH:  ',sig_ttH.Integral(1,lastbin)
+
         print 'ZZ Bkg:  ',irr_bkg.Integral(1,lastbin)
         print 'ggZZ Bkg:  ',ggzz.Integral(1,lastbin)
         print 'qqZZ Bkg:  ',qqzz.Integral(1,lastbin)
